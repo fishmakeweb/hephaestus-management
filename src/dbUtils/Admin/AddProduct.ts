@@ -2,7 +2,7 @@ import axios from '@/dbUtils/axios';
 
 class AddProductUtils {
 
-    async fetchAllDiamondAtr() {
+    async fetchAllDiamondAtribute() {
         try {
             const response = await axios.get("/diamonds/all");
             return response;
@@ -51,21 +51,57 @@ class AddProductUtils {
         }
     };
 
-    async fetchAllJewelryAtr(){
-        try{
+    async fetchAllJewelryAtribute() {
+        try {
             const response = await axios.get("/jewelry/all");
             return response;
         } catch (error) {
-            console.error('Error fetching jewelry attributes: ',error);
+            console.error('Error fetching jewelry attributes: ', error);
         }
     }
 
-    async fetchAllDiamonds(){
-        try{
+    async fetchAllDiamonds() {
+        try {
             const response = await axios.get("/diamonds");
             return response;
         } catch (error) {
-            console.error('Error fetching jewelry attributes: ',error);
+            console.error('Error fetching jewelry attributes: ', error);
+        }
+    }
+
+    async jewelryUniqueName(jewelryName: any) {
+        try {
+            const response = await axios.get(`/jewelry/check-name/${jewelryName}`);
+            return response;
+        } catch (error) {
+            console.error("Error checking jewelry name:", error);
+        }
+    }
+
+    async saveJewelryToDB(jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any, selectedCategory: any, selectedSize: any, selectedDiamond: any) {
+        const jewelryData = {
+            name: jewelryName,
+            img: jewelryUrl,
+            price: jewelryPrice,
+            quantity: jewelryQuantity,
+            date: new Date(), // Add the current date
+            material: {
+                materialId: selectedMaterial,
+            },
+            category: {
+                categoryId: selectedCategory,
+            },
+            size: {
+                sizeId: selectedSize,
+            },
+            diamond: selectedDiamond ? { diamondId: selectedDiamond } : null,
+        };
+        try {
+            const response = await axios.post("/secure/jewelry", jewelryData);
+            console.log('Save jewelry successfull: ', response);
+            return true;
+        } catch (error) {
+            console.error("Add jewelry failed:", error);
         }
     }
 }

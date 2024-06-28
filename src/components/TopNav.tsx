@@ -10,9 +10,9 @@ import {
     SheetFooter,
     SheetTitle,
     SheetDescription,
-} from "@/components/ui/sheet"; // Adjust the import path accordingly
-import { X } from "lucide-react"; // Make sure this import matches your setup
-import Link from 'next/link'; // Ensure you're using the correct Link component from your setup
+} from "@/components/ui/sheet"; 
+import { X } from "lucide-react"; 
+import Link from 'next/link'; 
 
 const NavbarStaff: React.FC<{}> = () => {
     const staff = JSON.parse(localStorage.getItem('user') || '{}');
@@ -79,10 +79,7 @@ const NavbarStaff: React.FC<{}> = () => {
                         className="dropdown-toggle flex items-center"
                         onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-8 h-8 rounded block object-cover align-middle">
-                            <path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 
-                            192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM128 256a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM80 432c0-44.2 35.8-80 80-80h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16z" />
-                        </svg>
+                        
                         <div className="p-2 md:block text-left">
                             <h2 className="text-base font-semibold text-gray-800">{staff.fullName}</h2>
                             <p className="text-xs text-gray-500">{staff.role.roleName}</p>
@@ -179,16 +176,39 @@ const NavbarStaff: React.FC<{}> = () => {
                                         </li>
                                     </ul>
                                 </li>
-                                <span className="text-gray-400 font-bold">PERSONAL</span>
                                 <li className="mb-1 group">
-                                    <a
-                                        href=""
-                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/calendar' ? 'bg-black text-white' : ''}`}
+                                    <button
+                                        onClick={toggleSalesDropdown}
+                                        className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
                                     >
-                                        <i className="ri-calendar-event-line mr-3 text-lg" />
-                                        <span className="text-sm">Calendar</span>
-                                    </a>
+                                        <i className="bx bx-user mr-3 text-lg" />
+                                        <span className="text-sm">View Products</span>
+                                        <i
+                                            className={`ri-arrow-right-s-line ml-auto ${isSalesDropdownOpen ? "rotate-90" : ""}`}
+                                        />
+                                    </button>
+                                    <ul
+                                        className={`pl-7 mt-2 ${isSalesDropdownOpen ? "block" : "hidden"}`}
+                                    >
+                                        <li className="mb-4">
+                                            <Link
+                                                href="/viewproduct/viewdiamond"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewdiamond' ? 'bg-black text-white' : ''}`}
+                                            >
+                                                - View Diamond
+                                            </Link>
+                                        </li>
+                                        <li className="mb-4">
+                                            <Link
+                                                href="/viewproduct/viewjewelry"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
+                                            >
+                                                - View Jewelry
+                                            </Link>
+                                        </li>
+                                    </ul>
                                 </li>
+                                <span className="text-gray-400 font-bold">PERSONAL</span>
                                 <li className="mb-1 group">
                                     <a
                                         href=""
@@ -228,16 +248,16 @@ const NavbarStaff: React.FC<{}> = () => {
                                     >
                                         <li className="mb-4">
                                             <Link
-                                                href="/viewDiamond"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewDiamond' ? 'bg-black text-white' : ''}`}
+                                                href="/viewproduct/viewdiamond"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewdiamond' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - View Diamond
                                             </Link>
                                         </li>
                                         <li className="mb-4">
                                             <Link
-                                                href="/viewJewelry"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewJewelry' ? 'bg-black text-white' : ''}`}
+                                                href="/viewproduct/viewjewelry"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - View Jewelry
                                             </Link>
@@ -245,15 +265,6 @@ const NavbarStaff: React.FC<{}> = () => {
                                     </ul>
                                 </li>
                                 <span className="text-gray-400 font-bold">PERSONAL</span>
-                                <li className="mb-1 group">
-                                    <a
-                                        href=""
-                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/calendar' ? 'bg-black text-white' : ''}`}
-                                    >
-                                        <i className="ri-calendar-event-line mr-3 text-lg" />
-                                        <span className="text-sm">Calendar</span>
-                                    </a>
-                                </li>
                                 <li className="mb-1 group">
                                     <a
                                         href=""

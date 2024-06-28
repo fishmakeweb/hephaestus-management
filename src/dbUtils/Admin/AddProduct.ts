@@ -22,7 +22,7 @@ class AddProductUtils {
                 },
             });
 
-            const imageUrl = response.data; // Assuming the API returns the URL in 'imageUrl' field
+            const imageUrl = response.data; 
             return imageUrl;
         } catch (error) {
             console.error("Error uploading file: ", error);
@@ -51,6 +51,16 @@ class AddProductUtils {
         }
     };
 
+    async updateDiamondStatus(diamondId:any){
+        try {
+            const response = await axios.put(`/secure/set/diamonds/${diamondId}`);
+            console.log('Update diamond status successfull: ', response);
+            return true;
+        } catch (error) {
+            console.error("Update diamond status failed:", error);
+            return false;
+        }
+    }
     async fetchAllJewelryAtribute() {
         try {
             const response = await axios.get("/jewelry/all");
@@ -104,6 +114,8 @@ class AddProductUtils {
             console.error("Add jewelry failed:", error);
         }
     }
+    
+
 }
 
 export default AddProductUtils;

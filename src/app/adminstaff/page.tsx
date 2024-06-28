@@ -2,7 +2,6 @@
 
 import StaffManage from '@/dbUtils/Admin/StaffManage';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import AuthGuard from '@/components/auth-guard';
 import NavbarStaff from '@/components/TopNav';
 import StaffTable from './StaffTable';
@@ -21,7 +20,6 @@ interface Staff {
 }
 
 export default function Page() {
-  const router = useRouter();
   const [staffList, setStaffList] = useState<Staff[]>([]);
   const [editingStaff, setEditingStaff] = useState<Staff | null>(null);
   const [modalOpen, setModalOpen] = useState(false);

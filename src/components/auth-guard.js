@@ -1,39 +1,33 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import NotFound from '@/app/not-found';
 
 const AuthGuard = ({ children, allowedRoles }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState('loading');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
 
     if (!token) {
       router.push('/');
       return;
     }
 
-    const checkAccess = async () => {
-      const role = localStorage.getItem('userRole');
-      
-      if (allowedRoles.includes(role)) {
-        setLoading(false);
-      } else {
-        if (role === 'ROLE_ADMIN') {
-          router.push('/adminstaff');
-        } else if (role === 'ROLE_SALESTAFF') {
-          router.push('/salestaff');
-        } else {
-          router.push('/');
-        }
-      }
-    };
-
-    checkAccess();
+    if (allowedRoles.includes(role)) {
+      setStatus('authorized');
+    } else {
+      setStatus('notFound');
+    }
   }, [router, allowedRoles]);
 
-  if (loading) {
-    return <p></p>;
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (status === 'notFound') {
+    return <NotFound />;
   }
 
   return children;

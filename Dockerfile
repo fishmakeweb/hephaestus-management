@@ -21,6 +21,8 @@ RUN apk add --no-cache git curl \
 FROM node:20-alpine AS PRODUCTION
 WORKDIR /app
 
+ENV PORT=5555
+
 COPY --from=BUILD /app/public ./public
 COPY --from=BUILD /app/next.config.mjs ./  
 # Changed from next.config.js to next.config.mjs

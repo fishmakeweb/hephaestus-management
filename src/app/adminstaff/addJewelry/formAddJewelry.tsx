@@ -133,6 +133,7 @@ const FormAddJewelry: React.FC = () => {
         const isValid = await validate();
         if (!isValid) return;
 
+        console.log(selectedDiamond);
         const saveResult = await productManager.saveJewelryToDB(
             jewelryName,
             jewelryUrl,
@@ -145,7 +146,10 @@ const FormAddJewelry: React.FC = () => {
         );
 
         if (saveResult) {
-            setShowSubmitMessage(true);
+            if (selectedDiamond) {
+                await productManager.updateDiamondStatus(selectedDiamond);
+            }
+            setShowSubmitMessage(true); 
         }
     };
 
@@ -280,7 +284,7 @@ const FormAddJewelry: React.FC = () => {
                                                     key={size.sizeId}
                                                     value={size.sizeId}
                                                 >
-                                                    {size.sizeNumber} {size.unit}
+                                                   {`${size.sizeNumber} ${size.unit} (${size.type})`}
                                                 </option>
                                             ))}
                                         </select>

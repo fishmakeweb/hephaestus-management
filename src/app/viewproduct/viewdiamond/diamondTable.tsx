@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import AuthService from "@/dbUtils/Auth/AuthService";
 
 export type Diamond = {
     diamondId: string;
@@ -118,6 +119,10 @@ export const columns: ColumnDef<Diamond>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
+            if (!AuthService.isAdmin()) {
+                return null; // Only render actions for admins
+            }
+
             const diamond = row.original;
             const [showUpdateOverlay, setShowUpdateOverlay] = useState(false);
 

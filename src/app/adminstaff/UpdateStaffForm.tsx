@@ -1,5 +1,4 @@
-
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import StaffManage from '@/dbUtils/Admin/StaffManage';
 
 interface UpdateStaffFormProps {
@@ -43,53 +42,56 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded shadow-lg w-1/3">
-        <h2 className="text-xl mb-4">Edit Staff</h2>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-4">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Edit Staff</h2>
         <form onSubmit={handleFormSubmit}>
-          <div className="mb-4">
+          <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="fullName">Full Name</label>
             <input
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               name="fullName"
               value={staff.fullName}
               onChange={handleChange}
+              required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="email">Email</label>
             <input
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="email"
               name="email"
               value={staff.email}
               onChange={handleChange}
+              required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="role">Role</label>
             <select
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="role"
               value={staff.role.roleName}
               onChange={handleChange}
+              required
             >
               <option value="ROLE_ADMIN">Admin</option>
               <option value="ROLE_SALESTAFF">Sales</option>
             </select>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-6">
             <button
               type="button"
-              className="inline-block bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 mr-2 rounded"
+              className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg mr-2"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-gray-800 hover:bg-black text-white font-semibold py-2 px-4 rounded-lg"
             >
               Save
             </button>

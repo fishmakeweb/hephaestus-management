@@ -65,7 +65,7 @@ export default function Page() {
             className="bg-black text-white font-bold py-2 px-4 rounded"
             onClick={() => setAddingUser(true)}
           >
-            Add User +
+            Add Staff +
           </button>
         </div>
 

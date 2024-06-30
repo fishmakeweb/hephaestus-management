@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 
-// Define the types for the staff object and props
-interface Role {
-  roleName: string;
-}
-
 interface Staff {
   staffId: string;
   fullName: string;

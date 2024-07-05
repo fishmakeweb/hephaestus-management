@@ -22,7 +22,7 @@ export default function Home() {
           if (AuthService.isAdmin()) {
             router.push('/adminstaff');
           } else if (AuthService.isSales()) {
-            router.push('/salestaff');
+            router.push('/salestaff/view-orders');
           }
         }
       } else {
@@ -55,7 +55,6 @@ export default function Home() {
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
-              {/* Your form elements go here */}
               <div>
                 <label
                   htmlFor="username"

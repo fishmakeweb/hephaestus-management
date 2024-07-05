@@ -15,12 +15,13 @@ import { X } from "lucide-react";
 import Link from 'next/link'; 
 
 const NavbarStaff: React.FC<{}> = () => {
-    const staff = JSON.parse(localStorage.getItem('user') || '{}');
+    const staff = JSON.parse(sessionStorage.getItem('user') || '{}');
 
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
     const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
     const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState<boolean>(false);
     const [isSalesDropdownOpen, setIsSalesDropdownOpen] = useState<boolean>(false);
+    const [isOrdersDropdownOpen, setIsOrdersDropdownOpen] = useState<boolean>(false);
     const userMenuRef = useRef<HTMLLIElement>(null);
     const router = useRouter();
     const pathname = usePathname();
@@ -58,6 +59,9 @@ const NavbarStaff: React.FC<{}> = () => {
         setIsSalesDropdownOpen(!isSalesDropdownOpen);
     };
 
+    const toogleOrderDropdown = () => {
+        setIsOrdersDropdownOpen(!isOrdersDropdownOpen);
+    };
 
     return (
         <div className="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
@@ -260,6 +264,38 @@ const NavbarStaff: React.FC<{}> = () => {
                                                 className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - View Jewelry
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li className="mb-1 group">
+                                    <button
+                                        onClick={toogleOrderDropdown}
+                                        className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
+                                    >
+                                        <i className="bx bx-user mr-3 text-lg" />
+                                        <span className="text-sm">View Orders</span>
+                                        <i
+                                            className={`ri-arrow-right-s-line ml-auto ${isOrdersDropdownOpen ? "rotate-90" : ""}`}
+                                        />
+                                    </button>
+                                    <ul
+                                        className={`pl-7 mt-2 ${isOrdersDropdownOpen ? "block" : "hidden"}`}
+                                    >
+                                        <li className="mb-4">
+                                            <Link
+                                                href="/salestaff/view-orders"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-orders' ? 'bg-black text-white' : ''}`}
+                                            >
+                                                - View Orders
+                                            </Link>
+                                        </li>
+                                        <li className="mb-4">
+                                            <Link
+                                                href="/salestaff/view-custom-orders"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-custom-orders' ? 'bg-black text-white' : ''}`}
+                                            >
+                                                - View Custom Orders
                                             </Link>
                                         </li>
                                     </ul>

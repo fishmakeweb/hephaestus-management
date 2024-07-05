@@ -1,39 +1,7 @@
+import { Carat, Clarity, Color, Cut, Measurement } from "@/app/adminstaff/adddiamond/formAddDiamond";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
-
-// Define types for diamond attributes
-interface Shape {
-    shapeId: string;
-    shapeDescription: string;
-}
-
-interface Measurement {
-    measurementId: string;
-    length: number;
-    width: number;
-    height: number;
-}
-
-interface Color {
-    colorId: string;
-    colorDescription: string;
-}
-
-interface Cut {
-    cutId: string;
-    cutDescription: string;
-}
-
-interface Carat {
-    caratId: string;
-    carat: number;
-}
-
-interface Clarity {
-    clarityId: string;
-    clarityDescription: string;
-}
 
 interface SubmitMessageProps {
     onClose: () => void;
@@ -72,13 +40,11 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
     const productHandler = new ManageProductUtils();
     const [diamond, setDiamond] = useState<Diamond | null>(null);
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-    const [shapes, setShapes] = useState<Shape[]>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [colors, setColors] = useState<Color[]>([]);
     const [cuts, setCuts] = useState<Cut[]>([]);
     const [carats, setCarats] = useState<Carat[]>([]);
     const [clarities, setClarities] = useState<Clarity[]>([]);
-    const [diamondShape, setDiamondShape] = useState<string>("");
     const [diamondMeasurement, setDiamondMeasurement] = useState<string>("");
     const [diamondColor, setDiamondColor] = useState<string>("");
     const [diamondCut, setDiamondCut] = useState<string>("");
@@ -95,7 +61,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
                 const response = await productHandler.findDiamond(diamondId);
                 const diamond = response?.data;
                 setDiamond(diamond);
-                setDiamondShape(diamond.shape.shapeId || "");
                 setDiamondMeasurement(diamond.measurement.measurementId || "");
                 setDiamondColor(diamond.color.colorId || "");
                 setDiamondCut(diamond.cut.cutId || "");
@@ -110,7 +75,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
             try {
                 const response = await productManager.fetchAllDiamondAtribute();
                 const diamondAttributes = response?.data;
-                setShapes(diamondAttributes?.shapes || []);
                 setMeasurements(diamondAttributes?.measurements || []);
                 setColors(diamondAttributes?.colors || []);
                 setCuts(diamondAttributes?.cuts || []);
@@ -134,7 +98,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
 
     const validate = (): boolean => {
         const newErrors: { [key: string]: string } = {};
-        if (!diamondShape) newErrors.diamondShape = "Shape is required.";
         if (!diamondMeasurement) newErrors.diamondMeasurement = "Measurement is required.";
         if (!diamondColor) newErrors.diamondColor = "Color is required.";
         if (!diamondCut) newErrors.diamondCut = "Cut is required.";
@@ -142,7 +105,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
         if (!diamondClarity) newErrors.diamondClarity = "Clarity is required.";
         if (!diamondPrice) newErrors.diamondPrice = "Price is required.";
         if (diamondPrice && parseFloat(diamondPrice) <= 0) newErrors.diamondPrice = "Price must be greater than 0.";
-        if (!diamondUrl) newErrors.diamondUrl = "File image is required.";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -154,7 +116,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
 
         const success = await productHandler.updateDiamond(
             diamondId,
-            diamondShape,
             diamondMeasurement,
             diamondColor,
             diamondCut,
@@ -186,23 +147,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
                         </button>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <label htmlFor="shape" className="block text-sm font-medium text-gray-700">Shape</label>
-                            <select
-                                id="shape"
-                                value={diamondShape}
-                                onChange={(e) => setDiamondShape(e.target.value)}
-                                className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
-                            >
-                                <option value="">Select a shape</option>
-                                {shapes.map((shape) => (
-                                    <option key={shape.shapeId} value={shape.shapeId}>
-                                        {shape.shapeDescription}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.diamondShape && <p className="text-red-500 text-xs">{errors.diamondShape}</p>}
-                        </div>
+                        
 
                         <div className="space-y-2">
                             <label htmlFor="measurement" className="block text-sm font-medium text-gray-700">Measurement</label>
@@ -320,11 +265,6 @@ const FormUpdateDiamond: React.FC<{ diamondId: any, onClose: () => void }> = ({ 
                                 className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-300 file:text-zinc-900 hover:file:bg-rose-300"
                                 onChange={handleFileChange}
                             />
-                            {errors.jewelryUrl && (
-                                <span className="text-red-500 text-sm">
-                                    {errors.jewelryUrl}
-                                </span>
-                            )}
                         </label>
                         <div className="flex justify-between mt-5">
                             <button className="border-2 px-5 py-2 rounded-lg border-black border-b-4 font-black translate-y-2 border-l-4">

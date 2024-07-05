@@ -8,13 +8,16 @@ interface Jewelry {
     jewelryId: number;
     name: string;
     diamond: {
-        shape: {
-            shapeDescription: string;
+        cut: {
+            cutDescription: string;
         };
     } | null;
     material: {
         materialName: string;
     };
+    shape: {
+        shapeDescription: string;
+    }
     category: {
         categoryName: string;
     };
@@ -97,17 +100,6 @@ const ViewAllJewelry: React.FC = () => {
 
     const handleCloseForm = () => {
         setShowUpdateForm(false);
-        setEditingJewelryId(null);
-    };
-
-    const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (event.target === event.currentTarget) {
-            handleCloseForm();
-        }
-    };
-
-    const handleOverlayClick = () => {
-        setShowActionOverlay(false);
         setEditingJewelryId(null);
     };
 
@@ -197,6 +189,12 @@ const ViewAllJewelry: React.FC = () => {
                                         scope="col"
                                         className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                                     >
+                                        Shape
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                                    >
                                         Size
                                     </th>
                                     <th
@@ -241,7 +239,7 @@ const ViewAllJewelry: React.FC = () => {
                                                     </h2>
                                                     {item.diamond && (
                                                         <small className="text-sm font-light text-gray-600">
-                                                            - {item.diamond.shape.shapeDescription}
+                                                            - {item.diamond.cut.cutDescription}
                                                         </small>
                                                     )}
                                                 </div>
@@ -251,6 +249,13 @@ const ViewAllJewelry: React.FC = () => {
                                             <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                                                 <h2 className="text-sm font-normal text-emerald-500">
                                                     {item.category.categoryName}
+                                                </h2>
+                                            </div>
+                                        </td>
+                                        <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
+                                                <h2 className="text-sm font-normal text-emerald-500">
+                                                    {item.shape.shapeDescription}
                                                 </h2>
                                             </div>
                                         </td>

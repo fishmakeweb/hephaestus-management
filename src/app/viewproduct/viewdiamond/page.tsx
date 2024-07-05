@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import { Diamond, columns } from './diamondTable';
+import { Diamond, DiamondTable } from './diamondTable';
 import { DataTable } from "@/components/data-table";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import AuthGuard from "@/components/auth-guard";
@@ -26,7 +26,7 @@ export default function DiamondPage() {
             <section className="py-24">
                 <div className="container">
                     <DataTable
-                        columns={columns}
+                        columns={DiamondTable}
                         data={data}
                     />
                 </div>

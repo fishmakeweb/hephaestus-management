@@ -7,8 +7,8 @@ const AuthGuard = ({ children, allowedRoles }) => {
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('userRole');
+    const token = sessionStorage.getItem('token');
+    const role = sessionStorage.getItem('userRole');
 
     if (!token) {
       router.push('/');

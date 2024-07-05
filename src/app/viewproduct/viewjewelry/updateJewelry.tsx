@@ -1,3 +1,4 @@
+import { Category, Diamond, Material, Shape, Size } from "@/app/adminstaff/addJewelry/formAddJewelry";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
@@ -6,12 +7,15 @@ interface Jewelry {
   jewelryId: number;
   name: string;
   diamond: {
-    shape: {
-      shapeDescription: string;
+    cut: {
+      cutDescription: string;
     };
   } | null;
   material: {
     materialName: string;
+  };
+  shape: {
+    shapeDescription: string;
   };
   category: {
     categoryName: string;
@@ -26,32 +30,6 @@ interface Jewelry {
   date: string;
 }
 
-interface Category {
-  categoryId: string;
-  categoryName: string;
-}
-
-interface Material {
-  materialId: string;
-  materialName: string;
-}
-
-interface Size {
-  sizeId: string;
-  sizeNumber: number;
-  unit: string;
-  type: string;
-}
-
-interface Diamond {
-  diamondId: string;
-  shape: { shapeDescription: string };
-  color: { colorDescription: string };
-  cut: { cutDescription: string };
-  clarity: { clarityDescription: string };
-  carat: { carat: number };
-  price: number;
-}
 
 interface UpdateJewelryProps {
   jewelryId: number;
@@ -66,6 +44,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
+  const [shapes, setShapes] = useState<Shape[]>([]);
   const [sizes, setSizes] = useState<Size[]>([]);
   const [diamonds, setDiamonds] = useState<Diamond[]>([]);
   const [jewelryName, setJewelryName] = useState<string>("");
@@ -73,6 +52,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
   const [jewelryUrl, setJewelryUrl] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedMaterial, setSelectedMaterial] = useState<string>("");
+  const [selectedShape, setSelectedShape] = useState<string>("");
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedDiamond, setSelectedDiamond] = useState<string>("");
   const [jewelryQuantity, setJewelryQuantity] = useState<number | "">("");
@@ -91,6 +71,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
         setImagePreviewUrl(jewelryData.img);
         setSelectedCategory(jewelryData.category.categoryId);
         setSelectedMaterial(jewelryData.material.materialId);
+        setSelectedShape(jewelryData.shape.shapeId);
         setSelectedSize(jewelryData.size.sizeId);
         setSelectedDiamond(jewelryData.diamond?.diamondId || "");
         setJewelryQuantity(jewelryData.quantity.toString());
@@ -109,6 +90,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
         if (jewelryAtr && diamondsResponse) {
           setCategories(jewelryAtr.data.categories || []);
           setMaterials(jewelryAtr.data.materials || []);
+          setShapes(jewelryAtr.data.shapes || []);
           setSizes(jewelryAtr.data.sizes || []);
           setDiamonds(diamondsResponse.data || []);
         }
@@ -137,24 +119,11 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
       newErrors.jewelryPrice = "Jewelry price must be greater than 0.";
     if (!selectedCategory) newErrors.selectedCategory = "Category is required.";
     if (!selectedMaterial) newErrors.selectedMaterial = "Material is required.";
+    if (!selectedShape) newErrors.selectedShape = "Shape is required.";
     if (!selectedSize) newErrors.selectedSize = "Size is required.";
-    if (!jewelryUrl) newErrors.jewelryUrl = "File image is required.";
     if (!jewelryQuantity) newErrors.jewelryQuantity = "Quantity is required.";
     if (jewelryQuantity && jewelryQuantity <= 0)
       newErrors.jewelryQuantity = "Quantity must be greater than 0.";
-
-    // Check if the jewelry name is unique
-    if (jewelryName) {
-      try {
-        const response = await productManager.jewelryUniqueName(jewelryName);
-        if (response?.data) {
-          newErrors.jewelryName = "Jewelry name already exists.";
-        }
-      } catch (error) {
-        console.error("Error checking jewelry name:", error);
-      }
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -173,7 +142,8 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
       selectedMaterial,
       selectedCategory,
       selectedSize,
-      selectedDiamond
+      selectedDiamond,
+      selectedShape
     );
 
     if (saveResult) {
@@ -282,6 +252,43 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                 </span>
               )}
             </label>
+
+            <label
+              className="relative block p-2 border-2 border-black rounded mb-3"
+              htmlFor="shape"
+            >
+              <span className="text-md font-semibold text-zinc-900">
+                Shape
+              </span>
+              <select
+                className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
+                id="shape"
+                value={selectedShape}
+                onChange={(e) => setSelectedShape(e.target.value)}
+              >
+                <option
+                  className="text-md font-semibold text-zinc-900"
+                  value=""
+                >
+                  Select a shape
+                </option>
+                {shapes.map((shape) => (
+                  <option
+                    className="text-md font-semibold text-zinc-900"
+                    key={shape.shapeId}
+                    value={shape.shapeId}
+                  >
+                    {shape.shapeDescription}
+                  </option>
+                ))}
+              </select>
+              {errors.selectedShape && (
+                <span className="text-red-500 text-sm">
+                  {errors.selectedShape}
+                </span>
+              )}
+            </label>
+
             <label
               className="relative block p-2 border-2 border-black rounded mb-3"
               htmlFor="size"
@@ -365,7 +372,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     key={diamond.diamondId}
                     value={diamond.diamondId}
                   >
-                    {`ID: ${diamond.diamondId}, Shape: ${diamond.shape.shapeDescription}, Color: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Price: ${diamond.price}`}
+                    {`ID: ${diamond.diamondId}, Color: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Price: ${diamond.price}`}
                   </option>
                 ))}
               </select>
@@ -407,11 +414,6 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                 className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-300 file:text-zinc-900 hover:file:bg-rose-300"
                 onChange={handleFileChange}
               />
-              {errors.jewelryUrl && (
-                <span className="text-red-500 text-sm">
-                  {errors.jewelryUrl}
-                </span>
-              )}
             </label>
             <div className="flex justify-between mt-5">
               <button className="border-2 px-5 py-2 rounded-lg border-black border-b-4 font-black translate-y-2 border-l-4">

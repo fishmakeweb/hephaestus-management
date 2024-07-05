@@ -27,7 +27,7 @@ class ManageProductUtils {
         }
     }
 
-    async updateJewelry(jewelryId: any, jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any, selectedCategory: any, selectedSize: any, selectedDiamond: any) {
+    async updateJewelry(jewelryId: any, jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any,  selectedCategory: any, selectedSize: any, selectedDiamond: any,selectedShape: any) {
         const jewelryData = {
             name: jewelryName,
             img: jewelryUrl,
@@ -36,6 +36,9 @@ class ManageProductUtils {
             date: new Date(), // Add the current date
             material: {
                 materialId: selectedMaterial,
+            },
+            shape:{
+                shapeId: selectedShape,
             },
             category: {
                 categoryId: selectedCategory,
@@ -63,9 +66,8 @@ class ManageProductUtils {
         }
     }
 
-    async updateDiamond(diamondId: any, shape: any, measurement: any, color: any, cut: any, carat: any, clarity: any, price: any, img: any) {
+    async updateDiamond(diamondId: any, measurement: any, color: any, cut: any, carat: any, clarity: any, price: any, img: any) {
         const diamondData = {
-            shape: { shapeId: shape },
             measurement: { measurementId: measurement },
             color: { colorId: color },
             cut: { cutId: cut },

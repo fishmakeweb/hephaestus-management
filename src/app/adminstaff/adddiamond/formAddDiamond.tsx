@@ -1,35 +1,30 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct"; // Adjust the path as necessary
 
-// Define types for diamond attributes
-interface Shape {
-  shapeId: string;
-  shapeDescription: string;
-}
 
-interface Measurement {
+export interface Measurement {
   measurementId: string;
   length: number;
   width: number;
   height: number;
 }
 
-interface Color {
+export interface Color {
   colorId: string;
   colorDescription: string;
 }
-
-interface Cut {
+ 
+export interface Cut {
   cutId: string;
   cutDescription: string;
 }
 
-interface Carat {
+export interface Carat {
   caratId: string;
   carat: number;
 }
 
-interface Clarity {
+export interface Clarity {
   clarityId: string;
   clarityDescription: string;
 }
@@ -59,14 +54,12 @@ const FormAddDiamond: React.FC = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(
     "https://diamondshop-img.ap-south-1.linodeobjects.com/1718429728643_Screenshot%202024-06-15%20123518.png"
   );
-  const [shapes, setShapes] = useState<Shape[]>([]);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [cuts, setCuts] = useState<Cut[]>([]);
   const [carats, setCarats] = useState<Carat[]>([]);
   const [clarities, setClarities] = useState<Clarity[]>([]);
   const [giaIssueDate, setGiaIssueDate] = useState<string>("");
-  const [diamondShape, setDiamondShape] = useState<string>("");
   const [diamondMeasurement, setDiamondMeasurement] = useState<string>("");
   const [diamondColor, setDiamondColor] = useState<string>("");
   const [diamondCut, setDiamondCut] = useState<string>("");
@@ -83,7 +76,6 @@ const FormAddDiamond: React.FC = () => {
         const response = await addProductUtils.fetchAllDiamondAtribute();
 
         const diamondAttributes = response?.data;
-        setShapes(diamondAttributes?.shapes || []);
         setMeasurements(diamondAttributes?.measurements || []);
         setColors(diamondAttributes?.colors || []);
         setCuts(diamondAttributes?.cuts || []);
@@ -107,7 +99,6 @@ const FormAddDiamond: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors: { [key: string]: string } = {};
-    if (!diamondShape) newErrors.diamondShape = "Shape is required.";
     if (!diamondMeasurement)
       newErrors.diamondMeasurement = "Measurement is required.";
     if (!diamondColor) newErrors.diamondColor = "Color is required.";
@@ -129,7 +120,6 @@ const FormAddDiamond: React.FC = () => {
     if (!validate()) return;
 
     const success = await addProductUtils.saveDiamondToDB(
-      diamondShape,
       diamondMeasurement,
       diamondColor,
       diamondCut,
@@ -162,41 +152,7 @@ const FormAddDiamond: React.FC = () => {
                   ADD DIAMOND
                 </h1>
                 <form onSubmit={handleSubmit} className="mx-5 my-5">
-                  <label
-                    className="relative block p-3 border-2 border-black rounded mb-5"
-                    htmlFor="shape"
-                  >
-                    <span className="text-md font-semibold text-zinc-900">
-                      Shape
-                    </span>
-                    <select
-                      className="w-full bg-transparent p-0 text-sm text-gray-800 focus:outline-none"
-                      id="shape"
-                      value={diamondShape}
-                      onChange={(e) => setDiamondShape(e.target.value)}
-                    >
-                      <option
-                        className="text-md font-semibold text-zinc-900"
-                        value=""
-                      >
-                        Select a shape
-                      </option>
-                      {shapes.map((shape) => (
-                        <option
-                          className="text-md font-semibold text-zinc-900"
-                          key={shape.shapeId}
-                          value={shape.shapeId}
-                        >
-                          {shape.shapeDescription}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.diamondShape && (
-                      <span className="text-red-500 text-sm">
-                        {errors.diamondShape}
-                      </span>
-                    )}
-                  </label>
+                  
 
                   <label
                     className="relative block p-3 border-2 border-black rounded mb-5"

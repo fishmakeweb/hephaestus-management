@@ -9,16 +9,16 @@ class AuthService {
       });
       const { token, refreshToken, staff } = response.data;
       if (token != null) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("refreshToken", refreshToken);
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("refreshToken", refreshToken);
       }
       if (staff) {
-        localStorage.setItem("role", "STAFF");
-        localStorage.setItem("user", JSON.stringify(staff));
+        sessionStorage.setItem("role", "STAFF");
+        sessionStorage.setItem("user", JSON.stringify(staff));
         if(staff.role.roleName == 'ROLE_ADMIN') {
-            localStorage.setItem("userRole", "ROLE_ADMIN");
+            sessionStorage.setItem("userRole", "ROLE_ADMIN");
         } else {
-            localStorage.setItem("userRole", "ROLE_SALESTAFF");  
+            sessionStorage.setItem("userRole", "ROLE_SALESTAFF");  
       }
       return response.data;
     }} catch (error) {
@@ -36,22 +36,22 @@ class AuthService {
   }
 
   static isAdmin() {
-    const userRole = localStorage.getItem("userRole");
+    const userRole = sessionStorage.getItem("userRole");
     return userRole == "ROLE_ADMIN";
   }
 
   static isSales() {
-    const userRole = localStorage.getItem("userRole");
+    const userRole = sessionStorage.getItem("userRole");
     return userRole == "ROLE_SALESTAFF";
   }
 
   static async refreshToken() {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
+      const refreshToken = sessionStorage.getItem("refreshToken");
       const response = await axios.post(`/auth/refresh`, {
         refreshToken,
       });
-      localStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
       throw error;
@@ -59,20 +59,20 @@ class AuthService {
   }
 
   static logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("role");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userRole");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("userRole");
   }
 
   static isAuthenticated() {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     return !!token;
   }
 
   static isStaff() {
-    const role = localStorage.getItem("role");
+    const role = sessionStorage.getItem("role");
     return role === "STAFF";
   }
 }

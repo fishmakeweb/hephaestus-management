@@ -29,9 +29,8 @@ class AddProductUtils {
         }
     }
 
-    async saveDiamondToDB(shape: any, measurement: any, color: any, cut: any, carat: any, clarity: any, gia: any, price: any, img: any) {
+    async saveDiamondToDB( measurement: any, color: any, cut: any, carat: any, clarity: any, gia: any, price: any, img: any) {
         const diamondData = {
-            shape: { shapeId: shape },
             measurement: { measurementId: measurement },
             color: { colorId: color },
             cut: { cutId: cut },
@@ -88,7 +87,7 @@ class AddProductUtils {
         }
     }
 
-    async saveJewelryToDB(jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any, selectedCategory: any, selectedSize: any, selectedDiamond: any) {
+    async saveJewelryToDB(jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any, selectedCategory: any, selectedSize: any, selectedDiamond: any, selectedShape:any) {
         const jewelryData = {
             name: jewelryName,
             img: jewelryUrl,
@@ -97,6 +96,9 @@ class AddProductUtils {
             date: new Date(), // Add the current date
             material: {
                 materialId: selectedMaterial,
+            },
+            shape: {
+                shapeId: selectedShape,
             },
             category: {
                 categoryId: selectedCategory,

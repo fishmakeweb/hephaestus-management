@@ -57,7 +57,7 @@ export default function Page() {
 
   return (
     <AuthGuard allowedRoles={['ROLE_ADMIN']}>
-      <NavbarStaff />
+      {/* <NavbarStaff /> */}
       <div className="text-center mt-4">
         <h1 className="text-3xl font-bold mb-4">Staff Management</h1>
         <div className="flex justify-end my-4 mx-40">

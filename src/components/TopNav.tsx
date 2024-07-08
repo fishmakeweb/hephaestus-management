@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import AuthService from "@/dbUtils/Auth/AuthService";
 import { useRouter, usePathname } from "next/navigation";
+
 import {
     Sheet,
     SheetTrigger,
@@ -11,6 +12,7 @@ import {
     SheetTitle,
     SheetDescription,
 } from "@/components/ui/sheet"; 
+import Sidebar from "./Sidebar";
 import { X } from "lucide-react"; 
 import Link from 'next/link'; 
 
@@ -64,19 +66,13 @@ const NavbarStaff: React.FC<{}> = () => {
     };
 
     return (
-        <div className="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
-            <button
-                type="button"
-                className="text-lg text-gray-900 font-semibold sidebar-toggle"
-                onClick={onToggleSidebar}
-            >
-                ☰
-            </button>
-            <button className="flex-1 text-center ml-32 text-2xl font-bold text-gray-900">
+        <div className="bg-white flex justify-between shadow-md shadow-black/5 sticky top-0 left-0 w-full">
+            <div className="w-full flex justify-center">
+            <button className="text-center text-2xl font-bold text-gray-900">
                 H E P H A E S T U S
             </button>
-            <ul className="ml-auto flex items-center">
-                {/* User Menu Dropdown */}
+            </div>
+            <ul className="mr-8 items-center">
                 <li className="dropdown ml-3 relative" ref={userMenuRef}>
                     <button
                         type="button"
@@ -120,8 +116,8 @@ const NavbarStaff: React.FC<{}> = () => {
                     )}
                 </li>
             </ul>
-
-            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            
+            {/* <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetContent side="left">
                     <SheetHeader>
                         <SheetTitle>H E P H A E S T U S</SheetTitle>
@@ -317,7 +313,7 @@ const NavbarStaff: React.FC<{}> = () => {
                         </SheetClose>
                     </SheetDescription>
                 </SheetContent>
-            </Sheet>
+            </Sheet> */}
         </div>
     );
 };

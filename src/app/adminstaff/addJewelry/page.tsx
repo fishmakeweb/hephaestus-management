@@ -8,7 +8,6 @@ import AuthGuard from '@/components/auth-guard';
 const AddJewelry = () => {
   return (
     <AuthGuard allowedRoles={['ROLE_ADMIN']}>
-    <NavbarStaff />
     <div>
         <FormAddJewelry />
     </div>

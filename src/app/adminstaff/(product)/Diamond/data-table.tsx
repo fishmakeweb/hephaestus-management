@@ -16,6 +16,8 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
+import FormAddDiamondSheet from "./AddDiamondForm";
+
 import { Button } from "@/components/ui/button";
 
 import {
@@ -62,46 +64,16 @@ export function DataTable<TData, TValue>({
     const router = useRouter();
 
     const handleAdd = () => {
-        router.push("/adddiamond");
+        router.push("/adminstaff/adddiamond");
     };
 
     return (
         <>
-            {/* Table */}
             <div>
-                {/* <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter shape..."
-          value={(table.getColumn("diamondId")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("diamondId")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div> */}
                 <div className="flex items-center py-4 justify-end">
-                    {AuthService.isAdmin() && (
                         <div className="flex items-center gap-x-3">
-                            <button className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-gray-800 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-black"
-                                onClick={handleAdd}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                            </button>
+                            <FormAddDiamondSheet/>
                         </div>
-                    )}
                 </div>
             </div>
             <div className="rounded-md border">
@@ -154,7 +126,6 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            {/* Button Pagination */}
             <div className="flex items-center justify-end space-x-2 py-4">
                 <Button
                     variant="outline"

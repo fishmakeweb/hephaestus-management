@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import AuthService from '@/dbUtils/Auth/AuthService';
 import { useRouter } from 'next/navigation';
-import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -20,9 +19,9 @@ export default function Home() {
       if (AuthService.isAuthenticated()) {
         if (AuthService.isStaff()) {
           if (AuthService.isAdmin()) {
-            router.push('/adminstaff');
+            router.push('/adminstaff/dashboard');
           } else if (AuthService.isSales()) {
-            router.push('/salestaff/view-orders');
+            router.push('salestaff/view-orders');
           }
         }
       } else {

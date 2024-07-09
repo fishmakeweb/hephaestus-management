@@ -1,5 +1,5 @@
-import { Category, Material, Shape, Size } from "@/app/adminstaff/addJewelry/formAddJewelry";
-import { Diamond } from "@/app/viewproduct/viewdiamond/diamondTable";
+import { Category, Material, Shape, Size } from "@/dbUtils/jewelryAPI/types";
+import { Diamond } from "@/app/adminstaff/(product)/Diamond/diamondTable";
 import axios from "@/dbUtils/axios";
 
 export interface OrderStatus {
@@ -39,9 +39,16 @@ export interface CustomOrder {
     startDate: Date; 
     finishDate: Date | null; 
 }
+const getToken = () => sessionStorage.getItem("token");
+
+// SECURE DONE
 export async function fetchAllOrders(): Promise<Order[]> {
     try {
-        const response = await axios.get<Order[]>('/orders');
+        const response = await axios.get<Order[]>('/orders',
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        );
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -49,9 +56,14 @@ export async function fetchAllOrders(): Promise<Order[]> {
     }
 }
 
+// SECURE DONE
 export async function fetchAllCustomOrders(): Promise<CustomOrder[]>{
     try{
-        const response = await axios.get<CustomOrder[]>('/custom-orders');
+        const response = await axios.get<CustomOrder[]>('/custom-orders',
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        );
         return response.data;
     }catch(error){
         console.error("Failed to fetch custom orders: ", error);
@@ -67,18 +79,46 @@ export async function updateAtr(customOrderId : number ,fullPaid : any, descript
             finishDate : finishDate,
             description : description
         };
-        await axios.put(`/custom-orders/updateAtr/${customOrderId}`, updateData);
+        await axios.put(`/custom-orders/updateAtr/${customOrderId}`, updateData,
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        );
     } catch (error) {
         console.error('Error updating order:', error);
     }
 };
 
-
+// SECURE DONE
 export async function verifyOrders(customOrderId : number) {
     try {
-        await axios.put(`/custom-orders/verifyOrders/${customOrderId}`);
+        const token = getToken();
+        await axios.post(`/confirmCustomOrder/${customOrderId}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
     } catch (error) {
         console.error('Error verifying order:', error);
     }
 }
 
+// SECURE DONE
+export async function verifyCancelOrders(customOrderId : number) {
+    try {
+        const token = getToken();
+        await axios.post(`/confirmCancelCustomOrder/${customOrderId}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+    } catch (error) {
+        console.error('Error verifying cancel order:', error);
+    }
+}
+
+export async function filterCOrders(orderStatusId : number) : Promise<CustomOrder[]> {
+    try {
+        const response = await axios.get<CustomOrder[]>(`/custom-orders/filter-custom-orderstatus/${orderStatusId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error verifying order:', error);
+        throw error;
+    }
+}

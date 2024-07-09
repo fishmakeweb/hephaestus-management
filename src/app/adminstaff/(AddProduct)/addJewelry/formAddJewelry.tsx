@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
+import { Category,Shape,Material,Size,Diamond } from "@/dbUtils/jewelryAPI/types";
 
 interface SubmitMessageProps {
   onClose: () => void;
@@ -21,36 +22,7 @@ const SubmitMessage: React.FC<SubmitMessageProps> = ({ onClose }) => {
   );
 };
 
-export interface Category {
-  categoryId: string;
-  categoryName: string;
-}
 
-export interface Shape {
-  shapeId: string;
-  shapeDescription: string;
-}
-
-export interface Material {
-  materialId: string;
-  materialName: string;
-}
-
-export interface Size {
-  sizeId: string;
-  sizeNumber: number;
-  unit: string;
-  type: string;
-}
-
-export interface Diamond {
-  diamondId: string;
-  color: { colorDescription: string };
-  cut: { cutDescription: string };
-  clarity: { clarityDescription: string };
-  carat: { carat: number };
-  price: number;
-}
 
 const FormAddJewelry: React.FC = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(

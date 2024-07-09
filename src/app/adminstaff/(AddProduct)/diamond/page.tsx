@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Diamond, DiamondTable } from './diamondTable';
-import { DataTable } from "@/components/data-table";
+import { DataTable } from "./data-table";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import AuthGuard from "@/components/auth-guard";
 

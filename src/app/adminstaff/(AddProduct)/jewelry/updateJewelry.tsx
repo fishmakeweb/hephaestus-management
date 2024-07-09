@@ -1,4 +1,4 @@
-import { Category, Diamond, Material, Shape, Size } from "@/app/adminstaff/(AddProduct)/addJewelry/formAddJewelry";
+import { Category,Shape,Material,Size,Diamond } from "@/dbUtils/jewelryAPI/types";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";

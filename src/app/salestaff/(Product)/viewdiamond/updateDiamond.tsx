@@ -1,4 +1,4 @@
-import { Carat, Clarity, Color, Cut, Measurement } from "@/app/adminstaff/(AddProduct)/adddiamond/formAddDiamond";
+import {Measurement,Color,Cut,Carat, Clarity } from "@/dbUtils/diamondAPI/types";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";

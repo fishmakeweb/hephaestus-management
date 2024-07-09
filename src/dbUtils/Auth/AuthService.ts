@@ -15,13 +15,14 @@ class AuthService {
       if (staff) {
         sessionStorage.setItem("role", "STAFF");
         sessionStorage.setItem("user", JSON.stringify(staff));
-        if(staff.role.roleName == 'ROLE_ADMIN') {
-            sessionStorage.setItem("userRole", "ROLE_ADMIN");
+        if (staff.role.roleName == "ROLE_ADMIN") {
+          sessionStorage.setItem("userRole", "ROLE_ADMIN");
         } else {
-            sessionStorage.setItem("userRole", "ROLE_SALESTAFF");  
+          sessionStorage.setItem("userRole", "ROLE_SALESTAFF");
+        }
+        return response.data;
       }
-      return response.data;
-    }} catch (error) {
+    } catch (error) {
       throw error;
     }
   }
@@ -40,9 +41,18 @@ class AuthService {
     return userRole == "ROLE_ADMIN";
   }
 
+  // static async checkAdmin():Promise<boolean> {
+  //   const role = await axios.get('/getRole',)
+  //   return false;
+  // }
+
   static isSales() {
     const userRole = sessionStorage.getItem("userRole");
     return userRole == "ROLE_SALESTAFF";
+  }
+
+  static getStaff() {
+    return JSON.parse(sessionStorage.getItem("user") || "{}");
   }
 
   static async refreshToken() {

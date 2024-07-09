@@ -3,8 +3,8 @@ import AuthService from "@/dbUtils/Auth/AuthService";
 import { useRouter, usePathname } from "next/navigation";
 
 const NavbarStaff: React.FC<{}> = () => {
-    const staff = JSON.parse(sessionStorage.getItem('user') || '{}');
-
+    const staff = AuthService.getStaff();
+    
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
     const userMenuRef = useRef<HTMLLIElement>(null);
     const router = useRouter();

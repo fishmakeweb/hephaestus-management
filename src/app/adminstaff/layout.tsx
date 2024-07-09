@@ -28,7 +28,6 @@ export default function RootLayout({
                         </div>
                     </ScrollArea>
                 </div>
-
             </body>
         </html>
     );

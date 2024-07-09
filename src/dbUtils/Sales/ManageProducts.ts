@@ -50,6 +50,9 @@ class ManageProductUtils {
         };
         try {
             const response = await axios.put(`/secure/jewelry/${jewelryId}`, jewelryData);
+            if(selectedDiamond != null){
+                await axios.put(`/secure/set/diamonds/${selectedDiamond}`);
+            }
             console.log("Update jewelry response: ", response.data);
             return true;
         } catch (error) {

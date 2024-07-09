@@ -1,5 +1,5 @@
-import { Category, Material, Shape, Size } from "@/app/adminstaff/(addproduct)/addJewelry/formAddJewelry";
-import { Diamond } from "@/app/adminstaff/(addproduct)/addJewelry/formAddJewelry";
+import { Category, Material, Shape, Size } from "@/dbUtils/jewelryAPI/types";
+import { Diamond } from "@/app/adminstaff/(product)/Diamond/diamondTable";
 import axios from "@/dbUtils/axios";
 
 export interface OrderStatus {

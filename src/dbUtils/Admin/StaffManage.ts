@@ -1,6 +1,16 @@
 import axios from "@/dbUtils/axios";
 import AuthService from "@/dbUtils/Auth/AuthService";
 
+export interface Staff {
+    staffId: string;
+    fullName: string;
+    email: string;
+    username: string;
+    role: {
+      roleName: string;
+    };
+  }
+
 class StaffManage {
     async fetchStaffs() {
         try {

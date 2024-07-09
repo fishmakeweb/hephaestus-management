@@ -1,4 +1,4 @@
-import { Category, Material, Shape, Size } from "@/app/adminstaff/addJewelry/formAddJewelry";
+import { Category, Material, Shape, Size } from "@/app/adminstaff/(AddProduct)/addJewelry/formAddJewelry";
 import { Diamond } from "@/app/viewproduct/viewdiamond/diamondTable";
 import axios from "@/dbUtils/axios";
 

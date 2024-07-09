@@ -1,7 +1,8 @@
 'use client'
 import { Inter } from "next/font/google";
-import Sidebar from "@/components/Sidebar";
-import NavbarStaff from "@/components/TopNav";
+import Sidebar from "./Sidebar";
+import NavbarStaff from "./TopNav";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,16 +17,16 @@ export default function RootLayout({
             <body className={inter.className}>
                 <div className="flex">
                     <Sidebar />
-                    <div className="w-full">
+                    <ScrollArea className="h-screen w-full">
                         <div className="w-full">
                         <NavbarStaff />
                         </div>
                         <div className="flex justify-center">
-                            <div>
+                            <div className="h-screen w-full">
                                 {children}
                             </div>
                         </div>
-                    </div>
+                    </ScrollArea>
                 </div>
 
             </body>

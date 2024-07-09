@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import FormAddDiamond from '@/app/adminstaff/adddiamond/formAddDiamond';
+import FormAddDiamond from '@/app/adminstaff/(AddProduct)/adddiamond/formAddDiamond';
 import AuthGuard from '@/components/auth-guard';
 
 const AddDiamond = () => {

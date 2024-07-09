@@ -14,7 +14,7 @@ const Sidebar: React.FC = () => {
     const router = useRouter();
     const pathname = usePathname();
     // State to manage the open/close state of the sidebar
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(true);
     const onToggleSidebar = () => {
         setIsSheetOpen(!isSheetOpen);
     };
@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
             <div
                 className={`bg-white text-white 
                     h-screen transition-all 
-                    duration-300
+                    duration-300  border-2 border-black
                     ${isOpen ? 'w-64' : 'w-0 overflow-hidden'}`}>
                 {/* Sidebar content */}
                 <div className="flex flex-col">
@@ -49,8 +49,7 @@ const Sidebar: React.FC = () => {
                         </a>
                     </div>
 
-                    {AuthService.isAdmin() && (
-                        <ul className="mt-4 ml-6">
+                        <ul className="mt-4 ml-6 mr-6">
                             <span className="text-gray-400 font-bold">ADMIN</span>
                             <li className="mb-1 group">
                                 <a
@@ -118,7 +117,7 @@ const Sidebar: React.FC = () => {
                                 >
                                     <li className="mb-4">
                                         <Link
-                                            href="/viewproduct/viewdiamond"
+                                            href="/adminstaff/viewdiamond"
                                             className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewdiamond' ? 'bg-black text-white' : ''}`}
                                         >
                                             - View Diamond
@@ -126,7 +125,7 @@ const Sidebar: React.FC = () => {
                                     </li>
                                     <li className="mb-4">
                                         <Link
-                                            href="/viewproduct/viewjewelry"
+                                            href="/adminstaff/viewjewelry"
                                             className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
                                         >
                                             - View Jewelry
@@ -145,107 +144,16 @@ const Sidebar: React.FC = () => {
                                 </a>
                             </li>
                         </ul>
-                    )}
-                    {AuthService.isSales() && (
-                        <ul className="mt-4">
-                            <span className="text-gray-400 font-bold">SALES</span>
-                            <li className="mb-1 group">
-                                <a
-                                    href=""
-                                    className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/salestaff' ? 'bg-black text-white' : ''}`}
-                                >
-                                    <i className="ri-home-2-line mr-3 text-lg" />
-                                    <span className="text-sm">Messages</span>
-                                </a>
-                            </li>
-                            <li className="mb-1 group">
-                                <button
-                                    onClick={toggleSalesDropdown}
-                                    className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
-                                >
-                                    <i className="bx bx-user mr-3 text-lg" />
-                                    <span className="text-sm">View Products</span>
-                                    <i
-                                        className={`ri-arrow-right-s-line ml-auto ${isSalesDropdownOpen ? "rotate-90" : ""}`}
-                                    />
-                                </button>
-                                <ul
-                                    className={`pl-7 mt-2 ${isSalesDropdownOpen ? "block" : "hidden"}`}
-                                >
-                                    <li className="mb-4">
-                                        <Link
-                                            href="/viewproduct/viewdiamond"
-                                            className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewdiamond' ? 'bg-black text-white' : ''}`}
-                                        >
-                                            - View Diamond
-                                        </Link>
-                                    </li>
-                                    <li className="mb-4">
-                                        <Link
-                                            href="/viewproduct/viewjewelry"
-                                            className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
-                                        >
-                                            - View Jewelry
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li className="mb-1 group">
-                                <button
-                                    onClick={toogleOrderDropdown}
-                                    className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
-                                >
-                                    <i className="bx bx-user mr-3 text-lg" />
-                                    <span className="text-sm">View Orders</span>
-                                    <i
-                                        className={`ri-arrow-right-s-line ml-auto ${isOrdersDropdownOpen ? "rotate-90" : ""}`}
-                                    />
-                                </button>
-                                <ul
-                                    className={`pl-7 mt-2 ${isOrdersDropdownOpen ? "block" : "hidden"}`}
-                                >
-                                    <li className="mb-4">
-                                        <Link
-                                            href="/salestaff/view-orders"
-                                            className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-orders' ? 'bg-black text-white' : ''}`}
-                                        >
-                                            - View Orders
-                                        </Link>
-                                    </li>
-                                    <li className="mb-4">
-                                        <Link
-                                            href="/salestaff/view-custom-orders"
-                                            className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-custom-orders' ? 'bg-black text-white' : ''}`}
-                                        >
-                                            - View Custom Orders
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            <span className="text-gray-400 font-bold">PERSONAL</span>
-                            <li className="mb-1 group">
-                                <a
-                                    href=""
-                                    className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/accountsettings' ? 'bg-black text-white' : ''}`}
-                                >
-                                    <i className="ri-settings-2-line mr-3 text-lg" />
-                                    <span className="text-sm">Account Settings</span>
-                                </a>
-                            </li>
-                        </ul>
-                    )}
                 </div>
             </div>
             {/* Main content */}
             <div className={`flex-1 
                         ${isOpen ? 'ml-0' : 'ml-0'}`}>
-                {/* Button to toggle sidebar */}
                 <div className="ml-auto">
                     <button
                         className="bg-white hover:bg-gray-200 
                        text-black font-bold py-2 px-4"
                         onClick={() => setIsOpen(!isOpen)}>
-                        {/* Toggle icon based on isOpen state */}
                         {isOpen ? (
                             <svg
                                 className="h-6 w-6"

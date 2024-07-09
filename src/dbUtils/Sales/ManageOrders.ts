@@ -48,7 +48,7 @@ export async function fetchAllOrders(): Promise<Order[]> {
         throw error;
     }
 }
-
+const getToken = () => sessionStorage.getItem("token");
 export async function fetchAllCustomOrders(): Promise<CustomOrder[]>{
     try{
         const response = await axios.get<CustomOrder[]>('/custom-orders');
@@ -76,9 +76,24 @@ export async function updateAtr(customOrderId : number ,fullPaid : any, descript
 
 export async function verifyOrders(customOrderId : number) {
     try {
-        await axios.post(`/confirmCustomOrder/${customOrderId}`);
+        const token = getToken();
+        await axios.post(`/confirmCustomOrder/${customOrderId}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
     } catch (error) {
         console.error('Error verifying order:', error);
+    }
+}
+
+
+export async function verifyCancelOrders(customOrderId : number) {
+    try {
+        const token = getToken();
+        await axios.post(`/confirmCancelCustomOrder/${customOrderId}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+    } catch (error) {
+        console.error('Error verifying cancel order:', error);
     }
 }
 

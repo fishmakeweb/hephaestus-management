@@ -1,7 +1,7 @@
-import { Carat, Clarity, Color, Cut, Measurement } from "@/app/adminstaff/adddiamond/formAddDiamond";
+import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { Carat, Clarity, Color, Cut, Measurement } from "@/app/(adminstaff)/adddiamond/formAddDiamond";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
-import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 
 interface SubmitMessageProps {
     onClose: () => void;

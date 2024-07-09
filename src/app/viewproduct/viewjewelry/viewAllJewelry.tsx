@@ -104,7 +104,7 @@ const ViewAllJewelry: React.FC = () => {
     };
 
     const handleAdd = () => {
-        router.push("/adminstaff/addJewelry");
+        router.push("/addJewelry");
     };
 
     if (loading) {

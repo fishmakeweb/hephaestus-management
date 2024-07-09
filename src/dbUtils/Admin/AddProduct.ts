@@ -50,16 +50,6 @@ class AddProductUtils {
         }
     };
 
-    async updateDiamondStatus(diamondId:any){
-        try {
-            const response = await axios.put(`/secure/set/diamonds/${diamondId}`);
-            console.log('Update diamond status successfull: ', response);
-            return true;
-        } catch (error) {
-            console.error("Update diamond status failed:", error);
-            return false;
-        }
-    }
     async fetchAllJewelryAtribute() {
         try {
             const response = await axios.get("/jewelry/all");
@@ -110,6 +100,9 @@ class AddProductUtils {
         };
         try {
             const response = await axios.post("/secure/jewelry", jewelryData);
+            if(selectedDiamond != null){
+                await axios.put(`/secure/set/diamonds/${selectedDiamond}`);
+            }
             console.log('Save jewelry successfull: ', response);
             return true;
         } catch (error) {

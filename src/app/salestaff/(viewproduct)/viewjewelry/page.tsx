@@ -6,7 +6,7 @@ import ViewAllJewelry from './viewAllJewelry';
 
 const ViewJewelry = () => {
   return (
-    <AuthGuard allowedRoles={['ROLE_SALESTAFF','ROLE_ADMIN']}>
+    <AuthGuard allowedRoles={['ROLE_SALESTAFF']}>
       <div>
        <ViewAllJewelry />
       </div>

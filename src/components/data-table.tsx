@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
     const router = useRouter();
 
     const handleAdd = () => {
-        router.push("/adminstaff/adddiamond");
+        router.push("/adddiamond");
     };
 
     return (

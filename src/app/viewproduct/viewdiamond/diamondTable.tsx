@@ -87,7 +87,7 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
     accessorKey: 'img',
     header: 'Image',
     cell: ({ getValue }) => {
-      const imageUrl = getValue() as string; // Type assertion to string
+      const imageUrl = getValue() as string; 
       return (
         <Image src={imageUrl} alt="Diamond" width={100} height={100} className="w-auto h-auto" priority={true}/>
       );
@@ -100,6 +100,6 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <ActionsCell diamond={row.original} />, // Use the new component
+    cell: ({ row }) => <ActionsCell diamond={row.original} />, 
   },
 ];

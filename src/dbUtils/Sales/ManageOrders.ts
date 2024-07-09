@@ -1,4 +1,4 @@
-import { Category, Material, Shape, Size } from "@/app/adminstaff/addJewelry/formAddJewelry";
+import { Category, Material, Shape, Size } from "@/app/(adminstaff)/addJewelry/formAddJewelry";
 import { Diamond } from "@/app/viewproduct/viewdiamond/diamondTable";
 import axios from "@/dbUtils/axios";
 
@@ -76,9 +76,18 @@ export async function updateAtr(customOrderId : number ,fullPaid : any, descript
 
 export async function verifyOrders(customOrderId : number) {
     try {
-        await axios.put(`/custom-orders/verifyOrders/${customOrderId}`);
+        await axios.post(`/confirmCustomOrder/${customOrderId}`);
     } catch (error) {
         console.error('Error verifying order:', error);
     }
 }
 
+export async function filterCOrders(orderStatusId : number) : Promise<CustomOrder[]> {
+    try {
+        const response = await axios.get<CustomOrder[]>(`/custom-orders/filter-custom-orderstatus/${orderStatusId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error verifying order:', error);
+        throw error;
+    }
+}

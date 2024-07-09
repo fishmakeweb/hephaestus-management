@@ -131,18 +131,18 @@ const NavbarStaff: React.FC<{}> = () => {
                             <ul className="mt-4">
                                 <span className="text-gray-400 font-bold">ADMIN</span>
                                 <li className="mb-1 group">
-                                    <a
-                                        href="#"
-                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/' ? 'bg-black text-white' : ''}`}
+                                    <Link
+                                        href="/dashboard"
+                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/dashboard' ? 'bg-black text-white' : ''}`}
                                     >
                                         <i className="ri-home-2-line mr-3 text-lg" />
                                         <span className="text-sm">Dashboard</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="mb-1 group">
                                     <Link
-                                        href="/adminstaff"
-                                        className={`flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/adminstaff' ? 'bg-black text-white' : ''}`}
+                                        href="/staffTable"
+                                        className={`flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/staffTable' ? 'bg-black text-white' : ''}`}
                                     >
                                         <i className="bx bxl-blogger mr-3 text-lg" />
                                         <span className="text-sm">Staff</span>
@@ -164,16 +164,16 @@ const NavbarStaff: React.FC<{}> = () => {
                                     >
                                         <li className="mb-4">
                                             <Link
-                                                href="/adminstaff/adddiamond"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/adddiamond' ? 'bg-black text-white' : ''}`}
+                                                href="/adddiamond"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adddiamond' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - Diamond
                                             </Link>
                                         </li>
                                         <li className="mb-4">
                                             <Link
-                                                href="/adminstaff/addJewelry"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/addJewelry' ? 'bg-black text-white' : ''}`}
+                                                href="/addJewelry"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/addJewelry' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - Jewelry
                                             </Link>
@@ -211,16 +211,6 @@ const NavbarStaff: React.FC<{}> = () => {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
-                                <span className="text-gray-400 font-bold">PERSONAL</span>
-                                <li className="mb-1 group">
-                                    <a
-                                        href=""
-                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/accountsettings' ? 'bg-black text-white' : ''}`}
-                                    >
-                                        <i className="ri-settings-2-line mr-3 text-lg" />
-                                        <span className="text-sm">Account Settings</span>
-                                    </a>
                                 </li>
                             </ul>
                         )}
@@ -284,31 +274,21 @@ const NavbarStaff: React.FC<{}> = () => {
                                     >
                                         <li className="mb-4">
                                             <Link
-                                                href="/salestaff/view-orders"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-orders' ? 'bg-black text-white' : ''}`}
+                                                href="/view-orders"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/view-orders' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - View Orders
                                             </Link>
                                         </li>
                                         <li className="mb-4">
                                             <Link
-                                                href="/salestaff/view-custom-orders"
-                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-custom-orders' ? 'bg-black text-white' : ''}`}
+                                                href="/view-custom-orders"
+                                                className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/view-custom-orders' ? 'bg-black text-white' : ''}`}
                                             >
                                                 - View Custom Orders
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
-                                <span className="text-gray-400 font-bold">PERSONAL</span>
-                                <li className="mb-1 group">
-                                    <a
-                                        href=""
-                                        className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/accountsettings' ? 'bg-black text-white' : ''}`}
-                                    >
-                                        <i className="ri-settings-2-line mr-3 text-lg" />
-                                        <span className="text-sm">Account Settings</span>
-                                    </a>
                                 </li>
                             </ul>
                         )}

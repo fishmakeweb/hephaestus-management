@@ -1,4 +1,4 @@
-import { CustomOrder, fetchAllCustomOrders, filterCOrders, updateAtr, verifyOrders } from '@/dbUtils/Sales/ManageOrders';
+import { CustomOrder, fetchAllCustomOrders, filterCOrders, updateAtr, verifyCancelOrders, verifyOrders,  } from '@/dbUtils/Sales/ManageOrders';
 import React, { useEffect, useState } from 'react';
 
 export default function CustomOrderTable() {
@@ -42,8 +42,13 @@ export default function CustomOrderTable() {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
-    const handleVerifyStatus = async (customOrderId: number) => {
-        await verifyOrders(customOrderId);
+    const handleVerifyStatus = async (customOrderId : number,description : string ) => {
+        if(description.trim().match('PRE PAID SUCCESSFULLY')){
+            await verifyOrders(customOrderId);
+        }else if (description.trim().match('REQUEST CANCEL')){
+            await verifyCancelOrders(customOrderId);
+        }
+       
         fetchOrders();
     };
 
@@ -119,7 +124,7 @@ export default function CustomOrderTable() {
                                 {customOrder.orderStatus.statusId !== 4 && (
                                     <button
                                         className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                                        onClick={() => handleVerifyStatus(customOrder.customOrderId)}
+                                        onClick={() => handleVerifyStatus(customOrder.customOrderId, customOrder.description)}
                                     >
                                         Verify
                                     </button>

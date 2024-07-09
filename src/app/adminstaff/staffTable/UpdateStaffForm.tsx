@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
-import StaffManage from '@/dbUtils/Admin/StaffManage';
+import StaffManage, { Staff } from '@/dbUtils/Admin/StaffManage';
 
 interface UpdateStaffFormProps {
   editingStaff: Staff;
   onClose: () => void;
   onSuccess: () => void;
-}
-
-interface Staff {
-  staffId: string;
-  fullName: string;
-  email: string;
-  username: string;
-  role: {
-    roleName: string;
-  };
 }
 
 const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose, onSuccess }) => {

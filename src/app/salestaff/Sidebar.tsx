@@ -1,11 +1,10 @@
 
 // Sidebar.tsx
-import React, { useState, useRef, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from 'next/link';
 
 const Sidebar: React.FC = () => {
-    const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
     const [isSalesDropdownOpen, setIsSalesDropdownOpen] = useState<boolean>(false);
     const [isOrdersDropdownOpen, setIsOrdersDropdownOpen] = useState<boolean>(false);
     const pathname = usePathname();

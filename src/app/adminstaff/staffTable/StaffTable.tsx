@@ -1,14 +1,5 @@
+import { Staff } from "@/dbUtils/Admin/StaffManage";
 import React, { useState } from "react";
-
-interface Staff {
-  staffId: string;
-  fullName: string;
-  email: string;
-  username: string;
-  role: {
-    roleName: string;
-  };
-}
 
 interface UsersTableProps {
   staffList: Staff[];
@@ -20,11 +11,14 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
   const [currentPage, setCurrentPage] = useState<number>(1);
   const rowsPerPage = 5;
 
+  const staff = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const filteredStaffList = staffList.filter((s) => s.staffId !== staff.staffId);
+
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = staffList.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filteredStaffList.slice(indexOfFirstRow, indexOfLastRow);
 
-  const totalPages = Math.ceil(staffList.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredStaffList.length / rowsPerPage);
 
   const handlePrevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));

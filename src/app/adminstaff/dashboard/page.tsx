@@ -40,14 +40,17 @@ const DashBoard: React.FC = () => {
 
             const filteredOrders = ordersResponse.filter(order => order.orderStatus.statusId !== 1);
 
-            setData({
-                categories: categoriesResponse,
-                top1Cate: top1CateResponse,
-                customers: customersResponse,
-                orders: filteredOrders,
-                customOrders: customOrdersResponse,
-                loading: false,
-            });
+            setTimeout(() => {
+                setData({
+                    categories: categoriesResponse,
+                    top1Cate: top1CateResponse,
+                    customers: customersResponse,
+                    orders: filteredOrders,
+                    customOrders: customOrdersResponse,
+                    loading: false,
+                });
+            }, 150);
+            
         };
 
         fetchData();

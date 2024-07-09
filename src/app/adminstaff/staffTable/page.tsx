@@ -1,22 +1,11 @@
 'use client'; 
 
-import StaffManage from '@/dbUtils/Admin/StaffManage';
+import StaffManage, { Staff } from '@/dbUtils/Admin/StaffManage';
 import React, { useState, useEffect } from 'react';
 import AuthGuard from '@/components/auth-guard';
 import StaffTable from './StaffTable';
 import AddStaffForm from './AddStaffForm';
 import UpdateStaffForm from './UpdateStaffForm';
-
-// Define the Staff interface
-interface Staff {
-  staffId: string;
-  fullName: string;
-  email: string;
-  username: string;
-  role: {
-    roleName: string;
-  };
-}
 
 export default function Page() {
   const [staffList, setStaffList] = useState<Staff[]>([]);

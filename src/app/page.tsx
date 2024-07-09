@@ -19,9 +19,9 @@ export default function Home() {
       if (AuthService.isAuthenticated()) {
         if (AuthService.isStaff()) {
           if (AuthService.isAdmin()) {
-            router.push('/dashboard');
+            router.push('adminstaff/dashboard');
           } else if (AuthService.isSales()) {
-            router.push('/view-orders');
+            router.push('salestaff/view-orders');
           }
         }
       } else {

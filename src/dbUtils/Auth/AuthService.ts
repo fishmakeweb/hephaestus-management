@@ -37,22 +37,29 @@ class AuthService {
   }
 
   static isAdmin() {
-    const userRole = sessionStorage.getItem("userRole");
-    return userRole == "ROLE_ADMIN";
+    try {
+      const userRole = sessionStorage.getItem("userRole");
+      return userRole == "ROLE_ADMIN";
+    } catch (error) {
+    }
   }
 
-  // static async checkAdmin():Promise<boolean> {
-  //   const role = await axios.get('/getRole',)
-  //   return false;
-  // }
-
   static isSales() {
-    const userRole = sessionStorage.getItem("userRole");
-    return userRole == "ROLE_SALESTAFF";
+    try {
+      const userRole = sessionStorage.getItem("userRole");
+      return userRole == "ROLE_SALESTAFF";
+    } catch (error) {
+      
+    }
+
   }
 
   static getStaff() {
-    return JSON.parse(sessionStorage.getItem("user") || "{}");
+    try {
+      return JSON.parse(sessionStorage.getItem("user") || "{}");
+    } catch (error) {
+      
+    }
   }
 
   static async refreshToken() {

@@ -22,7 +22,7 @@ export default function RootLayout({
                         <NavbarStaff />
                         </div>
                         <div className="flex justify-center">
-                            <div className="h-screen w-full">
+                            <div className="h-screen w-full mr-8">
                                 {children}
                             </div>
                         </div>

@@ -2,13 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import AuthService from "@/dbUtils/Auth/AuthService";
 import { useRouter, usePathname } from "next/navigation";
 
+interface Staff{
+    fullname:string;
+    role:{rolename:string}
+}
+
+
 const NavbarStaff: React.FC<{}> = () => {
     const staff = AuthService.getStaff();
-    
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
     const userMenuRef = useRef<HTMLLIElement>(null);
     const router = useRouter();
-    const pathname = usePathname();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

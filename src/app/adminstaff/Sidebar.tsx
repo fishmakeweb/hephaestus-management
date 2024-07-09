@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
                                 className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
                             >
                                 <i className="bx bx-user mr-3 text-lg" />
-                                <span className="text-sm">Add Products</span>
+                                <span className="text-sm">Products</span>
                                 <i
                                     className={`ri-arrow-right-s-line ml-auto ${isProductsDropdownOpen ? "rotate-90" : ""}`}
                                 />
@@ -72,50 +72,18 @@ const Sidebar: React.FC = () => {
                             >
                                 <li className="mb-4">
                                     <Link
-                                        href="/adminstaff/adddiamond"
-                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/adddiamond' ? 'bg-black text-white' : ''}`}
+                                        href="/adminstaff/Diamond"
+                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/Diamond' ? 'bg-black text-white' : ''}`}
                                     >
                                         - Diamond
                                     </Link>
                                 </li>
                                 <li className="mb-4">
                                     <Link
-                                        href="/adminstaff/addJewelry"
-                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/addJewelry' ? 'bg-black text-white' : ''}`}
+                                        href="/adminstaff/Jewelry"
+                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/Jewelry' ? 'bg-black text-white' : ''}`}
                                     >
                                         - Jewelry
-                                    </Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="mb-1 group">
-                            <button
-                                onClick={toggleSalesDropdown}
-                                className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
-                            >
-                                <i className="bx bx-user mr-3 text-lg" />
-                                <span className="text-sm">View Products</span>
-                                <i
-                                    className={`ri-arrow-right-s-line ml-auto ${isSalesDropdownOpen ? "rotate-90" : ""}`}
-                                />
-                            </button>
-                            <ul
-                                className={`pl-7 mt-2 ${isSalesDropdownOpen ? "block" : "hidden"}`}
-                            >
-                                <li className="mb-4">
-                                    <Link
-                                        href="/adminstaff/viewdiamond"
-                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewdiamond' ? 'bg-black text-white' : ''}`}
-                                    >
-                                        - View Diamond
-                                    </Link>
-                                </li>
-                                <li className="mb-4">
-                                    <Link
-                                        href="/adminstaff/viewjewelry"
-                                        className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/viewproduct/viewjewelry' ? 'bg-black text-white' : ''}`}
-                                    >
-                                        - View Jewelry
                                     </Link>
                                 </li>
                             </ul>

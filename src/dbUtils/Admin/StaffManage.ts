@@ -11,10 +11,14 @@ export interface Staff {
     };
   }
 
-class StaffManage {
+  class StaffManage {
+
+    // SECURE DONE
     async fetchStaffs() {
         try {
-            const response = await axios.get("/secure/staffs");
+            const response = await axios.get("/secure/staffs", {
+                headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+              });
             const transformedData = response.data.map(
                 (staff: { staffId: any; fullName: any; email: any; username: any; role: any; }) => ({
                     staffId: staff.staffId,
@@ -29,6 +33,8 @@ class StaffManage {
         }
     }
 
+
+    // SECURE DONE
     async addStaff(fullName: any, email: any, username: any, password: any, role: any) {
         const staffData = {
             fullName: fullName,

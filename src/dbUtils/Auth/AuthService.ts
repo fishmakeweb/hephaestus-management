@@ -15,20 +15,24 @@ class AuthService {
       if (staff) {
         sessionStorage.setItem("role", "STAFF");
         sessionStorage.setItem("user", JSON.stringify(staff));
-        if(staff.role.roleName == 'ROLE_ADMIN') {
-            sessionStorage.setItem("userRole", "ROLE_ADMIN");
+        if (staff.role.roleName == "ROLE_ADMIN") {
+          sessionStorage.setItem("userRole", "ROLE_ADMIN");
         } else {
-            sessionStorage.setItem("userRole", "ROLE_SALESTAFF");  
+          sessionStorage.setItem("userRole", "ROLE_SALESTAFF");
+        }
+        return response.data;
       }
-      return response.data;
-    }} catch (error) {
+    } catch (error) {
       throw error;
     }
   }
 
+  // SECURE DONE
   static async registerStaff(userData: any) {
     try {
-      const response = await axios.post(`/auth/register/staff`, userData);
+      const response = await axios.post(`/auth/register/staff`, userData, {
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+      });
       return response.data;
     } catch (error) {
       throw error;

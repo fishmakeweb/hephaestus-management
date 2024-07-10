@@ -119,3 +119,22 @@ export const totalCustomer = (customers : User[]) => {
     const totalCustomer = customers.length;
     return totalCustomer;
 };
+
+export const calculateLatestWeeklyChanges = (data: { weekStart: string, valueO: number, valueC: number }[]) => {
+  if (data.length < 2) {
+      return null;
+  }
+
+  const latestWeek = data[data.length - 1];
+  const previousWeek = data[data.length - 2];
+
+  const totalLatest = latestWeek.valueO + latestWeek.valueC;
+  const totalPrevious = previousWeek.valueO + previousWeek.valueC;
+
+  const combinedChange = ((totalLatest - totalPrevious) / totalPrevious) * 100;
+
+  return {
+      weekStart: latestWeek.weekStart,
+      combinedChange,
+  };
+};

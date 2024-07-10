@@ -8,7 +8,7 @@ import DataRibbon from './DataRibbon';
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { CustomerByDayChart } from './(charts)/CByDayChart';
 import { OrderByDayChart } from './(charts)/OByDayChart';
-import { aggregateByDay, aggregateCate, aggregateTotalByWeek, avgValue, calTotalSales, calTotalValue, totalCustomer } from "./dataValidating";
+import { aggregateByDay, aggregateCate, aggregateTotalByWeek, avgValue, calTotalSales, calTotalValue, totalCustomer, calculateLatestWeeklyChanges } from "./dataValidating";
 import { Skeleton } from "@nextui-org/skeleton";
 import { PercentChart } from "./(charts)/PercentChart";
 
@@ -39,8 +39,6 @@ const DashBoard: React.FC = () => {
             ]);
 
             const filteredOrders = ordersResponse.filter(order => order.orderStatus.statusId !== 1);
-
-            setTimeout(() => {
                 setData({
                     categories: categoriesResponse,
                     top1Cate: top1CateResponse,
@@ -49,8 +47,6 @@ const DashBoard: React.FC = () => {
                     customOrders: customOrdersResponse,
                     loading: false,
                 });
-            }, 150);
-
         };
 
         fetchData();
@@ -72,6 +68,8 @@ const DashBoard: React.FC = () => {
     const avgOrder = avgValue(orders, customOrders);
     const totalCus = totalCustomer(customers);
 
+    const latestWeeklyChanges = calculateLatestWeeklyChanges(LineChartData);
+
     const formattedTotalValue = `$${totalValue.toFixed(2)}`;
     const formattedAvgOrder = `${avgOrder.toFixed(2)}`;
     const PieChartData = aggregateCate(categories);
@@ -90,10 +88,22 @@ const DashBoard: React.FC = () => {
                 </div>
                 <div className='w-full flex justify-center p-4'>
                     <Card className="flex-1 bg-white py-2 px-10 border border-solid border-gray-200">
-                        <CardHeader className="flex">
+                        <CardHeader className="flex justify-between">
                             <div className="flex flex-col">
                                 <p className="text-lg font-bold">Orders Revenue:</p>
                             </div>
+                            {latestWeeklyChanges && (
+                                <div className="text-sm text-gray-500">
+                                    <p className="text-black">
+                                        Weekly Change:
+                                        {latestWeeklyChanges.combinedChange >= 0 ? (
+                                            <span className="text-green-500 font-bold"> ➚ {latestWeeklyChanges.combinedChange.toFixed(2)}%</span>
+                                        ) : (
+                                            <span className="text-red-500 font-bold"> ➘ {latestWeeklyChanges.combinedChange.toFixed(2)}%</span>
+                                        )}
+                                    </p>
+                                </div>
+                            )}
                         </CardHeader>
                         <CardBody className="h-[400px]">
                             {loading ? (
@@ -154,7 +164,6 @@ const DashBoard: React.FC = () => {
                         </CardBody>
                     </Card>
                 </div>
-
             </div>
         </AuthGuard>
     );

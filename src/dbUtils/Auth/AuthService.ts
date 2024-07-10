@@ -26,7 +26,10 @@ class AuthService {
       throw error;
     }
   }
-
+  static getUserName() {
+    const username = sessionStorage.getItem("username");
+    return username ? JSON.parse(username) : null;
+  }
   // SECURE DONE
   static async registerStaff(userData: any) {
     try {

@@ -1,43 +1,34 @@
-import { Tooltip, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend, AreaChart, Area } from "recharts";
+import { Tooltip, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend, AreaChart, Area, LineChart, Line } from "recharts";
 
 type OrderByDayChartProps = {
-    data: { date: string, valueO: number, valueC: number }[];
+    data: { weekStart: string, valueO: number, valueC: number }[];
 };
 
-const currencyFormatter = (value: number) => `$${value}`;
+const currencyFormatter = (value: number) => `$${value.toFixed(2)}`;
+
 
 export function OrderByDayChart({ data }: OrderByDayChartProps) {
     return (
         <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={data}>
-                <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                    </linearGradient>
-                </defs>
+            <LineChart data={data} margin={{ top: 20, right: 10, left: 30, bottom: 0 }}>
                 <CartesianGrid stroke="hsl(var(--muted))" />
-                <XAxis dataKey="date" stroke="hsl(var(--primary))" />
+                <XAxis dataKey="weekStart" stroke="hsl(var(--primary))" />
                 <YAxis stroke="hsl(var(--primary))" tickFormatter={currencyFormatter} />
                 <Tooltip formatter={(value: number) => currencyFormatter(value)} />
                 <Legend />
-                <Area
+                <Line
                     dataKey="valueO"
-                    type="monotone"
-                    name="Total Value"
+                    type="linear"
+                    name="Jewelry"
                     stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)"
                 />
-                <Area
+                <Line
                     dataKey="valueC"
-                    type="monotone"
-                    name="Total Prepaid"
+                    type="linear"
+                    name="Custom Jewelry"
                     stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)"
                 />
-            </AreaChart>
+            </LineChart>
         </ResponsiveContainer>
     );
 }

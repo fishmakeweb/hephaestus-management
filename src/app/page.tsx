@@ -12,6 +12,11 @@ export default function Home() {
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    const token = sessionStorage.getItem('token');
+    if(token != null){
+      alert('You have already logged in');
+      AuthService.logout();
+    }
 
     try {
       const response = await AuthService.login(username, password);
@@ -19,7 +24,7 @@ export default function Home() {
       if (AuthService.isAuthenticated()) {
         if (AuthService.isStaff()) {
           if (AuthService.isAdmin()) {
-            router.push('/adminstaff/dashboard');
+            router.push('/adminstaff/staffTable');
           } else if (AuthService.isSales()) {
             router.push('salestaff/view-orders');
           }

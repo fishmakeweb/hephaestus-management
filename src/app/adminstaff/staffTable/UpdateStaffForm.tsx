@@ -9,11 +9,36 @@ interface UpdateStaffFormProps {
 
 const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose, onSuccess }) => {
   const [staff, setStaff] = useState(editingStaff);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const staffManager = new StaffManage();
 
+  const validateInput = (name: string, value: string): string | null => {
+    if (/\s/.test(value)) {
+      return 'No spaces allowed.';
+    }
+    if (/[^a-zA-Z0-9@.]/.test(value) && name !== 'fullName') {
+      return 'No special characters allowed.';
+    }
+    return null;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    const error = validateInput(name, value);
+
+    if (error) {
+      setErrors({
+        ...errors,
+        [name]: error
+      });
+    } else {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+
     setStaff({
       ...staff,
       [name]: name === 'role' ? { roleName: value } : value
@@ -22,6 +47,11 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const hasErrors = Object.values(errors).some(error => error);
+    if (hasErrors) {
+      return;
+    }
+
     try {
       const { staffId, fullName, email, role } = staff;
       await staffManager.updateStaff(staffId, fullName, email, role.roleName);
@@ -46,6 +76,7 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
               onChange={handleChange}
               required
             />
+            {errors.fullName && <span className="text-red-500 text-sm">{errors.fullName}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="email">Email</label>
@@ -57,6 +88,7 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
               onChange={handleChange}
               required
             />
+            {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="role">Role</label>

@@ -1,3 +1,5 @@
+import axios from "@/dbUtils/axios";
+
 export interface Measurement {
     measurementId: string;
     length: number;
@@ -24,3 +26,16 @@ export interface Measurement {
     clarityId: string;
     clarityDescription: string;
   }
+
+  const getToken = () => sessionStorage.getItem("token");
+
+  export async function setDiamondStatus(diamondId: string, status: boolean) {
+    try{
+      await axios.put(`/secure/status/diamonds/${diamondId}`, status,{
+        headers: { Authorization: `Bearer ${getToken()}` },
+    });
+      console.log("Diamond status updated successfully");
+    }catch(err){
+      console.error("Failed to update diamond status", err);
+    }
+  };

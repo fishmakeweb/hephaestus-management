@@ -40,6 +40,36 @@ const SubmitMessage: React.FC<SubmitMessageProps> = ({ onClose }) => {
   );
 };
 
+export const fetchAttributes = async (productManager: AddProductUtils) => {
+  try {
+    const [jewelryAttrResponse, diamondsResponse] = await Promise.all([
+      productManager.fetchAllJewelryAtribute(),
+      productManager.fetchAllDiamonds(),
+    ]);
+
+    if (jewelryAttrResponse && diamondsResponse) {
+      const filteredDiamonds = diamondsResponse.data.filter((diamond: Diamond) => !diamond.sold);
+
+      return {
+        categories: jewelryAttrResponse.data.categories || [],
+        materials: jewelryAttrResponse.data.materials || [],
+        shapes: jewelryAttrResponse.data.shapes || [],
+        sizes: jewelryAttrResponse.data.sizes || [],
+        diamonds: filteredDiamonds,
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching attributes:", error);
+    return {
+      categories: [],
+      materials: [],
+      shapes: [],
+      sizes: [],
+      diamonds: [],
+    };
+  }
+};
+
 const FormAddJewelrySheet: React.FC = () => {
   const productManager = new AddProductUtils();
   const [imagePreviewUrl, setImagePreviewUrl] = useState(
@@ -61,29 +91,18 @@ const FormAddJewelrySheet: React.FC = () => {
   const [jewelryQuantity, setJewelryQuantity] = useState<number | "">("");
   const [showSubmitMessage, setShowSubmitMessage] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const fetchAttributes = async () => {
-      try {
-        const [jewelryAttrResponse, diamondsResponse] = await Promise.all([
-          productManager.fetchAllJewelryAtribute(),
-          productManager.fetchAllDiamonds(),
-        ]);
-  
-        if (jewelryAttrResponse && diamondsResponse) {
-          const filteredDiamonds = diamondsResponse.data.filter((diamond: Diamond) => !diamond.sold);
-          
-          setCategories(jewelryAttrResponse.data.categories || []);
-          setMaterials(jewelryAttrResponse.data.materials || []);
-          setShapes(jewelryAttrResponse.data.shapes || []);
-          setSizes(jewelryAttrResponse.data.sizes || []);
-          setDiamonds(filteredDiamonds);
-        }
-      } catch (error) {
-        console.error("Error fetching attributes:", error);
-      }
+    const loadAttributes = async () => {
+      const attributes = await fetchAttributes(productManager);
+      setCategories(attributes?.categories);
+      setMaterials(attributes?.materials);
+      setShapes(attributes?.shapes);
+      setSizes(attributes?.sizes);
+      setDiamonds(attributes?.diamonds);
     };
-    fetchAttributes();
+    loadAttributes();
   }, []);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -147,23 +166,26 @@ const FormAddJewelrySheet: React.FC = () => {
     } else {
       console.error("Failed to add jewelry");
     }
+
+    window.location.reload();
   };
 
-  const handleCloseSubmitMessage = () => {
-    setShowSubmitMessage(false);
-
+  const handleSheetClose = () => {
+    if (!showSubmitMessage) {
+      setIsOpen(false);
+    }
   };
 
   return (
     <>
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline">Add New Jewelry</Button>
+          <Button variant="outline" onClick={() => setIsOpen(true)}>Add Jewelry Diamond</Button>
         </SheetTrigger>
         <SheetContent side="center" className="pb-2">
           <ScrollArea className="h-screen p-6 mt-4">
             <SheetHeader>
-              <SheetTitle>Add New Jewelry</SheetTitle>
+              <SheetTitle>Add Diamond</SheetTitle>
             </SheetHeader>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 px-4">
@@ -324,13 +346,14 @@ const FormAddJewelrySheet: React.FC = () => {
                   <p className="text-red-500">{errors.jewelryUrl}</p>
                 )}
               </div>
-              <Button className="mb-8" type="submit">
-                Save Jewelry
+              <Button type="submit" className="mb-8">
+                <SheetClose asChild onClick={handleSheetClose}>
+                </SheetClose>
+                <p>Save Jewelry</p>
               </Button>
             </form>
           </ScrollArea>
         </SheetContent>
-        {showSubmitMessage && <SubmitMessage onClose={handleCloseSubmitMessage} />}
       </Sheet>
     </>
   );

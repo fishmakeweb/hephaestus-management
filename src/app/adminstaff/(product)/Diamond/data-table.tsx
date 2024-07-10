@@ -1,8 +1,5 @@
 
-import AuthService from "@/dbUtils/Auth/AuthService";
 import * as React from "react"
-import { useRouter } from "next/navigation";
-
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -60,12 +57,6 @@ export function DataTable<TData, TValue>({
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
     });
-
-    const router = useRouter();
-
-    const handleAdd = () => {
-        router.push("/adminstaff/adddiamond");
-    };
 
     return (
         <>

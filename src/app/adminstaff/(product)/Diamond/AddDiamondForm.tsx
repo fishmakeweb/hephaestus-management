@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -21,6 +22,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const FormAddDiamondSheet: React.FC = () => {
   const addProductUtils = new AddProductUtils();
+  const [isOpen, setIsOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(
     "https://diamondshop-img.ap-south-1.linodeobjects.com/1718429728643_Screenshot%202024-06-15%20123518.png"
   );
@@ -88,7 +90,6 @@ const FormAddDiamondSheet: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
     const success = await addProductUtils.saveDiamondToDB(
       diamondMeasurement,
       diamondColor,
@@ -102,20 +103,40 @@ const FormAddDiamondSheet: React.FC = () => {
 
     if (success) {
       setShowSubmitMessage(true);
+      setDiamondMeasurement("");
+      setDiamondColor("");
+      setDiamondCut("");
+      setDiamondCarat("");
+      setDiamondClarity("");
+      setGiaIssueDate("");
+      setDiamondPrice("");
+      setDiamondUrl("");
+      setImagePreviewUrl(
+        "https://diamondshop-img.ap-south-1.linodeobjects.com/1718429728643_Screenshot%202024-06-15%20123518.png"
+      );
     } else {
       console.error("Failed to save diamond");
     }
+    setIsOpen(false);
+    window.location.reload();
   };
+
+  const handleSheetClose = () => {
+    if (!showSubmitMessage) {
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline">Add New Diamond</Button>
+        <Button variant="outline" onClick={() => setIsOpen(true)}>Add New Diamond</Button>
       </SheetTrigger>
       <SheetContent side="center" className="pb-2">
-      <ScrollArea className="h-screen p-6 mt-4">
-        <SheetHeader>
-          <SheetTitle>Add Diamond</SheetTitle>
-        </SheetHeader>
+        <ScrollArea className="h-screen p-6 mt-4">
+          <SheetHeader>
+            <SheetTitle>Add Diamond</SheetTitle>
+          </SheetHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 px-4">
               <Label htmlFor="measurement">Measurement</Label>
@@ -246,9 +267,14 @@ const FormAddDiamondSheet: React.FC = () => {
                 <p className="text-red-500">{errors.diamondUrl}</p>
               )}
             </div>
-              <Button className="mb-8" type="submit">Save Diamond</Button>
+
+            <Button type="submit" className="mb-8">
+              <SheetClose asChild onClick={handleSheetClose}>
+              </SheetClose>
+              <p>Save diamond</p>
+            </Button>
           </form>
-          </ScrollArea>
+        </ScrollArea>
       </SheetContent>
     </Sheet>
   );

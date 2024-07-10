@@ -11,6 +11,7 @@ import {
 import AuthService from "@/dbUtils/Auth/AuthService";
 import FormUpdateDiamond from "./updateDiamond";
 import { Diamond } from './diamondTable';
+import { setDiamondStatus } from '@/dbUtils/diamondAPI/types';
 
 type ActionsCellProps = {
   diamond: Diamond;
@@ -18,6 +19,11 @@ type ActionsCellProps = {
 
 const ActionsCell: React.FC<ActionsCellProps> = ({ diamond }) => {
   const [showUpdateOverlay, setShowUpdateOverlay] = useState(false);
+
+  const handleSetStatus = async (diamondId: string, status: boolean) => {
+    await setDiamondStatus(diamondId, !status);
+    window.location.reload(); 
+  };
 
   const handleUpdateClick = () => {
     setShowUpdateOverlay(true);
@@ -28,7 +34,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ diamond }) => {
   };
 
   if (!AuthService.isAdmin()) {
-    return null; 
+    return null;
   }
 
   return (
@@ -43,10 +49,13 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ diamond }) => {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleUpdateClick}>
             Update
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleSetStatus(diamond.diamondId, diamond.sold)}>
+            {diamond.sold ? 'Set Available' : 'Set Sold'}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

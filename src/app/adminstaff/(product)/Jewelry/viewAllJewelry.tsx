@@ -2,8 +2,17 @@ import React, { useState, useEffect } from "react";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import { useRouter } from "next/navigation";
 import UpdateJewelry from "./updateJewelry";
-import AuthService from "@/dbUtils/Auth/AuthService";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import FormAddJewelrySheet from "./AddJewelryForm";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
 
 interface Jewelry {
   jewelryId: number;
@@ -41,7 +50,6 @@ const ViewAllJewelry: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [editingJewelryId, setEditingJewelryId] = useState<number | null>(null);
-  const [showActionOverlay, setShowActionOverlay] = useState<boolean>(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] =
     useState<boolean>(false);
   const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
@@ -71,22 +79,17 @@ const ViewAllJewelry: React.FC = () => {
   };
 
   const handleEditClick = (jewelryId: number) => {
-    if (editingJewelryId === jewelryId && showActionOverlay) {
-      setShowActionOverlay(false);
+    setShowUpdateForm(true);
+    if (editingJewelryId === jewelryId) {
       setEditingJewelryId(null);
     } else {
       setEditingJewelryId(jewelryId);
-      setShowActionOverlay(true);
     }
   };
 
-  const handleActionClick = (action: string) => {
-    setShowActionOverlay(false);
-    if (action === "update") {
-      setShowUpdateForm(true);
-    } else if (action === "delete") {
+  const handleActionClick = (jewelryId: number | null) => {
       setShowDeleteConfirmation(true);
-    }
+      setEditingJewelryId(jewelryId);
   };
 
   const handleDelete = async (jewelryId: number | null) => {
@@ -249,49 +252,25 @@ const ViewAllJewelry: React.FC = () => {
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {item.date}
                     </td>
-                    {AuthService.isAdmin() && (
-                      <td className="px-1 py-2 text-base text-center">
-                        <button
-                          className="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100"
-                          onClick={() => handleEditClick(item.jewelryId)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-4 h-4"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
-                            />
-                          </svg>
-                        </button>
-                        {editingJewelryId === item.jewelryId &&
-                          showActionOverlay && (
-                            <div
-                              className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg"
-                              onClick={(e) => e.stopPropagation()}
+                    <td>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => handleEditClick(item.jewelryId)}
                             >
-                              <button
-                                className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100"
-                                onClick={() => handleActionClick("update")}
-                              >
-                                Update
-                              </button>
-                              <button
-                                className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100"
-                                onClick={() => handleActionClick("delete")}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          )}
+                              Update
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => handleActionClick(item.jewelryId)}>Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </td>
-                    )}
                   </tr>
                 ))}
               </tbody>
@@ -322,7 +301,7 @@ const ViewAllJewelry: React.FC = () => {
       </section>
 
       {editingJewelryId && showUpdateForm && (
-        <UpdateJewelry jewelryId={editingJewelryId} onClose={handleCloseForm} />
+        <UpdateJewelry jewelryId={editingJewelryId} onClose={() => setShowUpdateForm(false)} />
       )}
       {showDeleteConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

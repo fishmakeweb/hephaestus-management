@@ -1,7 +1,8 @@
-import { Category,Shape,Material,Size,Diamond } from "@/dbUtils/jewelryAPI/types";
+import { Category, Shape, Material, Size, Diamond } from "@/dbUtils/jewelryAPI/types";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { fetchAttributes } from "./AddJewelryForm";
 
 interface Jewelry {
   jewelryId: number;
@@ -78,18 +79,15 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
 
     const fetchData = async () => {
       try {
-        const [jewelryAtr, diamondsResponse] = await Promise.all([
-          productManager.fetchAllJewelryAtribute(),
-          productManager.fetchAllDiamonds()
-        ]);
-        
-        if (jewelryAtr && diamondsResponse) {
-          const filteredDiamonds = diamondsResponse.data.filter((diamond: Diamond) => !diamond.sold);
-          setCategories(jewelryAtr.data.categories || []);
-          setMaterials(jewelryAtr.data.materials || []);
-          setShapes(jewelryAtr.data.shapes || []);
-          setSizes(jewelryAtr.data.sizes || []);
-          setDiamonds(filteredDiamonds.data || []);
+        const jewelryAtr = await fetchAttributes(productManager);
+  
+        if (jewelryAtr) {
+          const filteredDiamonds = jewelryAtr.diamonds.filter((diamond: Diamond) => !diamond.sold);
+          setCategories(jewelryAtr.categories || []);
+          setMaterials(jewelryAtr.materials || []);
+          setShapes(jewelryAtr.shapes || []);
+          setSizes(jewelryAtr.sizes || []);
+          setDiamonds(filteredDiamonds);
         }
       } catch (error) {
         console.error('Error fetching attributes:', error);
@@ -145,7 +143,8 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
 
     if (saveResult) {
       setShowSubmitMessage(true);
-      onClose();
+    } else {
+      console.error("Failed to update Jewelry");
     }
   };
 

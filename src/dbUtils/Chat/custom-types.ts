@@ -1,5 +1,5 @@
+import { Category,Material,Diamond,Shape,Size } from "@/dbUtils/jewelryAPI/types";
 
-import { Jewelry } from "../customAPI/getAttribute";
 export interface OrderStatus {
     statusId: number;
     statusDescription: string;
@@ -16,6 +16,17 @@ export interface CustomOrder {
     finishDate: string;
     orderStatus: OrderStatus;
 }
+
+export interface Jewelry {
+    id: number;
+    category: Category;
+    material: Material;
+    diamond: Diamond | null;
+    shape: Shape;
+    size: Size;
+    price: number;
+    note: string;
+  }
 
 export interface ChatMessage {
     message: string;

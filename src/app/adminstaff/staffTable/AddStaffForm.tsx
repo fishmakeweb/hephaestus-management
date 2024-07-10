@@ -15,10 +15,36 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
     role: 'ROLE_SALESTAFF'
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const staffManager = new StaffManage();
+
+  const validateInput = (name: string, value: string): string | null => {
+    if (/\s/.test(value)) {
+      return 'No spaces allowed.';
+    }
+    if (/[^a-zA-Z0-9@.]/.test(value) && name !== 'fullName') {
+      return 'No special characters allowed.';
+    }
+    return null;
+  };
 
   const handleChangeAddUser = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    const error = validateInput(name, value);
+
+    if (error) {
+      setErrors({
+        ...errors,
+        [name]: error
+      });
+    } else {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+
     setNewUser({
       ...newUser,
       [name]: value
@@ -27,6 +53,11 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
 
   const handleAddUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const hasErrors = Object.values(errors).some(error => error);
+    if (hasErrors) {
+      return;
+    }
+
     try {
       await staffManager.addStaff(newUser.fullName, newUser.email, newUser.username, newUser.password, newUser.role);
       setNewUser({
@@ -57,6 +88,7 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
               onChange={handleChangeAddUser}
               required
             />
+            {errors.fullName && <span className="text-red-500 text-sm">{errors.fullName}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="email">Email</label>
@@ -68,6 +100,7 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
               onChange={handleChangeAddUser}
               required
             />
+            {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="username">Username</label>
@@ -79,6 +112,7 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
               onChange={handleChangeAddUser}
               required
             />
+            {errors.username && <span className="text-red-500 text-sm">{errors.username}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
@@ -90,6 +124,7 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
               onChange={handleChangeAddUser}
               required
             />
+            {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700" htmlFor="role">Role</label>

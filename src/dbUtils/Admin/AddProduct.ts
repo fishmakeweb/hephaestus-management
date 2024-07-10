@@ -1,4 +1,5 @@
 import axios from '@/dbUtils/axios';
+import { isNullOrEmptyOrBlank } from '../Sales/ManageProducts';
 
 class AddProductUtils {
     async fetchAllDiamondAtribute() {
@@ -139,9 +140,18 @@ class AddProductUtils {
             const response = await axios.post("/secure/jewelry", jewelryData, {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
               });
-            if(selectedDiamond != null){
-                await axios.put(`/secure/set/diamonds/${selectedDiamond}`);
-            }
+              if (!isNullOrEmptyOrBlank(selectedDiamond)) {
+                const dresponse = await axios.put(
+                  `/secure/set/diamonds/${selectedDiamond}`,
+                  {},
+                  {
+                    headers: {
+                      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+                    }
+                  }
+                );
+                console.log(dresponse);
+              }
             console.log('Save jewelry successfull: ', response);
             return true;
         } catch (error) {

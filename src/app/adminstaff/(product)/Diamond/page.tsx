@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Diamond, DiamondTable } from './diamondTable';
 import { DataTable } from "./data-table";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
-import AuthGuard from "@/components/auth-guard";
 
 export default function DiamondPage() {
     const productManager = new AddProductUtils();
@@ -20,7 +19,6 @@ export default function DiamondPage() {
     }, []);
 
     return (
-        <AuthGuard allowedRoles={['ROLE_SALESTAFF', 'ROLE_ADMIN']}>
             <section className="py-24">
                 <div className="container">
                     <DataTable
@@ -29,6 +27,5 @@ export default function DiamondPage() {
                     />
                 </div>
             </section>
-        </AuthGuard>
     )
 }

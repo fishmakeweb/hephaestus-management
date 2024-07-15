@@ -1,20 +1,19 @@
-import axios from "@/dbUtils/axios"; 
+import axios from "@/dbUtils/axiosAuth";
 export function isNullOrEmptyOrBlank(variable: any): boolean {
   return (
     variable === null ||
     variable === undefined ||
-    (typeof variable === 'string' && variable.trim().length === 0)
+    (typeof variable === "string" && variable.trim().length === 0)
   );
 }
-
 
 class ManageProductUtils {
   // SECURE DONE
   async fetchJewelryPagination(page: number) {
     try {
-      const response = await axios.get(`/jewelry/page?page=${page}&size=8`, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-      });
+      const response = await axios.get(
+        `/adminsale/jewelry/page?page=${page}&size=8`
+      );
       return response;
     } catch (error) {
       console.error("Failed to fetch jewelry data: ", error);
@@ -22,11 +21,9 @@ class ManageProductUtils {
   }
 
   // SECURE DONE
-  async deleteJewelry(jewelryId: any) {
+  async deleteJewelry(jewelryId: number) {
     try {
-      await axios.delete(`/secure/jewelry/${jewelryId}`, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-      });
+      await axios.delete(`/admin/jewelry/${jewelryId}`);
     } catch (error) {
       console.error("Failed to delete jewelry: ", error);
     }
@@ -35,17 +32,26 @@ class ManageProductUtils {
   // SECURE
   async findJewelry(jewelryId: any) {
     try {
-      const response = await axios.get(`/jewelry/${jewelryId}`);
+      const response = await axios.get(`/public/jewelry/${jewelryId}`);
       return response;
     } catch (error) {
       console.error("Failed to find jewelry: ", error);
     }
   }
 
-
-
   // SECURE
-  async updateJewelry(jewelryId: any, jewelryName: any, jewelryUrl: any, jewelryPrice: any, jewelryQuantity: any, selectedMaterial: any, selectedCategory: any, selectedSize: any, selectedDiamond: any, selectedShape: any) {
+  async updateJewelry(
+    jewelryId: any,
+    jewelryName: any,
+    jewelryUrl: any,
+    jewelryPrice: any,
+    jewelryQuantity: any,
+    selectedMaterial: any,
+    selectedCategory: any,
+    selectedSize: any,
+    selectedDiamond: any,
+    selectedShape: any
+  ) {
     const jewelryData = {
       name: jewelryName,
       img: jewelryUrl,
@@ -68,19 +74,12 @@ class ManageProductUtils {
     };
     try {
       const response = await axios.put(
-        `/secure/jewelry/${jewelryId}`,
-        jewelryData, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-      });
+        `/admin/jewelry/${jewelryId}`,
+        jewelryData
+      );
       if (!isNullOrEmptyOrBlank(selectedDiamond)) {
         const dresponse = await axios.put(
-          `/secure/set/diamonds/${selectedDiamond}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`
-            }
-          }
+          `/admin/set/diamonds/${selectedDiamond}`
         );
         console.log(dresponse);
       }
@@ -93,7 +92,7 @@ class ManageProductUtils {
 
   async findDiamond(diamondId: any) {
     try {
-      const response = await axios.get(`/diamonds/${diamondId}`);
+      const response = await axios.get(`/public/diamonds/${diamondId}`);
       return response;
     } catch (error) {
       console.error("Failed to find diamond: ", error);
@@ -122,13 +121,8 @@ class ManageProductUtils {
     };
     try {
       const response = await axios.put(
-        `/secure/diamonds/${diamondId}`,
-        diamondData,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
+        `/admin/diamonds/${diamondId}`,
+        diamondData
       );
       console.log("Update diamond response: ", response.data);
       return true;

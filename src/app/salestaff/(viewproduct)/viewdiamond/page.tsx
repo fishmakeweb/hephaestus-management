@@ -20,7 +20,7 @@ export default function DiamondPage() {
     }, []);
 
     return (
-        <AuthGuard allowedRoles={['ROLE_SALESTAFF']}>
+        <>
             <section className="py-24">
                 <div className="container">
                     <DataTable
@@ -29,6 +29,6 @@ export default function DiamondPage() {
                     />
                 </div>
             </section>
-        </AuthGuard>
+        </>
     )
 }

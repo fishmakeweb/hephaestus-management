@@ -4,7 +4,8 @@ import Sidebar from "./Sidebar";
 import NavbarStaff from "../../components/TopNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useEffect, useState } from "react";
-
+import AuthService from "@/dbUtils/Auth/AuthService";
+import NotFound from "../not-found";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -12,15 +13,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [staff, setStaff] = useState<any>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedUser = sessionStorage.getItem('user');
-    if (storedUser) {
-      setStaff(JSON.parse(storedUser));
-    }
+    const checkUserRole = async () => {
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        const userRole = await AuthService.checkRole(token);
+        setRole(userRole);
+      }
+    };
+
+    checkUserRole();
   }, []);
 
+  if (role !== "ROLE_ADMIN") {
+    return <NotFound />;
+  }
+  
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -28,7 +38,7 @@ export default function RootLayout({
           <Sidebar />
           <ScrollArea className="h-screen w-full">
             <div className="w-full">
-              {staff && <NavbarStaff staff={staff} />}
+              <NavbarStaff role = {role}/>
             </div>
             <div className="flex justify-center">
               <div className="h-screen w-full">

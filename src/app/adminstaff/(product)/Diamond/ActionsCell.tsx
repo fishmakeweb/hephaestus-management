@@ -33,9 +33,6 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ diamond }) => {
     setShowUpdateOverlay(false);
   };
 
-  if (!AuthService.isAdmin()) {
-    return null;
-  }
 
   return (
     <>

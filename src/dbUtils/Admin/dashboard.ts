@@ -1,5 +1,5 @@
 
-import axios from "@/dbUtils/axios"
+import axios from "@/dbUtils/axiosAuth"
 import { User } from "lucide-react";
 
 export interface User {
@@ -20,9 +20,7 @@ export interface Category {
 
 export async function fetchAllCustomers(): Promise<User[]> {
     try {
-        const response = await axios.get<User[]>('/secure/customers', {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-          });
+        const response = await axios.get<User[]>('/admin/customers');
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -32,9 +30,7 @@ export async function fetchAllCustomers(): Promise<User[]> {
 
 export async function fetchCategories(): Promise<Category[]> {
     try {
-        const response = await axios.get<Category[]>('/categories/order-count', {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-          });
+        const response = await axios.get<Category[]>('/categories/order-count');
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -44,9 +40,7 @@ export async function fetchCategories(): Promise<Category[]> {
 
 export async function fetchTop1Cate(): Promise<Category> {
     try {
-        const response = await axios.get<Category>('/categories/top-order-count', {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-          });
+        const response = await axios.get<Category>('/categories/top-order-count');
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);

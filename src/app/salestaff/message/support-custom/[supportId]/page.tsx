@@ -20,7 +20,7 @@ export default function Chat() {
 
   useEffect(() => {
     let client: Client;
-    const socket = new SockJS("http://localhost:8080/custom-order-chat");
+    const socket = new SockJS("https://api.hephaestus.store/custom-order-chat");
     client = new Client({
       webSocketFactory: () => socket,
       connectHeaders: {
@@ -53,7 +53,7 @@ export default function Chat() {
 
   const fetchChatHistory = async () => {
     const response = await axios.get<CustomOrderChatMessage[]>(
-      `http://localhost:8080/api/chat/custom-order-history/${supportId}`,
+      `https://api.hephaestus.store/api/chat/custom-order-history/${supportId}`,
       {
         headers: { Authorization: "Bearer " + sessionStorage.getItem("token") },
       }

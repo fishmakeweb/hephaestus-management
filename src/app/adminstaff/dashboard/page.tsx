@@ -75,7 +75,7 @@ const DashBoard: React.FC = () => {
     const PieChartData = aggregateCate(categories);
 
     return (
-        <AuthGuard allowedRoles={['ROLE_ADMIN']}>
+        <>
             <div className='bg-gray-100 min-h-screen flex flex-col items-center'>
                 <h1 className="text-3xl font-bold mt-4 mb-2">Dash Board</h1>
                 <div className='flex flex-col items-center p-4'>
@@ -165,7 +165,7 @@ const DashBoard: React.FC = () => {
                     </Card>
                 </div>
             </div>
-        </AuthGuard>
+        </>
     );
 }
 

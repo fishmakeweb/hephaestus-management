@@ -14,6 +14,7 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
   const staffManager = new StaffManage();
 
   const validateInput = (name: string, value: string): string | null => {
+    if (name.includes('role')) return null;
     if (/\s/.test(value)) {
       return 'No spaces allowed.';
     }
@@ -43,6 +44,7 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
       ...staff,
       [name]: name === 'role' ? { roleName: value } : value
     });
+    console.log(error);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {

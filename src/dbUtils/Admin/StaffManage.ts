@@ -1,4 +1,4 @@
-import axios from "@/dbUtils/axios";
+import axios from "@/dbUtils/axiosAuth";
 import AuthService from "@/dbUtils/Auth/AuthService";
 
 export interface Staff {
@@ -16,9 +16,7 @@ export interface Staff {
     // SECURE DONE
     async fetchStaffs() {
         try {
-            const response = await axios.get("/secure/staffs", {
-                headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-              });
+            const response = await axios.get("/admin/staffs");
             const transformedData = response.data.map(
                 (staff: { staffId: any; fullName: any; email: any; username: any; role: any; }) => ({
                     staffId: staff.staffId,
@@ -44,7 +42,7 @@ export interface Staff {
             role: { roleName: role }
         };
         try {
-            const response = await AuthService.registerStaff(staffData);
+            const response = await axios.post(`/admin/register/staff`, staffData);;
             console.log('Register successful:', response);
         } catch (error) {
             console.error('Add staff failed:', error);
@@ -58,7 +56,7 @@ export interface Staff {
             role: { roleName: role }
         };
         try {
-            const response = await axios.put(`/secure/staffs/${staffId}`, updateStaff);
+            const response = await axios.put(`/admin/staffs/${staffId}`, updateStaff);
             console.log('Update successful: ', response);
         } catch (error) {
             console.error('Update failed: ', error);
@@ -67,11 +65,13 @@ export interface Staff {
 
     async deleteStaff(staffId: any) {
         try {
-            axios.delete(`/secure/staffs/${staffId}`);
+            axios.delete(`/admin/staffs/${staffId}`);
         } catch (error) {
             console.error('Delete failed: ', error);
         }
     }
+
+    
 }
 
 export default StaffManage;

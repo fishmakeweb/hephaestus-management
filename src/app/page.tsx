@@ -9,30 +9,25 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-
   const handleLogin = async (e: any) => {
     e.preventDefault();
     const token = sessionStorage.getItem('token');
-    if(token != null){
+
+  
+    if (token != null) {
       alert('You have already logged in');
       AuthService.logout();
+      return;
     }
-
+  
     try {
-      const response = await AuthService.login(username, password);
-      console.log(response);
-      if (AuthService.isAuthenticated()) {
-        if (AuthService.isStaff()) {
-          if (AuthService.isAdmin()) {
-            router.push('/adminstaff/staffTable');
-          } else if (AuthService.isSales()) {
-            router.push('salestaff/view-orders');
-          }
-        }
-      } else {
-        setUsername('');
-        setPassword('');
-        setError("Login failed. Please check your credentials.");
+      const token = await AuthService.login(username, password);
+      const role = await AuthService.checkRole(token);
+      
+      if (role === "ROLE_ADMIN") {
+        router.push('/adminstaff/staffTable');
+      } else if (role === "ROLE_SALESTAFF") {
+        router.push('/salestaff/view-orders');
       }
     } catch (error) {
       console.error("Login failed:", error);

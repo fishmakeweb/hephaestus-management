@@ -14,12 +14,7 @@ interface OrderCardsProps {
   customOrderData: CusOrderMessageDTO[];
 }
 
-const CusOrderCards: React.FC<OrderCardsProps> = ({
-  customOrderData,
-
-}) => {
-
-
+const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
   if (!customOrderData) {
     return <div>Loading...</div>;
   }
@@ -33,10 +28,33 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({
             className="w-full bg-white rounded-lg shadow-md"
           >
             <CardHeader className="flex gap-3">
-            <div className="flex flex-col">
-                  <p className="text-md font-semibold">Order ID: {customOrder.customOrderId}</p>
-                  <p className="text-sm text-default-500">Start Date: {customOrder.startDate} . Finish Date: {customOrder.finishDate}</p>
-                </div>
+              <div className="flex flex-col">
+                <p className="text-md font-semibold">
+                  Order ID: {customOrder.customOrderId}
+                </p>
+                <p className="text-sm text-default-500">
+                  Start Date:{" "}
+                  {new Date(customOrder.startDate).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })} .
+                  Finish Date:{" "}
+                  {customOrder.finishDate
+                    ? new Date(customOrder.finishDate).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    })
+                    : "No data"}
+                </p>
+              </div>
             </CardHeader>
             <Divider />
             <CardBody className="flex flex-col gap-2">
@@ -44,8 +62,9 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({
                 Status: {customOrder.orderStatus}
               </p>
               <p id="fullPaid" className="text-lg font-semibold">
-                Prepaid: ${customOrder.prepaid} Fullpaid: ${customOrder.fullpaid}
-              </p> 
+                Prepaid: ${customOrder.prepaid} Fullpaid: $
+                {customOrder.fullpaid}
+              </p>
             </CardBody>
             <Divider />
             <CardFooter>

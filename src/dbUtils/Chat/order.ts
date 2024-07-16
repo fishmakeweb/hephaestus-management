@@ -1,4 +1,4 @@
-import axios from "@/dbUtils/axios";
+import axios from "@/dbUtils/axiosAuth";
 
 
 

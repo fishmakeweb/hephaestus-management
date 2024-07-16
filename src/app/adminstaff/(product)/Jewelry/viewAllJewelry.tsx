@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
 import { useRouter } from "next/navigation";
 import UpdateJewelry from "./updateJewelry";
+import { setJewelryStatus } from "@/dbUtils/jewelryAPI/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,6 +40,7 @@ interface Jewelry {
   img: string;
   quantity: number;
   date: string;
+  sold: boolean;
 }
 
 const ViewAllJewelry: React.FC = () => {
@@ -67,6 +69,12 @@ const ViewAllJewelry: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleSetStatus = async (jewelryId : number, status : boolean) => {
+      await setJewelryStatus(jewelryId, !status);
+      window.location.reload();
+  }
+
 
   useEffect(() => {
     fetchJewelry(currentPage);
@@ -199,6 +207,12 @@ const ViewAllJewelry: React.FC = () => {
                   >
                     Date
                   </th>
+                  <th
+                    scope="col"
+                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                  >
+                    Status
+                  </th>
                   <th scope="col" className="relative py-3.5 px-4">
                     <span className="sr-only">Actions</span>
                   </th>
@@ -252,6 +266,9 @@ const ViewAllJewelry: React.FC = () => {
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {item.date}
                     </td>
+                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                      {item.sold? "Sold" : "Available"}
+                    </td>
                     <td>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -268,6 +285,11 @@ const ViewAllJewelry: React.FC = () => {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => handleActionClick(item.jewelryId)}>Delete</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => handleSetStatus(item.jewelryId, item.sold)}
+                            >
+                              {item.sold ? 'Set Available' : 'Set Sold'}
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>

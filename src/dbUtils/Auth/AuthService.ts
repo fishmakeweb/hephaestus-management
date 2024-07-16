@@ -7,50 +7,22 @@ class AuthService {
         username,
         password,
       });
-      const { token, refreshToken, staff } = response.data;
+      const { token } = response.data; // Assume the response will only handle token
       if (token != null) {
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("refreshToken", refreshToken);
+        sessionStorage.setItem("token", token); // Store only the token
+        sessionStorage.setItem("username", username); // Store the username for future use
       }
-      if (staff) {
-        sessionStorage.setItem("role", "STAFF");
-        sessionStorage.setItem("user", JSON.stringify(staff));
-        if (staff.role.roleName == "ROLE_ADMIN") {
-          sessionStorage.setItem("userRole", "ROLE_ADMIN");
-        } else {
-          sessionStorage.setItem("userRole", "ROLE_SALESTAFF");
-        }
-        return response.data;
-      }
+      return token; // Return the token for immediate use if necessary
     } catch (error) {
-      throw error;
+      console.error("Login error:", error);
+      throw error; // Ensure that login errors are properly handled or logged
     }
   }
   static getUserName() {
     const username = sessionStorage.getItem("username");
-    return username ? JSON.parse(username) : null;
+    return username ? username : null;
   }
   // SECURE DONE
-  static async registerStaff(userData: any) {
-    try {
-      const response = await axios.post(`/auth/register/staff`, userData, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static isAdmin() {
-    const userRole = sessionStorage.getItem("userRole");
-    return userRole == "ROLE_ADMIN";
-  }
-
-  static isSales() {
-    const userRole = sessionStorage.getItem("userRole");
-    return userRole == "ROLE_SALESTAFF";
-  }
 
   static async refreshToken() {
     try {
@@ -67,10 +39,7 @@ class AuthService {
 
   static logout() {
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("role");
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("userRole");
+    sessionStorage.removeItem("username");
   }
 
   static isAuthenticated() {
@@ -78,9 +47,19 @@ class AuthService {
     return !!token;
   }
 
-  static isStaff() {
-    const role = sessionStorage.getItem("role");
-    return role === "STAFF";
+  static async checkRole(token: string) {
+    try {
+      const response = await axios.get("/public/checkrole", {
+        params: {
+          token: token,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error checking user role:", error);
+      return false;
+    }
   }
 }
 

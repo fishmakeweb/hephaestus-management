@@ -1,3 +1,4 @@
+import axios from "@/dbUtils/axiosAuth";
 export interface Category {
     categoryId: string;
     categoryName: string;
@@ -29,3 +30,12 @@ export interface Category {
     price: number;
     sold : boolean;
   }
+
+  export async function setJewelryStatus(jewelryId: number, status: boolean) {
+    try{
+      await axios.put(`/admin/status/jewelry/${jewelryId}`, status);
+      console.log("Jewelry status updated successfully");
+    }catch(err){
+      console.error("Failed to update diamond status", err);
+    }
+  };

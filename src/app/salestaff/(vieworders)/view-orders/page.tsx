@@ -1,6 +1,5 @@
 "use client"
 
-import AuthGuard from "@/components/auth-guard";
 import OrderTable from "./order-table";
 
 export default function OrderPage() {

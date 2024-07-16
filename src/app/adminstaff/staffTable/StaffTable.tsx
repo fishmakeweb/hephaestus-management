@@ -11,8 +11,8 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
   const [currentPage, setCurrentPage] = useState<number>(1);
   const rowsPerPage = 5;
 
-  const staff = JSON.parse(sessionStorage.getItem('user') || '{}');
-  const filteredStaffList = staffList.filter((s) => s.staffId !== staff.staffId);
+  const username = sessionStorage.getItem('username') || '';
+  const filteredStaffList = staffList.filter((s) => s.username !== username);
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;

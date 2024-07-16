@@ -109,12 +109,14 @@ export async function filterCOrders(
   orderStatusId: number
 ): Promise<CustomOrder[]> {
   try {
+    console.log(`Calling backend with orderStatusId: ${orderStatusId}`);
     const response = await axios.get<CustomOrder[]>(
       `/filter-custom-orderstatus/${orderStatusId}`
     );
+    console.log("Backend response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error verifying order:", error);
+    console.error("Error filtering orders:", error);
     throw error;
   }
 }

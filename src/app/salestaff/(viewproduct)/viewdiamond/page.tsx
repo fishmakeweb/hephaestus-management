@@ -1,23 +1,22 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
-import { Diamond, DiamondTable } from './diamondTable';
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import { DiamondTable } from './diamondTable';
 import { DataTable } from "@/components/data-table";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
-import AuthGuard from "@/components/auth-guard";
 
 export default function DiamondPage() {
-    const productManager = new AddProductUtils();
+    const productManager = useMemo(() => new AddProductUtils(), []); 
     const [data, setData] = useState([]);
 
-    const fetchDiamonds = async () => {
+    const fetchDiamonds = useCallback(async () => {
         const response = await productManager.fetchAllDiamonds();
         setData(response?.data);
-    }
+    }, [productManager]);
 
     useEffect(() => {
         fetchDiamonds();
-    }, []);
+    }, [fetchDiamonds]); 
 
     return (
         <>

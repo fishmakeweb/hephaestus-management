@@ -8,7 +8,6 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { CusOrderMessageDTO } from "@/dbUtils/Chat/order";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface OrderCardsProps {
   customOrderData: CusOrderMessageDTO[];

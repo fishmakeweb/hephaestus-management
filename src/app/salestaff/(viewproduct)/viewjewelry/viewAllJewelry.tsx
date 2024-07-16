@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
+'use client'
+
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
+import Image from "next/image";
 
 interface Jewelry {
   jewelryId: number;
@@ -30,38 +33,39 @@ interface Jewelry {
 }
 
 const ViewAllJewelry: React.FC = () => {
-  const productManager = new ManageProductUtils();
+  const productManager = useMemo(() => new ManageProductUtils(), []);
   const [jewelry, setJewelry] = useState<Jewelry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const fetchJewelry = async (page: number = 1) => {
+  const fetchJewelry = useCallback(async (page: number = 1) => {
     setLoading(true);
     try {
       const response = await productManager.fetchJewelryPagination(page);
-      const jewelry = response?.data;
-      setJewelry(jewelry.content);
-      setTotalPages(jewelry.totalPages);
+      const jewelryData = response?.data;
+      setJewelry(jewelryData.content);
+      setTotalPages(jewelryData.totalPages);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
-  };
+  }, [productManager]);
 
   useEffect(() => {
     fetchJewelry(currentPage);
-  }, [currentPage]);
+  }, [fetchJewelry, currentPage]);
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = useCallback((newPage: number) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
-  };
+  }, [totalPages]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <>
@@ -155,10 +159,12 @@ const ViewAllJewelry: React.FC = () => {
                   <tr key={item.jewelryId}>
                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                       <div className="inline-flex items-center gap-x-3">
-                        <img
+                        <Image
                           className="object-cover w-10 h-10 rounded-lg"
                           src={item.img}
                           alt={item.name}
+                          width={100}
+                          height={100}
                         />
                         <div className="flex items-center gap-x-2">
                           <h2 className="font-medium text-gray-800">
@@ -199,7 +205,7 @@ const ViewAllJewelry: React.FC = () => {
                       {item.date}
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                      {item.sold? "Sold" : "Available"}
+                      {item.sold ? "Sold" : "Available"}
                     </td>
                   </tr>
                 ))}

@@ -3,7 +3,6 @@
 import { Category, fetchAllCustomers, fetchCategories, fetchTop1Cate, User } from "@/dbUtils/Admin/dashboard";
 import { fetchAllOrders, fetchAllCustomOrders, Order, CustomOrder } from "@/dbUtils/Sales/ManageOrders";
 import { useEffect, useState } from "react";
-import AuthGuard from '@/components/auth-guard';
 import DataRibbon from './DataRibbon';
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { CustomerByDayChart } from './(charts)/CByDayChart';
@@ -11,6 +10,7 @@ import { OrderByDayChart } from './(charts)/OByDayChart';
 import { aggregateByDay, aggregateCate, aggregateTotalByWeek, avgValue, calTotalSales, calTotalValue, totalCustomer, calculateLatestWeeklyChanges } from "./dataValidating";
 import { Skeleton } from "@nextui-org/skeleton";
 import { PercentChart } from "./(charts)/PercentChart";
+import Image from "next/image";
 
 const DashBoard: React.FC = () => {
     const [data, setData] = useState({
@@ -39,14 +39,14 @@ const DashBoard: React.FC = () => {
             ]);
 
             const filteredOrders = ordersResponse.filter(order => order.orderStatus.statusId !== 1);
-                setData({
-                    categories: categoriesResponse,
-                    top1Cate: top1CateResponse,
-                    customers: customersResponse,
-                    orders: filteredOrders,
-                    customOrders: customOrdersResponse,
-                    loading: false,
-                });
+            setData({
+                categories: categoriesResponse,
+                top1Cate: top1CateResponse,
+                customers: customersResponse,
+                orders: filteredOrders,
+                customOrders: customOrdersResponse,
+                loading: false,
+            });
         };
 
         fetchData();
@@ -155,9 +155,11 @@ const DashBoard: React.FC = () => {
                             ) : (
                                 <div className="ml-14">
                                     <p className="font-bold text-center">{top1Cate?.categoryName}</p>
-                                    <img
-                                        alt={top1Cate?.categoryName}
-                                        src={top1Cate?.categoryImg}
+                                    <Image
+                                        alt={top1Cate ? top1Cate.categoryName : ""}
+                                        src={top1Cate ? top1Cate.categoryImg : ""}
+                                        width={100}
+                                        height={100}
                                     />
                                 </div>
                             )}

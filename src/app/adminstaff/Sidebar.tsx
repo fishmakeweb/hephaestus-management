@@ -1,22 +1,17 @@
 
 // Sidebar.tsx
 import React, { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from 'next/link';
 
 const Sidebar: React.FC = () => {
     const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState<boolean>(false);
-    const [isSalesDropdownOpen, setIsSalesDropdownOpen] = useState<boolean>(false);
     const pathname = usePathname();
     // State to manage the open/close state of the sidebar
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
     const toggleProductsDropdown = () => {
         setIsProductsDropdownOpen(!isProductsDropdownOpen);
-    };
-
-    const toggleSalesDropdown = () => {
-        setIsSalesDropdownOpen(!isSalesDropdownOpen);
     };
 
     return (

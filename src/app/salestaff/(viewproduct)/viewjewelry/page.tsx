@@ -5,7 +5,7 @@ import ViewAllJewelry from './viewAllJewelry';
 
 const ViewJewelry = () => {
   return (
-      <div>
+      <div className="mx-auto max-w-screen-lg">
        <ViewAllJewelry />
       </div>
   )

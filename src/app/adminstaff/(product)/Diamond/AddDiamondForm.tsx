@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, FormEvent, useMemo } from "react";
 import {
   Measurement,
   Color,
@@ -19,9 +19,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
 
 const FormAddDiamondSheet: React.FC = () => {
-  const addProductUtils = new AddProductUtils();
+  const addProductUtils = useMemo(() => new AddProductUtils(), []); // Memoize addProductUtils creation
+
   const [isOpen, setIsOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(
     "https://diamondshop-img.ap-south-1.linodeobjects.com/1718429728643_Screenshot%202024-06-15%20123518.png"
@@ -59,7 +61,7 @@ const FormAddDiamondSheet: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [addProductUtils]); // Depend on addProductUtils
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const imageUrl = await addProductUtils.handleFileChange(event);
@@ -257,10 +259,12 @@ const FormAddDiamondSheet: React.FC = () => {
                 className="input"
               />
               {imagePreviewUrl && (
-                <img
+                <Image
                   src={imagePreviewUrl}
                   alt="Diamond"
                   className="h-40 w-40 object-cover mb-4"
+                  width={100}
+                  height={100}
                 />
               )}
               {errors.diamondUrl && (

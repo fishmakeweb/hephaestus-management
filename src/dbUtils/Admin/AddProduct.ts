@@ -1,6 +1,6 @@
 // import axios from "@/dbUtils/axios";
 import axios from "@/dbUtils/axiosAuth";
-import { isNullOrEmptyOrBlank } from "../Sales/ManageProducts";
+import { isNullOrEmptyOrBlank } from "./ManageProducts";
 
 class AddProductUtils {
   async fetchAllDiamondAtribute() {

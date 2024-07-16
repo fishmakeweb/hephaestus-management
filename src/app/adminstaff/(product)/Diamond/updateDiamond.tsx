@@ -1,3 +1,5 @@
+import React, { useEffect, useState, ChangeEvent, FormEvent, useMemo } from "react";
+import Image from "next/image";
 import {
   Carat,
   Clarity,
@@ -6,8 +8,7 @@ import {
   Measurement,
 } from "@/dbUtils/diamondAPI/types";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
-import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
-import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
 
 interface SubmitMessageProps {
   onClose: () => void;
@@ -22,33 +23,15 @@ interface Diamond {
   carat: string;
   clarity: string;
   price: string;
-  imageUrl: string;
+  img: string;
 }
-
-const SubmitMessage: React.FC<SubmitMessageProps> = ({ onClose }) => {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded shadow-md text-center">
-        <h2 className="text-xl font-semibold mb-4">
-          Update Diamond Successfully
-        </h2>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={onClose}
-        >
-          OK
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
   diamondId,
   onClose,
 }) => {
-  const productManager = new AddProductUtils();
-  const productHandler = new ManageProductUtils();
+  const productManager = useMemo(() => new AddProductUtils(), []);
+  const productHandler = useMemo(() => new ManageProductUtils(), []);
   const [diamond, setDiamond] = useState<Diamond | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
@@ -70,16 +53,16 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
     const fetchData = async () => {
       try {
         const response = await productHandler.findDiamond(diamondId);
-        const diamond = response?.data;
-        setDiamond(diamond);
-        setDiamondMeasurement(diamond.measurement.measurementId || "");
-        setDiamondColor(diamond.color.colorId || "");
-        setDiamondCut(diamond.cut.cutId || "");
-        setDiamondCarat(diamond.carat.caratId || "");
-        setDiamondClarity(diamond.clarity.clarityId || "");
-        setDiamondPrice(diamond.price.toString() || "");
-        setDiamondUrl(diamond.img); 
-        setImagePreviewUrl(diamond.img);
+        const diamondData = response?.data;
+        setDiamond(diamondData);
+        setDiamondMeasurement(diamondData.measurement.measurementId || "");
+        setDiamondColor(diamondData.color.colorId || "");
+        setDiamondCut(diamondData.cut.cutId || "");
+        setDiamondCarat(diamondData.carat.caratId || "");
+        setDiamondClarity(diamondData.clarity.clarityId || "");
+        setDiamondPrice(diamondData.price.toString() || "");
+        setDiamondUrl(diamondData.img);
+        setImagePreviewUrl(diamondData.img);
       } catch (error) {
         console.error("Failed to find diamond", error);
       }
@@ -98,7 +81,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
     };
 
     fetchData();
-  }, [diamondId]);
+  }, [diamondId, productHandler, productManager]); // Add productHandler and productManager to the dependency array
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const imageUrl = await productManager.handleFileChange(event);
@@ -314,10 +297,12 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
             </div>
 
             <div className="shrink-0 mt-5">
-              <img
+              <Image
                 className="h-20 w-20 object-cover"
                 src={imagePreviewUrl}
                 alt="Current profile photo"
+                width={100}
+                height={100}
               />
             </div>
             <label className="block pt-2">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent, useMemo } from "react";
 import {
   Sheet,
   SheetTrigger,
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
 import {
   Category,
   Shape,
@@ -71,7 +72,8 @@ export const fetchAttributes = async (productManager: AddProductUtils) => {
 };
 
 const FormAddJewelrySheet: React.FC = () => {
-  const productManager = new AddProductUtils();
+  const productManager = useMemo(() => new AddProductUtils(), []); // Wrap in useMemo
+
   const [imagePreviewUrl, setImagePreviewUrl] = useState(
     "https://diamondshop-img.ap-south-1.linodeobjects.com/1718429728643_Screenshot%202024-06-15%20123518.png"
   );
@@ -103,7 +105,7 @@ const FormAddJewelrySheet: React.FC = () => {
       setDiamonds(attributes?.diamonds);
     };
     loadAttributes();
-  }, []);
+  }, [productManager]); // Include productManager in the dependency array
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const imageUrl = await productManager.handleFileChange(event);
@@ -180,12 +182,12 @@ const FormAddJewelrySheet: React.FC = () => {
     <>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" onClick={() => setIsOpen(true)}>Add Jewelry Diamond</Button>
+          <Button variant="outline" onClick={() => setIsOpen(true)}>Add Jewelry</Button>
         </SheetTrigger>
         <SheetContent side="center" className="pb-2">
           <ScrollArea className="h-screen p-6 mt-4">
             <SheetHeader>
-              <SheetTitle>Add Diamond</SheetTitle>
+              <SheetTitle>Add Jewelry</SheetTitle>
             </SheetHeader>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 px-4">
@@ -336,10 +338,12 @@ const FormAddJewelrySheet: React.FC = () => {
                   className="input"
                 />
                 {imagePreviewUrl && (
-                  <img
+                  <Image
                     src={imagePreviewUrl}
                     alt="Jewelry"
                     className="h-40 w-40 object-cover mb-4"
+                    width={100}
+                    height={100}
                   />
                 )}
                 {errors.jewelryUrl && (
@@ -355,6 +359,9 @@ const FormAddJewelrySheet: React.FC = () => {
           </ScrollArea>
         </SheetContent>
       </Sheet>
+      {showSubmitMessage && (
+        <SubmitMessage onClose={() => setShowSubmitMessage(false)} />
+      )}
     </>
   );
 };

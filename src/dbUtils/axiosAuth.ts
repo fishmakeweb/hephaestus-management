@@ -9,7 +9,7 @@ const getToken = () => {
 };
 
 const instance = axios.create({
-  baseURL: "https://api.hephaestus.store/api",
+  baseURL: "http://localhost:8080/api",
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${getToken()}`,

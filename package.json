@@ -33,6 +33,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "recharts": "^2.12.7",
+    "sharp": "^0.33.4",
     "sockjs": "^0.3.24",
     "sockjs-client": "^1.6.1",
     "tailwind-merge": "^2.3.0",

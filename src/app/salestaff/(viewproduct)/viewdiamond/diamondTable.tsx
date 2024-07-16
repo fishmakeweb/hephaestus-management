@@ -88,7 +88,7 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
     cell: ({ getValue }) => {
       const imageUrl = getValue() as string; 
       return (
-        <Image src={imageUrl} alt="Diamond" width={100} height={100} className="w-auto h-auto" priority={true}/>
+        <Image src={imageUrl} alt="Diamond" width={100} height={100} className="w-auto h-300" priority={true}/>
       );
     }
   },

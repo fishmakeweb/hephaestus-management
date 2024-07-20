@@ -80,31 +80,34 @@ export default function Chat() {
 
   return (
     <>
-      <p className="text-xl  font-semibold mb-4">Custom Order Support Box</p>
-      <div className="w-full bg-white  rounded-lg shadow-md">
-        <div className="chat-box">
-          <div className="messages">
-            <ScrollArea className="h-[70vh]">
-              {chatMessages.map((msg) => (
-                <p className="mb-2" key={msg.id}>
-                  <span className="bg-gray-300 text-black p-1">
-                    {msg.username}
-                  </span>
-                  : {msg.message}
-                </p>
-              ))}
-            </ScrollArea>
-          </div>
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Hello..."
-            onKeyPress={(e) => (e.key === "Enter" ? sendMessage() : null)}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
-      </div>
+      <div className="mt-4 bg-white shadow-lg rounded-lg p-1 sm:p-2 w-full max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-xl mx-auto">
+    <h3 className="text-lg font-semibold mb-1 sm:mb-2">Custom Order Support Box</h3>
+    <div className="chat-box border border-gray-300 rounded-lg p-1 sm:p-2 max-h-60 overflow-auto">
+      <ul className="space-y-1 sm:space-y-2">
+        {chatMessages.map((msg) => (
+          <li key={msg.id} className="break-words">
+            <strong>{msg.username}:</strong> {msg.message}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div className="mt-2 sm:mt-3 flex space-x-1 sm:space-x-2 w-full">
+      <input
+        type="text"
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+        placeholder="Type a message..."
+        className="flex-grow p-1 sm:p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-indigo-300"
+        onKeyPress={(e) => (e.key === "Enter" ? sendMessage() : null)}
+      />
+      <button
+        onClick={sendMessage}
+        className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 sm:py-2 px-2 sm:px-4 rounded transition-colors duration-150 ease-in-out"
+      >
+        Send
+      </button>
+    </div>
+  </div>
     </>
   );
 }

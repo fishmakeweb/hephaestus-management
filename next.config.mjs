@@ -6,7 +6,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
     images: {
         domains: [
-            'ap-south-1.linodeobjects.com', // Ensure this is your intended domain
+            'ap-south-1.linodeobjects.com',
+            'diamondshop-img.ap-south-1.linodeobjects.com',
         ],
     },
     output: "standalone",

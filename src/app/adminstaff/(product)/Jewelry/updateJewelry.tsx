@@ -1,8 +1,9 @@
 import { Category, Shape, Material, Size, Diamond } from "@/dbUtils/jewelryAPI/types";
 import AddProductUtils from "@/dbUtils/Admin/AddProduct";
-import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
+import React, { useState, useEffect, ChangeEvent, FormEvent, useCallback, useMemo } from "react";
 import { fetchAttributes } from "./AddJewelryForm";
+import Image from "next/image";
 
 interface Jewelry {
   jewelryId: number;
@@ -27,16 +28,15 @@ interface Jewelry {
   date: string;
 }
 
-
 interface UpdateJewelryProps {
   jewelryId: number;
   onClose: () => void;
 }
 
-
 const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => {
-  const productHandler = new ManageProductUtils();
-  const productManager = new AddProductUtils();
+  const productHandler = useMemo(() => new ManageProductUtils(), []);
+  const productManager = useMemo(() => new AddProductUtils(), []);
+
   const [jewelry, setJewelry] = useState<Jewelry | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
@@ -56,47 +56,46 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
   const [showSubmitMessage, setShowSubmitMessage] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  const fetchJewelryDetails = useCallback(async () => {
+    try {
+      const response = await productHandler.findJewelry(jewelryId);
+      const jewelryData = response?.data;
+      setJewelry(jewelryData);
+      setJewelryName(jewelryData.name);
+      setJewelryPrice(jewelryData.price);
+      setJewelryUrl(jewelryData.img);
+      setImagePreviewUrl(jewelryData.img);
+      setSelectedCategory(jewelryData.category.categoryId);
+      setSelectedMaterial(jewelryData.material.materialId);
+      setSelectedShape(jewelryData.shape.shapeId);
+      setSelectedSize(jewelryData.size.sizeId);
+      setSelectedDiamond(jewelryData.diamond?.diamondId || "");
+      setJewelryQuantity(jewelryData.quantity.toString());
+    } catch (error) {
+      console.error("Error fetching jewelry details: ", error);
+    }
+  }, [jewelryId, productHandler]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const jewelryAtr = await fetchAttributes(productManager);
+      if (jewelryAtr) {
+        const filteredDiamonds = jewelryAtr.diamonds.filter((diamond: Diamond) => !diamond.sold);
+        setCategories(jewelryAtr.categories || []);
+        setMaterials(jewelryAtr.materials || []);
+        setShapes(jewelryAtr.shapes || []);
+        setSizes(jewelryAtr.sizes || []);
+        setDiamonds(filteredDiamonds);
+      }
+    } catch (error) {
+      console.error('Error fetching attributes:', error);
+    }
+  }, [productManager]);
+
   useEffect(() => {
-    const fetchJewelryDetails = async () => {
-      try {
-        const response = await productHandler.findJewelry(jewelryId);
-        const jewelryData = response?.data;
-        setJewelry(jewelryData);
-        setJewelryName(jewelryData.name);
-        setJewelryPrice(jewelryData.price);
-        setJewelryUrl(jewelryData.img);
-        setImagePreviewUrl(jewelryData.img);
-        setSelectedCategory(jewelryData.category.categoryId);
-        setSelectedMaterial(jewelryData.material.materialId);
-        setSelectedShape(jewelryData.shape.shapeId);
-        setSelectedSize(jewelryData.size.sizeId);
-        setSelectedDiamond(jewelryData.diamond?.diamondId || "");
-        setJewelryQuantity(jewelryData.quantity.toString());
-      } catch (error) {
-        console.error("Error fetching jewelry details: ", error);
-      }
-    };
-
-    const fetchData = async () => {
-      try {
-        const jewelryAtr = await fetchAttributes(productManager);
-  
-        if (jewelryAtr) {
-          const filteredDiamonds = jewelryAtr.diamonds.filter((diamond: Diamond) => !diamond.sold);
-          setCategories(jewelryAtr.categories || []);
-          setMaterials(jewelryAtr.materials || []);
-          setShapes(jewelryAtr.shapes || []);
-          setSizes(jewelryAtr.sizes || []);
-          setDiamonds(filteredDiamonds);
-        }
-      } catch (error) {
-        console.error('Error fetching attributes:', error);
-      }
-    };
-
     fetchJewelryDetails();
     fetchData();
-  }, [jewelryId]);
+  }, [fetchJewelryDetails, fetchData]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const imageUrl = await productManager.handleFileChange(event);
@@ -151,6 +150,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
   const handleReload = () => {
     window.location.reload();
   };
+
 
   return (
     <>
@@ -398,10 +398,12 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               )}
             </label>
             <div className="shrink-0 mt-5">
-              <img
+              <Image
                 className="h-20 w-20 object-cover"
                 src={imagePreviewUrl}
                 alt="Current profile photo"
+                width={100}
+                height={100}
               />
             </div>
             <label className="block pt-2">

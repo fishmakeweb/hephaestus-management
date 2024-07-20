@@ -1,4 +1,4 @@
-// components/CustomOrderTable.tsx
+import React, { useEffect, useState } from "react";
 import {
   CustomOrder,
   fetchAllCustomOrders,
@@ -7,7 +7,6 @@ import {
   verifyCancelOrders,
   verifyOrders,
 } from "@/dbUtils/Sales/ManageOrders";
-import React, { useEffect, useState } from "react";
 
 export default function CustomOrderTable() {
   const [orders, setOrders] = useState<CustomOrder[]>([]);
@@ -15,10 +14,8 @@ export default function CustomOrderTable() {
   const [editingOrder, setEditingOrder] = useState<CustomOrder | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [filterOrder, setFilterOrder] = useState<CustomOrder[]>([]);
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState<boolean>(false);
   const rowsPerPage = 6;
-  const totalPages = Math.ceil(
-    (filterOrder.length > 0 ? filterOrder.length : orders.length) / rowsPerPage
-  );
 
   useEffect(() => {
     fetchOrders();
@@ -27,23 +24,26 @@ export default function CustomOrderTable() {
   const fetchOrders = async () => {
     const response = await fetchAllCustomOrders();
     setOrders(response);
-    setFilterOrder([]);
+    setFilterOrder([]); // Clear any existing filters
   };
 
   const filterCOrder = async (orderStatusId: number) => {
-    const response = await filterCOrders(orderStatusId);
-    setFilterOrder(response);
+    try {
+      const response = await filterCOrders(orderStatusId);
+      setFilterOrder(response);
+    } catch (error) {
+      console.error("Error filtering orders:", error);
+    }
   };
 
-  const handleFilterChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleFilterChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = parseInt(e.target.value, 10);
     if (selectedValue === 0) {
       await fetchOrders();
     } else {
-      filterCOrder(selectedValue);
+      await filterCOrder(selectedValue);
     }
+    setCurrentPage(1); // Reset to the first page when filter changes
   };
 
   const handlePrevPage = () => {
@@ -54,14 +54,17 @@ export default function CustomOrderTable() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const handleVerifyStatus = async (
-    customOrderId: number,
-    description: string
-  ) => {
-    if (description.trim().match("PREPAID SUCCESSFULLY")) {
-      await verifyOrders(customOrderId);
-    } else if (description.trim().match("REQUEST CANCEL")) {
-      await verifyCancelOrders(customOrderId);
+  const handleVerifyStatus = async (customOrderId: number, description: string) => {
+    try {
+      if (description.trim().match("PREPAID SUCCESSFULLY")) {
+        await verifyOrders(customOrderId);
+      } else if (description.trim().match("REQUEST CANCEL")) {
+        await verifyCancelOrders(customOrderId);
+      }
+      setShowSuccessOverlay(true);
+      setTimeout(() => setShowSuccessOverlay(false), 3000); // Hide overlay after 3 seconds
+    } catch (error) {
+      console.error("Error verifying status:", error);
     }
     fetchOrders();
   };
@@ -80,7 +83,6 @@ export default function CustomOrderTable() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingOrder) {
-      console.log(selectedDate);
       await updateAtr(
         editingOrder.customOrderId,
         editingOrder.fullpaid,
@@ -93,10 +95,14 @@ export default function CustomOrderTable() {
   };
 
   const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentRows =
-    filterOrder.length > 0
-      ? filterOrder.slice(startIndex, startIndex + rowsPerPage)
-      : orders.slice(startIndex, startIndex + rowsPerPage);
+  const currentRows = (filterOrder.length > 0 ? filterOrder : orders).slice(
+    startIndex,
+    startIndex + rowsPerPage
+  );
+
+  const totalPages = Math.ceil(
+    (filterOrder.length > 0 ? filterOrder.length : orders.length) / rowsPerPage
+  );
 
   return (
     <div className="mt-10 max-w-full overflow-hidden">
@@ -191,7 +197,7 @@ export default function CustomOrderTable() {
                   >
                     Edit
                   </button>
-                  {customOrder.orderStatus.statusId !== 4 && (
+                  {customOrder.orderStatus.statusId === 3 && (
                     <button
                       className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       onClick={() =>
@@ -226,6 +232,14 @@ export default function CustomOrderTable() {
           Next
         </button>
       </div>
+      {showSuccessOverlay && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded shadow-md">
+            <h2 className="text-xl font-bold mb-4">Success</h2>
+            <p>Email has been sent to the customer</p>
+          </div>
+        </div>
+      )}
       {editingOrder && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-8 rounded shadow-md w-1/2 overflow-y-auto">

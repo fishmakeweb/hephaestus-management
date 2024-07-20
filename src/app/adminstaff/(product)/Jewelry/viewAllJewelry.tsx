@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import ManageProductUtils from "@/dbUtils/Sales/ManageProducts";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
 import { useRouter } from "next/navigation";
 import UpdateJewelry from "./updateJewelry";
 import { setJewelryStatus } from "@/dbUtils/jewelryAPI/types";
+import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,7 +46,10 @@ interface Jewelry {
 
 const ViewAllJewelry: React.FC = () => {
   const router = useRouter();
-  const productManager = new ManageProductUtils();
+
+  // Wrap productManager initialization in useMemo
+  const productManager = useMemo(() => new ManageProductUtils(), []);
+
   const [jewelry, setJewelry] = useState<Jewelry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +60,7 @@ const ViewAllJewelry: React.FC = () => {
     useState<boolean>(false);
   const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
 
-  const fetchJewelry = async (page: number = 1) => {
+  const fetchJewelry = useCallback(async (page: number = 1) => {
     setLoading(true);
     try {
       const response = await productManager.fetchJewelryPagination(page);
@@ -68,17 +72,16 @@ const ViewAllJewelry: React.FC = () => {
       setError("Failed to fetch jewelry data.");
       setLoading(false);
     }
-  };
-
-  const handleSetStatus = async (jewelryId : number, status : boolean) => {
-      await setJewelryStatus(jewelryId, !status);
-      window.location.reload();
-  }
-
+  }, [productManager]);
 
   useEffect(() => {
     fetchJewelry(currentPage);
-  }, [currentPage]);
+  }, [fetchJewelry, currentPage]);
+
+  const handleSetStatus = async (jewelryId: number, status: boolean) => {
+    await setJewelryStatus(jewelryId, !status);
+    window.location.reload();
+  };
 
   const handlePageChange = (newPage: number) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -96,8 +99,8 @@ const ViewAllJewelry: React.FC = () => {
   };
 
   const handleActionClick = (jewelryId: number | null) => {
-      setShowDeleteConfirmation(true);
-      setEditingJewelryId(jewelryId);
+    setShowDeleteConfirmation(true);
+    setEditingJewelryId(jewelryId);
   };
 
   const handleDelete = async (jewelryId: number | null) => {
@@ -105,7 +108,7 @@ const ViewAllJewelry: React.FC = () => {
     try {
       await productManager.deleteJewelry(jewelryId);
       setShowDeleteConfirmation(false);
-      fetchJewelry(currentPage);
+      fetchJewelry(currentPage); // Dependency included here
     } catch (error) {
       console.error("Delete jewelry failed:", error);
     }
@@ -223,10 +226,12 @@ const ViewAllJewelry: React.FC = () => {
                   <tr key={item.jewelryId}>
                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                       <div className="inline-flex items-center gap-x-3">
-                        <img
+                        <Image
                           className="object-cover w-10 h-10 rounded-lg"
                           src={item.img}
                           alt={item.name}
+                          width={100}
+                          height={100}
                         />
                         <div className="flex items-center gap-x-2">
                           <h2 className="font-medium text-gray-800">
@@ -267,32 +272,32 @@ const ViewAllJewelry: React.FC = () => {
                       {item.date}
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                      {item.sold? "Sold" : "Available"}
+                      {item.sold ? "Sold" : "Available"}
                     </td>
                     <td>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => handleEditClick(item.jewelryId)}
-                            >
-                              Update
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => handleActionClick(item.jewelryId)}>Delete</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => handleSetStatus(item.jewelryId, item.sold)}
-                            >
-                              {item.sold ? 'Set Available' : 'Set Sold'}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </td>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => handleEditClick(item.jewelryId)}
+                          >
+                            Update
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => handleSetStatus(item.jewelryId, item.sold)}
+                          >
+                            {item.sold ? 'Set Available' : 'Set Sold'}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -325,27 +330,7 @@ const ViewAllJewelry: React.FC = () => {
       {editingJewelryId && showUpdateForm && (
         <UpdateJewelry jewelryId={editingJewelryId} onClose={() => setShowUpdateForm(false)} />
       )}
-      {showDeleteConfirmation && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded shadow-md text-center">
-            <h2 className="text-xl font-semibold mb-4">
-              Are you sure you want to delete?
-            </h2>
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded mr-2"
-              onClick={() => handleDelete(editingJewelryId)}
-            >
-              Yes
-            </button>
-            <button
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-              onClick={() => setShowDeleteConfirmation(false)}
-            >
-              No
-            </button>
-          </div>
-        </div>
-      )}
+
     </>
   );
 };

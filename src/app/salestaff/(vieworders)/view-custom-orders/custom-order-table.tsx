@@ -105,7 +105,7 @@ export default function CustomOrderTable() {
   );
 
   return (
-    <div className="mt-10 max-w-full overflow-hidden">
+    <div className="mt-10">
       <div className="mb-4">
         <select onChange={handleFilterChange} className="p-2 border rounded">
           <option value="0">All Orders</option>
@@ -124,10 +124,10 @@ export default function CustomOrderTable() {
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Username
               </th>
-              <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              <th className="px-14 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Start Date
               </th>
-              <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              <th className="px-14 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Finish Date
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
@@ -161,8 +161,6 @@ export default function CustomOrderTable() {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
                     hour12: false,
                   })}
                 </td>
@@ -172,8 +170,6 @@ export default function CustomOrderTable() {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
                         hour12: false,
                       })
                     : "No data"}

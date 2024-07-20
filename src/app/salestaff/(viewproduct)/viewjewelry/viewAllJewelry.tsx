@@ -66,10 +66,9 @@ const ViewAllJewelry: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
     <>
-      <section className="container-fluid px-4 mx-auto">
+      <section className="container-fluid px-4 mx-auto overflow-x-auto"> {/* Added overflow-x-auto */}
         <div className="sm:flex sm:items-center sm:justify-between mt-4">
           <div>
             <div className="flex items-center gap-x-3">
@@ -81,7 +80,7 @@ const ViewAllJewelry: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col mt-6">
-          <div className="overflow-hidden border border-gray-200 md:rounded-lg">
+          <div className="border border-gray-200 md:rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -211,31 +210,32 @@ const ViewAllJewelry: React.FC = () => {
                 ))}
               </tbody>
             </table>
-            <div className="flex justify-between items-center py-3 px-4 bg-gray-50">
-              <div>
-                <button
-                  className="px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
-                <button
-                  className="px-3 py-1.5 ml-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
-              </div>
-              <span className="text-sm font-normal text-gray-700">
-                Page {currentPage} of {totalPages}
-              </span>
-            </div>
           </div>
         </div>
       </section>
+      <div className="flex w-full justify-between items-center py-3 px-4 ">
+        <div>
+          <button
+            className="px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <button
+            className="px-3 py-1.5 ml-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+        <span className="text-sm font-normal text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+      </div>
     </>
   );
 };
+
 export default ViewAllJewelry;

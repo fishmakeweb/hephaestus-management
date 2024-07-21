@@ -68,7 +68,7 @@ const NavbarStaff: React.FC<TopNavProps> = ({ role }) => {
               </svg>
               <div>
                 <p className="font-bold">{name}</p>
-                <h5 className="text-sm font-semibold text-gray-800">{role}</h5>
+                <h5 className="text-sm font-semibold text-gray-800">{role.substring(5)}</h5>
                 <p className="text-xs text-gray-500"></p>
               </div>
             </div>

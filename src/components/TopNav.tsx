@@ -74,7 +74,7 @@ const NavbarStaff: React.FC<TopNavProps> = ({ role }) => {
             </div>
           </button>
           {isUserMenuOpen && (
-            <ul className="dropdown-menu absolute top-full right-0 mt-1 shadow-md shadow-black/5 z-30 py-1.5 rounded-md bg-white border border-gray-100 w-48">
+            <ul className="dropdown-menu absolute top-full mt-1 shadow-md shadow-black/5 z-30 py-1.5 rounded-md bg-white border border-gray-100 w-48">
               <li>
                 <button
                   role="menuitem"

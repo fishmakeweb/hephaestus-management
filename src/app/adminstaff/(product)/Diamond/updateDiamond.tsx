@@ -94,14 +94,14 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
   const validate = (): boolean => {
     const newErrors: { [key: string]: string } = {};
     if (!diamondMeasurement)
-      newErrors.diamondMeasurement = "Measurement is required.";
-    if (!diamondColor) newErrors.diamondColor = "Color is required.";
-    if (!diamondCut) newErrors.diamondCut = "Cut is required.";
-    if (!diamondCarat) newErrors.diamondCarat = "Carat is required.";
-    if (!diamondClarity) newErrors.diamondClarity = "Clarity is required.";
-    if (!diamondPrice) newErrors.diamondPrice = "Price is required.";
+      newErrors.diamondMeasurement = "Kích thước là bắt buộc.";
+    if (!diamondColor) newErrors.diamondColor = "Màu sắc là bắt buộc.";
+    if (!diamondCut) newErrors.diamondCut = "Cut là bắt buộc.";
+    if (!diamondCarat) newErrors.diamondCarat = "Carat là bắt buộc.";
+    if (!diamondClarity) newErrors.diamondClarity = "Clarity là bắt buộc.";
+    if (!diamondPrice) newErrors.diamondPrice = "Giá bán là bắt buộc.";
     if (diamondPrice && parseFloat(diamondPrice) <= 0)
-      newErrors.diamondPrice = "Price must be greater than 0.";
+      newErrors.diamondPrice = "Giá bán phải lớn hơn 0.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -138,7 +138,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="bg-white p-9 rounded shadow-md max-h-screen overflow-y-auto">
           <div className="flex justify-between items-center text-center mb-4">
-            <h1 className="text-2xl font-semibold">UPDATE DIAMOND</h1>
+            <h1 className="text-2xl font-semibold">Cập nhật kim cương</h1>
             <button
               className="text-gray-500 hover:text-gray-700"
               onClick={onClose}
@@ -152,7 +152,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 htmlFor="measurement"
                 className="block text-sm font-medium text-gray-700"
               >
-                Measurement
+                Kích thước
               </label>
               <select
                 id="measurement"
@@ -160,7 +160,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 onChange={(e) => setDiamondMeasurement(e.target.value)}
                 className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
               >
-                <option value="">Select a measurement</option>
+                <option value="">Chọn kích thước</option>
                 {measurements.map((measurement) => (
                   <option
                     key={measurement.measurementId}
@@ -182,7 +182,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 htmlFor="color"
                 className="block text-sm font-medium text-gray-700"
               >
-                Color
+                Màu sắc
               </label>
               <select
                 id="color"
@@ -190,7 +190,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 onChange={(e) => setDiamondColor(e.target.value)}
                 className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
               >
-                <option value="">Select a color</option>
+                <option value="">Chọn màu sắc</option>
                 {colors.map((color) => (
                   <option key={color.colorId} value={color.colorId}>
                     {color.colorDescription}
@@ -215,7 +215,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 onChange={(e) => setDiamondCut(e.target.value)}
                 className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
               >
-                <option value="">Select a cut</option>
+                <option value="">Chọn cut</option>
                 {cuts.map((cut) => (
                   <option key={cut.cutId} value={cut.cutId}>
                     {cut.cutDescription}
@@ -240,7 +240,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 onChange={(e) => setDiamondCarat(e.target.value)}
                 className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
               >
-                <option value="">Select a carat</option>
+                <option value="">Chọn carat</option>
                 {carats.map((carat) => (
                   <option key={carat.caratId} value={carat.caratId}>
                     {carat.carat}
@@ -265,7 +265,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 onChange={(e) => setDiamondClarity(e.target.value)}
                 className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
               >
-                <option value="">Select a clarity</option>
+                <option value="">Chọn clarity</option>
                 {clarities.map((clarity) => (
                   <option key={clarity.clarityId} value={clarity.clarityId}>
                     {clarity.clarityDescription}
@@ -282,7 +282,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
                 htmlFor="price"
                 className="block text-sm font-medium text-gray-700"
               >
-                Price
+                Giá Bán
               </label>
               <input
                 type="number"
@@ -306,7 +306,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
               />
             </div>
             <label className="block pt-2">
-              <span className="sr-only t-2">Choose profile photo</span>
+              <span className="sr-only t-2">Chọn hình ảnh</span>
               <input
                 type="file"
                 className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-300 file:text-zinc-900 hover:file:bg-rose-300"
@@ -315,14 +315,14 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
             </label>
             <div className="flex justify-between mt-5">
               <button className="border-2 px-5 py-2 rounded-lg border-black border-b-4 font-black translate-y-2 border-l-4">
-                Update
+                Cập nhật
               </button>
               <button
                 type="button"
                 className="bg-gray-500 text-white px-4 py-2 rounded"
                 onClick={onClose}
               >
-                Cancel
+                Hủy
               </button>
             </div>
           </form>
@@ -331,7 +331,7 @@ const FormUpdateDiamond: React.FC<{ diamondId: any; onClose: () => void }> = ({
       {showSubmitMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded shadow-md text-center">
-            <h2 className="text-xl font-semibold mb-4">Update Successfully</h2>
+            <h2 className="text-xl font-semibold mb-4">Cập nhật thành công!</h2>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
               onClick={handleReload}

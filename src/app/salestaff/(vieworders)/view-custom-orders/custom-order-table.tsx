@@ -105,16 +105,16 @@ export default function CustomOrderTable() {
   );
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 mx-2">
       <div className="mb-4">
         <select onChange={handleFilterChange} className="p-2 border rounded">
-          <option value="0">All Orders</option>
+          <option value="0">Tất cả đơn</option>
           <option value="2">Pending</option>
           <option value="3">Processing</option>
           <option value="4">Success</option>
         </select>
       </div>
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full divide-y divide-gray-200 border-collapse border border-black">
           <thead>
             <tr>
@@ -124,10 +124,10 @@ export default function CustomOrderTable() {
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Username
               </th>
-              <th className="px-14 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              <th className="px-10 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Start Date
               </th>
-              <th className="px-14 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              <th className="px-10 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Finish Date
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
@@ -150,13 +150,13 @@ export default function CustomOrderTable() {
           <tbody className="bg-white divide-y divide-gray-200">
             {currentRows.map((customOrder) => (
               <tr key={customOrder.customOrderId}>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   {customOrder.customOrderId}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 max-w-26 break-words">
                   {customOrder.username}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   {new Date(customOrder.startDate).toLocaleString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -164,29 +164,29 @@ export default function CustomOrderTable() {
                     hour12: false,
                   })}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   {customOrder.finishDate
                     ? new Date(customOrder.finishDate).toLocaleString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour12: false,
-                      })
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour12: false,
+                    })
                     : "No data"}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   {customOrder.orderStatus.statusDescription}
                 </td>
                 <td className="px-6 py-3 whitespace-no-wrap">
                   {customOrder.description}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   ${customOrder.prepaid.toFixed(2)}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap">
+                <td className="px-4 py-3 whitespace-no-wrap">
                   ${customOrder.fullpaid.toFixed(2)}
                 </td>
-                <td className="px-6 py-3 whitespace-no-wrap flex space-x-2">
+                <td className="px-6 py-3 whitespace-no-wrap flex flex-col space-y-2">
                   <button
                     className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
                     onClick={() => handleEditOrder(customOrder)}
@@ -197,10 +197,7 @@ export default function CustomOrderTable() {
                     <button
                       className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       onClick={() =>
-                        handleVerifyStatus(
-                          customOrder.customOrderId,
-                          customOrder.description
-                        )
+                        handleVerifyStatus(customOrder.customOrderId, customOrder.description)
                       }
                     >
                       Verify

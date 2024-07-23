@@ -96,7 +96,7 @@ export default function Home() {
             </form>
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>
-                Please inform your supervisor if you want accsess.
+                Xin hãy liên hệ quản lý của bạn nếu muốn truy cập.
               </p>
             </div>
           </div>

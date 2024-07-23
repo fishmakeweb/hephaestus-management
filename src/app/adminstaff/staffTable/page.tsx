@@ -20,7 +20,7 @@ export default function Page() {
       const filteredStaffList = staffs.filter((staff : Staff) => staff.username !== username);
       setStaffList(filteredStaffList);
     } catch (error) {
-      console.error('Error fetching staffs:', error);
+      console.error('Lỗi load nhân viên:', error);
     }
   }, [staffManager]);
 
@@ -34,7 +34,7 @@ export default function Page() {
       await staffManager.deleteStaff(staffId);
       setStaffList(prevStaffList => prevStaffList.filter(staff => staff.staffId !== staffId));
     } catch (error) {
-      console.error("Error deleting staff:", error);
+      console.error("Lỗi xóa nhân viên:", error);
     }
   };
 
@@ -44,13 +44,13 @@ export default function Page() {
   };
   return (
     <div className="text-center mt-4">
-      <h1 className="text-3xl font-bold mb-4">Staff Management</h1>
+      <h1 className="text-3xl font-bold mb-4">Quản lý nhân viên</h1>
       <div className="flex justify-end my-4 mx-40">
         <button
           className="bg-black text-white font-bold py-2 px-4 rounded"
           onClick={() => setAddingUser(true)}
         >
-          Add Staff +
+          Thêm nhân viên +
         </button>
       </div>
 

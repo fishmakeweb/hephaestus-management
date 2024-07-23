@@ -61,8 +61,8 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                 Status: {customOrder.orderStatus}
               </p>
               <p id="fullPaid" className="text-lg font-semibold">
-                Prepaid: ${customOrder.prepaid} Fullpaid: $
-                {customOrder.fullpaid}
+                Prepaid: ${customOrder.prepaid.toFixed(2)} Fullpaid: $
+                {customOrder.fullpaid.toFixed(2)}
               </p>
             </CardBody>
             <Divider />

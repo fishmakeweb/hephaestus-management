@@ -50,7 +50,7 @@ const OrderCards: React.FC<OrderCardsProps> = ({ orderData }) => {
                 Status: {order.orderStatus}
               </p>
               <p className="text-lg font-semibold">
-                Total Price: ${order.totalPrice}
+                Total Price: ${order.totalPrice.toFixed(2)}
               </p>
             </CardBody>
             <Divider />

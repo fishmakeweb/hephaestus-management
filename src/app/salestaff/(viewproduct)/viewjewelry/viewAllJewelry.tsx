@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
 import Image from "next/image";
+import { filterJewelryByCategory } from "@/dbUtils/jewelryAPI/view";
 
 interface Jewelry {
   jewelryId: number;
@@ -38,23 +39,47 @@ const ViewAllJewelry: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
-  const fetchJewelry = useCallback(async (page: number = 1) => {
-    setLoading(true);
-    try {
-      const response = await productManager.fetchJewelryPagination(page);
-      const jewelryData = response?.data;
-      setJewelry(jewelryData.content);
-      setTotalPages(jewelryData.totalPages);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }, [productManager]);
+  const fetchJewelry = useCallback(
+    async (page: number = 1, categoryId?: number) => {
+      setLoading(true);
+      try {
+        let response;
+        let jewelryData;
+
+        if (categoryId) {
+          response = await filterJewelryByCategory(categoryId);
+          jewelryData = response;
+        } else {
+          response = await productManager.fetchJewelryPagination(page);
+          jewelryData = response?.data;
+        }
+
+        if (Array.isArray(jewelryData)) {
+          setJewelry(jewelryData);
+          setTotalPages(1);
+        } else {
+          setJewelry(jewelryData.content);
+          setTotalPages(jewelryData.totalPages);
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch jewelry data.");
+        setLoading(false);
+      }
+    },
+    [productManager]
+  );
 
   useEffect(() => {
-    fetchJewelry(currentPage);
-  }, [fetchJewelry, currentPage]);
+    if (selectedCategory) {
+      fetchJewelry(currentPage, selectedCategory);
+    } else {
+      fetchJewelry(currentPage);
+    }
+  }, [fetchJewelry, currentPage, selectedCategory]);
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -62,13 +87,18 @@ const ViewAllJewelry: React.FC = () => {
     }
   }, [totalPages]);
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = Number(event.target.value);
+    setSelectedCategory(categoryId !== 0 ? categoryId : null);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <section className="container-fluid px-4 mx-auto overflow-x-auto"> {/* Added overflow-x-auto */}
+      <section className="container-fluid px-4">
         <div className="sm:flex sm:items-center sm:justify-between mt-4">
           <div>
             <div className="flex items-center gap-x-3">
@@ -78,9 +108,17 @@ const ViewAllJewelry: React.FC = () => {
               </span>
             </div>
           </div>
+          <div className="mt-4">
+            <select onChange={handleCategoryChange}>
+              <option value="">Filter By Categories</option>
+              <option value="1">Engagement Ring</option>
+              <option value="2">Fashion Ring</option>
+              <option value="0">All Categories</option>
+            </select>
+          </div>
         </div>
         <div className="flex flex-col mt-6">
-          <div className="border border-gray-200 md:rounded-lg">
+          <div className="border border-gray-100">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -108,7 +146,7 @@ const ViewAllJewelry: React.FC = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
                     Category
                   </th>
@@ -177,14 +215,14 @@ const ViewAllJewelry: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    <td className="px-8 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                       <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                         <h2 className="text-sm font-normal text-emerald-500">
                           {item.category.categoryName}
                         </h2>
                       </div>
                     </td>
-                    <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                       <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                         <h2 className="text-sm font-normal text-emerald-500">
                           {item.shape.shapeDescription}
@@ -230,9 +268,6 @@ const ViewAllJewelry: React.FC = () => {
             Next
           </button>
         </div>
-        <span className="text-sm font-normal text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
       </div>
     </>
   );

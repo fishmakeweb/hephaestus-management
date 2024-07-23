@@ -107,17 +107,17 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
 
   const validate = async (): Promise<boolean> => {
     const newErrors: { [key: string]: string } = {};
-    if (!jewelryName) newErrors.jewelryName = "Jewelry name is required.";
-    if (!jewelryPrice) newErrors.jewelryPrice = "Jewelry price is required.";
+    if (!jewelryName) newErrors.jewelryName = "Tên trang sức là bắt buộc.";
+    if (!jewelryPrice) newErrors.jewelryPrice = "Giá trang sức là bắt buộc.";
     if (jewelryPrice && jewelryPrice <= 0)
-      newErrors.jewelryPrice = "Jewelry price must be greater than 0.";
-    if (!selectedCategory) newErrors.selectedCategory = "Category is required.";
-    if (!selectedMaterial) newErrors.selectedMaterial = "Material is required.";
-    if (!selectedShape) newErrors.selectedShape = "Shape is required.";
-    if (!selectedSize) newErrors.selectedSize = "Size is required.";
-    if (!jewelryQuantity) newErrors.jewelryQuantity = "Quantity is required.";
+      newErrors.jewelryPrice = "Giá trang sức phải lớn hơn 0.";
+    if (!selectedCategory) newErrors.selectedCategory = "Loại trang sức là bắt buộc.";
+    if (!selectedMaterial) newErrors.selectedMaterial = "Nguyên liệu trang sức là bắt buộc.";
+    if (!selectedShape) newErrors.selectedShape = "Hình dạng trang sức là bắt buộc.";
+    if (!selectedSize) newErrors.selectedSize = "Kích cỡ trang sức là bắt buộc.";
+    if (!jewelryQuantity) newErrors.jewelryQuantity = "Số lương trang sức là bắt buộc.";
     if (jewelryQuantity && jewelryQuantity <= 0)
-      newErrors.jewelryQuantity = "Quantity must be greater than 0.";
+      newErrors.jewelryQuantity = "Số lượng phải lớn hơn 0.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -143,7 +143,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
     if (saveResult) {
       setShowSubmitMessage(true);
     } else {
-      console.error("Failed to update Jewelry");
+      console.error("Cập nhật thất bại");
     }
   };
 
@@ -157,21 +157,21 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="bg-white p-4 rounded shadow-md w-full max-w-md max-h-screen overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">
-            Update Jewelry ID: {jewelryId}
+            ID trang sức đang cập nhật: {jewelryId}
           </h2>
           <form onSubmit={handleSubmit}>
             <label
               className="relative block p-2 border-2 border-black rounded mb-3"
               htmlFor="name"
             >
-              <span className="text-md font-semibold text-zinc-900">Name</span>
+              <span className="text-md font-semibold text-zinc-900">Tên</span>
               <input
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
                 id="name"
                 type="text"
                 value={jewelryName}
                 onChange={(e) => setJewelryName(e.target.value)}
-                placeholder="Jewelry name"
+                placeholder="Tên trang sức"
               />
               {errors.jewelryName && (
                 <span className="text-red-500 text-sm">
@@ -184,7 +184,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               htmlFor="category"
             >
               <span className="text-md font-semibold text-zinc-900">
-                Category
+                Loại
               </span>
               <select
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
@@ -196,7 +196,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Select a category
+                  Chọn loại
                 </option>
                 {categories.map((category) => (
                   <option
@@ -219,7 +219,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               htmlFor="material"
             >
               <span className="text-md font-semibold text-zinc-900">
-                Material
+                Nguyên liệu
               </span>
               <select
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
@@ -231,7 +231,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Select a material
+                  Chọn nguyên liệu
                 </option>
                 {materials.map((material) => (
                   <option
@@ -255,7 +255,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               htmlFor="shape"
             >
               <span className="text-md font-semibold text-zinc-900">
-                Shape
+                Hình dáng
               </span>
               <select
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
@@ -267,7 +267,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Select a shape
+                  Chọn hình dáng
                 </option>
                 {shapes.map((shape) => (
                   <option
@@ -290,7 +290,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               className="relative block p-2 border-2 border-black rounded mb-3"
               htmlFor="size"
             >
-              <span className="text-md font-semibold text-zinc-900">Size</span>
+              <span className="text-md font-semibold text-zinc-900">Kích cỡ</span>
               <select
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
                 id="size"
@@ -301,7 +301,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Select a size
+                  Chọn kích cỡ
                 </option>
                 {sizes.map((size) => (
                   <option
@@ -324,7 +324,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               htmlFor="quantity"
             >
               <span className="text-md font-semibold text-zinc-900">
-                Quantity
+                Số lượng
               </span>
               <input
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
@@ -336,7 +336,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     parseInt(e.target.value) || ""
                   )
                 }
-                placeholder="Quantity"
+                placeholder="Số lượng"
               />
               {errors.jewelryQuantity && (
                 <span className="text-red-500 text-sm">
@@ -349,7 +349,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               htmlFor="diamond"
             >
               <span className="text-md font-semibold text-zinc-900">
-                Diamond (Optional)
+                Kim cương (Không bắt buộc)
               </span>
               <select
                 className="w-full bg-transparent p-0 text-sm text-gray-500 focus:outline-none"
@@ -361,7 +361,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Select a diamond (optional)
+                  Chọn kim cương (không bắt buộc)
                 </option>
                 {diamonds.map((diamond) => (
                   <option
@@ -369,7 +369,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     key={diamond.diamondId}
                     value={diamond.diamondId}
                   >
-                    {`ID: ${diamond.diamondId}, Color: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Price: ${diamond.price}`}
+                    {`ID: ${diamond.diamondId}, Màu sắc: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price}`}
                   </option>
                 ))}
               </select>
@@ -378,7 +378,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               className="relative block p-2 border-2 mt-3 border-black rounded"
               htmlFor="price"
             >
-              <span className="text-md font-semibold text-zinc-900">Price</span>
+              <span className="text-md font-semibold text-zinc-900">Giá bán</span>
               <input
                 className="w-full p-0 text-sm border-none bg-transparent text-gray-500 focus:outline-none"
                 id="price"
@@ -389,7 +389,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     parseFloat(e.target.value) || ""
                   )
                 }
-                placeholder="Jewelry Price"
+                placeholder="Giá bán trang sức"
               />
               {errors.jewelryPrice && (
                 <span className="text-red-500 text-sm">
@@ -407,7 +407,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
               />
             </div>
             <label className="block pt-2">
-              <span className="sr-only t-2">Choose profile photo</span>
+              <span className="sr-only t-2">Chọn hình ảnh</span>
               <input
                 type="file"
                 className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-300 file:text-zinc-900 hover:file:bg-rose-300"
@@ -416,14 +416,14 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
             </label>
             <div className="flex justify-between mt-5">
               <button className="border-2 px-5 py-2 rounded-lg border-black border-b-4 font-black translate-y-2 border-l-4">
-                Update
+                Cập nhật
               </button>
               <button
                 type="button"
                 className="bg-gray-500 text-white px-4 py-2 rounded"
                 onClick={onClose}
               >
-                Cancel
+                Hủy
               </button>
             </div>
           </form>
@@ -432,7 +432,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
       {showSubmitMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded shadow-md text-center">
-            <h2 className="text-xl font-semibold mb-4">Update Successfully</h2>
+            <h2 className="text-xl font-semibold mb-4">Cập nhật thành công</h2>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
               onClick={handleReload}

@@ -33,7 +33,7 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                 </p>
                 <p className="text-sm text-default-500">
                   Start Date:{" "}
-                  {new Date(customOrder.startDate).toLocaleString("en-US", {
+                  {new Date(customOrder.startDate).toLocaleString("vi-VN", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -43,7 +43,7 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                   })} .
                   Finish Date:{" "}
                   {customOrder.finishDate
-                    ? new Date(customOrder.finishDate).toLocaleString("en-US", {
+                    ? new Date(customOrder.finishDate).toLocaleString("vi-VN", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",

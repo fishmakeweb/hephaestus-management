@@ -33,7 +33,7 @@ const OrderCards: React.FC<OrderCardsProps> = ({ orderData }) => {
                 </p>
                 <p className="text-sm text-default-500">
                   Date:{" "}
-                  {new Date(order.orderDate).toLocaleString("en-US", {
+                  {new Date(order.orderDate).toLocaleString("vi-VN", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",

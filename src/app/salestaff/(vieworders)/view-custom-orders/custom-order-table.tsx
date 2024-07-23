@@ -7,7 +7,12 @@ import {
   verifyCancelOrders,
   verifyOrders,
 } from "@/dbUtils/Sales/ManageOrders";
-
+import TrackedCustomOrderCard from "./custom-order-detail";
+interface SelectedCustomOrder {
+  customOrderId: string;
+  username: string;
+  orderStatus: string; // Add more properties as needed
+}
 export default function CustomOrderTable() {
   const [orders, setOrders] = useState<CustomOrder[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +21,9 @@ export default function CustomOrderTable() {
   const [filterOrder, setFilterOrder] = useState<CustomOrder[]>([]);
   const [showSuccessOverlay, setShowSuccessOverlay] = useState<boolean>(false);
   const rowsPerPage = 6;
-
+  const [selectedCustomOrder, setSelectedCustomOrder] = useState<SelectedCustomOrder | null>(
+    null
+  );
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -36,7 +43,9 @@ export default function CustomOrderTable() {
     }
   };
 
-  const handleFilterChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFilterChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const selectedValue = parseInt(e.target.value, 10);
     if (selectedValue === 0) {
       await fetchOrders();
@@ -54,13 +63,24 @@ export default function CustomOrderTable() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const handleVerifyStatus = async (customOrderId: number, description: string) => {
+  const handleVerifyCancel = async (
+    customOrderId: number,
+    description: string
+  ) => {
     try {
-      if (description.trim().match("PREPAID SUCCESSFULLY")) {
-        await verifyOrders(customOrderId);
-      } else if (description.trim().match("REQUEST CANCEL")) {
+      if (description.trim().toUpperCase().match("YÊU CẦU HỦY ĐƠN")) {
         await verifyCancelOrders(customOrderId);
       }
+      setShowSuccessOverlay(true);
+      setTimeout(() => setShowSuccessOverlay(false), 3000); // Hide overlay after 3 seconds
+    } catch (error) {
+      console.error("Error verifying status:", error);
+    }
+    fetchOrders();
+  };
+  const handleVerifyDone = async (customOrderId: number) => {
+    try {
+      await verifyOrders(customOrderId);
       setShowSuccessOverlay(true);
       setTimeout(() => setShowSuccessOverlay(false), 3000); // Hide overlay after 3 seconds
     } catch (error) {
@@ -93,7 +113,9 @@ export default function CustomOrderTable() {
       setEditingOrder(null);
     }
   };
-
+  const handleViewDetail = (customOrderId: any, username: any, orderStatus : any) => {
+    setSelectedCustomOrder({ customOrderId, username, orderStatus });
+  };
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentRows = (filterOrder.length > 0 ? filterOrder : orders).slice(
     startIndex,
@@ -145,6 +167,9 @@ export default function CustomOrderTable() {
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Action
               </th>
+              <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                Xem chi tiết
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -157,7 +182,7 @@ export default function CustomOrderTable() {
                   {customOrder.username}
                 </td>
                 <td className="px-4 py-3 whitespace-no-wrap">
-                  {new Date(customOrder.startDate).toLocaleString("en-US", {
+                  {new Date(customOrder.startDate).toLocaleString("vi-VN", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -166,12 +191,12 @@ export default function CustomOrderTable() {
                 </td>
                 <td className="px-4 py-3 whitespace-no-wrap">
                   {customOrder.finishDate
-                    ? new Date(customOrder.finishDate).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour12: false,
-                    })
+                    ? new Date(customOrder.finishDate).toLocaleString("vi-VN", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour12: false,
+                      })
                     : "No data"}
                 </td>
                 <td className="px-4 py-3 whitespace-no-wrap">
@@ -191,18 +216,48 @@ export default function CustomOrderTable() {
                     className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
                     onClick={() => handleEditOrder(customOrder)}
                   >
-                    Edit
+                    Chỉnh sửa
                   </button>
+                  {customOrder.orderStatus.statusId === 3 &&
+                    customOrder.description
+                      .toUpperCase()
+                      .match("YÊU CẦU HỦY ĐƠN") && (
+                      <button
+                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() =>
+                          handleVerifyCancel(
+                            customOrder.customOrderId,
+                            customOrder.description
+                          )
+                        }
+                      >
+                        Xác nhận hủy
+                      </button>
+                    )}
                   {customOrder.orderStatus.statusId === 3 && (
                     <button
                       className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       onClick={() =>
-                        handleVerifyStatus(customOrder.customOrderId, customOrder.description)
+                        handleVerifyDone(customOrder.customOrderId)
                       }
                     >
-                      Verify
+                      Hoàn thành
                     </button>
                   )}
+                </td>
+                <td className="px-6 py-3 whitespace-no-wrap">
+                  <button
+                    className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
+                    onClick={() =>
+                      handleViewDetail(
+                        customOrder.customOrderId,
+                        customOrder.username,
+                        customOrder.orderStatus.statusDescription
+                      )
+                    }
+                  >
+                    Xem
+                  </button>
                 </td>
               </tr>
             ))}
@@ -301,6 +356,14 @@ export default function CustomOrderTable() {
             </form>
           </div>
         </div>
+      )}
+            {selectedCustomOrder && (
+        <TrackedCustomOrderCard
+          customOrderId={selectedCustomOrder.customOrderId}
+          username={selectedCustomOrder.username}
+          orderStatus={selectedCustomOrder.orderStatus}
+          onClose={() => setSelectedCustomOrder(null)}
+        />
       )}
     </div>
   );

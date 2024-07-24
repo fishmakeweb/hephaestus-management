@@ -147,25 +147,25 @@ export default function CustomOrderTable() {
                 Username
               </th>
               <th className="px-10 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Start Date
+                Ngày bắt đầu
               </th>
               <th className="px-10 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Finish Date
+              Ngày kết thúc
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Order Status
+                Trạng thái
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Order Description
+                Miêu tả đơn hàng
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Pre-paid Price
+                Giá trả trước
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Full-paid Price
+                Giá cuối
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                Action
+                Hành động
               </th>
               <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                 Xem chi tiết

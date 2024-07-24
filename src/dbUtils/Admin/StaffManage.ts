@@ -43,7 +43,7 @@ export interface Staff {
         };
         try {
             const response = await axios.post(`/admin/register/staff`, staffData);;
-            console.log('Register successful:', response);
+            return response.data;
         } catch (error) {
             console.error('Add staff failed:', error);
         }

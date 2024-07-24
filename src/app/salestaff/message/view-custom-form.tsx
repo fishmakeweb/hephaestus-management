@@ -29,10 +29,10 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
             <CardHeader className="flex gap-3">
               <div className="flex flex-col">
                 <p className="text-md font-semibold">
-                  Order ID: {customOrder.customOrderId}
+                  Mã đơn hàng: {customOrder.customOrderId}
                 </p>
                 <p className="text-sm text-default-500">
-                  Start Date:{" "}
+                  Ngày bắt đầu:{" "}
                   {new Date(customOrder.startDate).toLocaleString("vi-VN", {
                     year: "numeric",
                     month: "long",
@@ -41,7 +41,7 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                     minute: "2-digit",
                     hour12: false,
                   })} .
-                  Finish Date:{" "}
+                  Ngày kết thúc:{" "}
                   {customOrder.finishDate
                     ? new Date(customOrder.finishDate).toLocaleString("vi-VN", {
                       year: "numeric",
@@ -58,10 +58,10 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
             <Divider />
             <CardBody className="flex flex-col gap-2">
               <p className="text-lg font-semibold">
-                Status: {customOrder.orderStatus}
+                Trạng thái: {customOrder.orderStatus}
               </p>
               <p id="fullPaid" className="text-lg font-semibold">
-                Prepaid: ${customOrder.prepaid.toFixed(2)} Fullpaid: $
+                Trả trước: ${customOrder.prepaid.toFixed(2)} Trả đủ: $
                 {customOrder.fullpaid.toFixed(2)}
               </p>
             </CardBody>
@@ -71,7 +71,7 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                 href={`/salestaff/message/support-custom/${customOrder.customOrderId}`}
                 className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
               >
-                View Support Box
+                Xem hộp hỗ trợ
               </Link>
             </CardFooter>
           </Card>

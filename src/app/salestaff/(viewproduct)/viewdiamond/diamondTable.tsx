@@ -41,7 +41,7 @@ export type Diamond = {
 export const DiamondTable: ColumnDef<Diamond>[] = [
   {
     accessorKey: 'measurement',
-    header: 'Measurement',
+    header: 'Kích thước',
     cell: info => `${info.row.original.measurement.length} x ${info.row.original.measurement.width} x ${info.row.original.measurement.height}`,
   },
   {
@@ -51,12 +51,12 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
   },
   {
     accessorKey: 'color.colorDescription',
-    header: 'Color',
+    header: 'Màu sắc',
     cell: info => info.getValue(),
   },
   {
     accessorKey: 'cut.cutDescription',
-    header: 'Cut Style',
+    header: 'Kiểu cut',
     cell: info => info.getValue(),
   },
   {
@@ -66,7 +66,7 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
   },
   {
     accessorKey: 'gia.giaNumber',
-    header: 'GIA Number',
+    header: 'GIA',
     cell: info => info.getValue(),
   },
   {
@@ -76,15 +76,15 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Price
+        Giá
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: info => `$${info.getValue()}`,
+    cell: info => `${info.getValue()} VNĐ`,
   },
   {
     accessorKey: 'img',
-    header: 'Image',
+    header: 'Hình ảnh',
     cell: ({ getValue }) => {
       const imageUrl = getValue() as string; 
       return (
@@ -94,7 +94,7 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
   },
   {
     accessorKey: 'sold',
-    header: "Status",
-    cell: info => `${info.getValue()? "Sold" : "Available"}`,
+    header: "Trạng thái",
+    cell: info => `${info.getValue()? "Đã bán" : "Còn hàng"}`,
   },
 ];

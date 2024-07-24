@@ -74,7 +74,7 @@ export default function RootLayout({
               <NavbarStaff role={role} />
               {showNotification && (
                 <Alert  className="w-[15vw] bg-white fixed top-20 right-5 p-3 rounded-lg shadow-md transition-opacity duration-300 z-10">
-                <AlertTitle className="underline">Notification</AlertTitle>
+                <AlertTitle className="underline">Thông báo</AlertTitle>
                 <AlertDescription>{notification}</AlertDescription>
               </Alert>
               )}

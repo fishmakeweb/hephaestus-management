@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   fetchCustomerProfileByUsername,
   fetchOrderDetail,
@@ -104,10 +105,12 @@ const TrackedOrderCard: React.FC<TrackedOrderCardProps> = ({
           <div>
             {formData.map((detail) => (
               <div key={detail.id} className="py-3 flex items-center">
-                <img
+                <Image
                   loading="lazy"
                   src={detail.jewelry.img}
                   alt={detail.jewelry.name}
+                  width={100} 
+                  height={100}
                   className="w-20 h-20 rounded-md object-cover"
                 />
                 <div className="ml-3 flex-grow">

@@ -361,7 +361,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Chọn kim cương (không bắt buộc)
+                  ID kim cương đang chọn: {selectedDiamond}
                 </option>
                 {diamonds.map((diamond) => (
                   <option
@@ -369,7 +369,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     key={diamond.diamondId}
                     value={diamond.diamondId}
                   >
-                    {`ID: ${diamond.diamondId}, Màu sắc: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price}`}
+                    {`ID: ${diamond.diamondId}, Màu sắc: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price} VNĐ`}
                   </option>
                 ))}
               </select>

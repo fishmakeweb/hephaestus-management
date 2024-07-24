@@ -322,7 +322,7 @@ const FormAddJewelrySheet: React.FC = () => {
                   <option value="">Chọn một kim cương</option>
                   {diamonds.map((diamond) => (
                     <option key={diamond.diamondId} value={diamond.diamondId}>
-                      {`ID: ${diamond.diamondId}, Màu: ${diamond.color.colorDescription}, Cắt: ${diamond.cut.cutDescription}, Độ Sáng: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price}`}
+                      {`ID: ${diamond.diamondId}, Màu: ${diamond.color.colorDescription}, Cắt: ${diamond.cut.cutDescription}, Độ Sáng: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price} VNĐ`}
                     </option>
                   ))}
                 </select>

@@ -51,22 +51,22 @@ export default function OrderTable() {
         <thead>
           <tr>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-              Order ID
+              Mã đơn hàng
             </th>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
               Username
             </th>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-              Order Date
+              Ngày mua
             </th>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-              Order Status
+              Trạng thái
             </th>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-              Total Price
+              Tổng giá
             </th>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-              View Order Detail
+            <th className="px-8 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              Xem chi tiết đơn
             </th>
           </tr>
         </thead>
@@ -97,16 +97,16 @@ export default function OrderTable() {
                 {order.orderStatus.statusDescription}
               </td>
               <td className="px-6 py-3 whitespace-no-wrap">
-                ${order.totalPrice.toFixed(2)}
+                {order.totalPrice.toFixed(2)} VNĐ
               </td>
-              <td className="px-6 py-3 whitespace-no-wrap">
+              <td className="px-8 py-3 whitespace-no-wrap">
                 <button
-                  className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
+                  className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-6 rounded"
                   onClick={() =>
                     handleViewDetail(order.orderId, order.username, order.orderStatus.statusDescription)
                   }
                 >
-                  View detail
+                  Xem chi tiết
                 </button>
               </td>
             </tr>
@@ -119,14 +119,14 @@ export default function OrderTable() {
           disabled={currentPage === 1}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
         >
-          Previous
+          Trước
         </button>
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
         >
-          Next
+          Tiếp
         </button>
       </div>
       {selectedOrder && (

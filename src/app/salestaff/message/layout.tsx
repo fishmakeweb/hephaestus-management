@@ -45,15 +45,15 @@ export default function RootLayout({
     );
   }
   return (
-    <div className="bg-gray-100 h-full flex flex-col lg:flex-row p-4">
+    <div className="h-full flex flex-col lg:flex-row p-4">
         <div className="w-full w-1/3">
           <div>
-            <p className="text-xl text-center font-semibold mb-4">Orders</p>
+            <p className="text-xl text-center font-semibold mb-4">Đơn trang sức</p>
             <OrderCards orderData={orderData} />
           </div>
           <div>
           <p className="text-xl  font-semibold  text-center mb-4">
-              Custom Orders
+              Đơn trang sức chế tác
             </p>
             <CusOrderCards customOrderData={customOrderData} />
           </div>

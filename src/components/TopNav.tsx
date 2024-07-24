@@ -78,10 +78,10 @@ const NavbarStaff: React.FC<TopNavProps> = ({ role }) => {
               <li>
                 <button
                   role="menuitem"
-                  className="flex items-center text-[13px] py-1.5 px-4 text-gray-800 hover:text-black hover:bg-gray-100 cursor-pointer"
+                  className="flex w-full items-center text-[13px] py-1.5 px-4 text-gray-800 hover:text-black hover:bg-gray-100 cursor-pointer"
                   onClick={handleLogout}
                 >
-                  Log Out
+                  Đăng xuất
                 </button>
               </li>
             </ul>

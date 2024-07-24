@@ -102,18 +102,19 @@ const ViewAllJewelry: React.FC = () => {
         <div className="sm:flex sm:items-center sm:justify-between mt-4">
           <div>
             <div className="flex items-center gap-x-3">
-              <h2 className="text-lg font-medium text-gray-800">Jewelry</h2>
+              <h2 className="text-lg font-medium text-gray-800">Trang sức</h2>
               <span className="px-3 py-1 text-base text-blue-600 bg-blue-100 rounded-full">
-                {jewelry.length} products
+                {jewelry.length} sản phẩm
               </span>
             </div>
           </div>
           <div className="mt-4">
             <select onChange={handleCategoryChange}>
-              <option value="">Filter By Categories</option>
-              <option value="1">Engagement Ring</option>
-              <option value="2">Fashion Ring</option>
-              <option value="0">All Categories</option>
+              <option value="">Filter danh mục</option>
+              <option value="1">Nhẫn đính hôn</option>
+              <option value="3">Nhẫn thời trang</option>
+              <option value="2">Dây Chuyền</option>
+              <option value="0">Tất cả các danh mục</option>
             </select>
           </div>
         </div>
@@ -127,7 +128,7 @@ const ViewAllJewelry: React.FC = () => {
                     className="py-3.5 px-4 text-sm font-normal rtl:text-right text-gray-500"
                   >
                     <button className="flex items-center gap-x-3 focus:outline-none">
-                      <span>Products</span>
+                      <span>Sản phẩm</span>
                       <svg
                         className="h-3"
                         viewBox="0 0 10 11"
@@ -148,46 +149,46 @@ const ViewAllJewelry: React.FC = () => {
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Category
+                    Danh mục
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Shape
+                    Hình dạng
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Size
+                    Kích thước
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Price
+                    Giá bán
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Quantity
+                    Số lượng
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Date
+                    Ngày
                   </th>
                   <th
                     scope="col"
                     className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                   >
-                    Status
+                    Trạng thái
                   </th>
                   <th scope="col" className="relative py-3.5 px-4">
-                    <span className="sr-only">Actions</span>
+                    <span className="sr-only">Hành động</span>
                   </th>
                 </tr>
               </thead>
@@ -233,7 +234,7 @@ const ViewAllJewelry: React.FC = () => {
                       {item.size.sizeNumber} {item.size.unit}
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                      ${item.price.toFixed(2)}
+                      {item.price.toFixed(2)} VNĐ
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {item.quantity}
@@ -258,14 +259,14 @@ const ViewAllJewelry: React.FC = () => {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            Previous
+            Trước
           </button>
           <button
             className="px-3 py-1.5 ml-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            Next
+            Tiếp
           </button>
         </div>
       </div>

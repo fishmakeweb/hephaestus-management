@@ -16,13 +16,11 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const staffManager = new StaffManage();
 
   const validateInput = (name: string, value: string): string | null => {
-    if (/\s/.test(value)) {
-      return 'Không được phép có khoảng trắng.';
-    }
     if (/[^a-zA-Z0-9@.]/.test(value) && name !== 'fullName') {
       return 'Không được phép có ký tự đặc biệt.';
     }
@@ -59,7 +57,11 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
     }
 
     try {
-      await staffManager.addStaff(newUser.fullName, newUser.email, newUser.username, newUser.password, newUser.role);
+      const response = await staffManager.addStaff(newUser.fullName, newUser.email, newUser.username, newUser.password, newUser.role);
+      if(response.error){
+        setGeneralError(response.error);
+        return;
+      }
       setNewUser({
         fullName: '',
         email: '',
@@ -67,9 +69,11 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
         password: '',
         role: 'ROLE_SALESTAFF'
       });
+      setGeneralError(null);
       onSuccess();
     } catch (error) {
       console.error('Lỗi khi thêm nhân viên:', error);
+      setGeneralError('Tên đăng nhập hoặc email đã tồn tại.');
     }
   };
 
@@ -138,6 +142,7 @@ const AddStaffForm: React.FC<AddStaffFormProps> = ({ onClose, onSuccess }) => {
               <option value="ROLE_ADMIN">Quản trị viên</option>
             </select>
           </div>
+          {generalError && <div className="text-red-500 text-sm mb-5">{generalError}</div>}
           <div className="flex justify-end mt-6">
             <button
               type="button"

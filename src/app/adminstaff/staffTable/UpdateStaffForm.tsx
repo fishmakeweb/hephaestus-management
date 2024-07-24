@@ -15,9 +15,6 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
 
   const validateInput = (name: string, value: string): string | null => {
     if (name.includes('role')) return null;
-    if (/\s/.test(value)) {
-      return 'Không được phép có khoảng trắng.';
-    }
     if (/[^a-zA-Z0-9@.]/.test(value) && name !== 'fullName') {
       return 'Không được phép có ký tự đặc biệt.';
     }

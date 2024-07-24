@@ -35,14 +35,14 @@ const Sidebar: React.FC = () => {
                     </div>
 
                     <ul className="mt-4 ml-6 mr-6">
-                        <span className="text-gray-400 font-bold">SALES STAFF</span>
+                        <span className="text-gray-400 font-bold">NHÂN VIÊN BÁN HÀNG</span>
                         <li className="mb-1 group">
                             <Link
                                 href="/salestaff/message"
                                 className={`flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname.includes('/salestaff/message') ? 'bg-black text-white' : ''}`}
                             >
                                 <i className="ri-home-2-line mr-3 text-lg" />
-                                <span className="text-sm">Message</span>
+                                <span className="text-sm">Tin nhắn</span>
                             </Link>
                         </li>
                         <li className="mb-1 group">
@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
                                 className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
                             >
                                 <i className="bx bx-user mr-3 text-lg" />
-                                <span className="text-sm">Product</span>
+                                <span className="text-sm">Sản phẩm</span>
                                 <i
                                     className={`ri-arrow-right-s-line ml-auto ${isSalesDropdownOpen ? "rotate-90" : ""}`}
                                 />
@@ -64,7 +64,7 @@ const Sidebar: React.FC = () => {
                                         href="/salestaff/viewdiamond"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/viewdiamond' ? 'bg-black text-white' : ''}`}
                                     >
-                                        Diamond
+                                        Kim cương
                                     </Link>
                                 </li>
                                 <li className="mb-4">
@@ -72,7 +72,7 @@ const Sidebar: React.FC = () => {
                                         href="/salestaff/viewjewelry"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/viewjewelry' ? 'bg-black text-white' : ''}`}
                                     >
-                                        Jewelry
+                                        Trang sức
                                     </Link>
                                 </li>
                             </ul>
@@ -83,7 +83,7 @@ const Sidebar: React.FC = () => {
                                 className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
                             >
                                 <i className="bx bx-user mr-3 text-lg" />
-                                <span className="text-sm">View:</span>
+                                <span className="text-sm">Xem:</span>
                                 <i
                                     className={`ri-arrow-right-s-line ml-auto ${isOrdersDropdownOpen ? "rotate-90" : ""}`}
                                 />
@@ -96,7 +96,7 @@ const Sidebar: React.FC = () => {
                                         href="/salestaff/view-orders"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-orders' ? 'bg-black text-white' : ''}`}
                                     >
-                                        - Orders
+                                        - Đơn trang sức
                                     </Link>
                                 </li>
                                 <li className="mb-4">
@@ -104,7 +104,7 @@ const Sidebar: React.FC = () => {
                                         href="/salestaff/view-custom-orders"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/salestaff/view-custom-orders' ? 'bg-black text-white' : ''}`}
                                     >
-                                        - Custom Orders
+                                        - Đơn trang sức chế tác
                                     </Link>
                                 </li>
                             </ul>

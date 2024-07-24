@@ -19,7 +19,7 @@ export default function RootLayout({
   const [role, setRole] = useState<string | null>(null);
   const [notification, setNotification] = useState<string>("");
   const [showNotification, setShowNotification] = useState(false);
-  const audioRef = useRef(new Audio('https://diamondshop-img.ap-south-1.linodeobjects.com/facebookchat.mp3'));
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -34,7 +34,7 @@ export default function RootLayout({
   }, []);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/chat');
+    const socket = new SockJS('https://api.hephaestus.store/chat');
     const client = new Client({
       webSocketFactory: () => socket,
       connectHeaders: {
@@ -44,6 +44,7 @@ export default function RootLayout({
         client.subscribe('/topic/notifications', (message) => {
           setNotification(message.body);
           setShowNotification(true);
+          audioRef.current = new Audio('https://diamondshop-img.ap-south-1.linodeobjects.com/facebookchat.mp3');
           audioRef.current.play();
           setTimeout(() => setShowNotification(false), 5000); // Hide after 5 seconds
         });

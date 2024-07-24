@@ -13,6 +13,22 @@ const nextConfig = {
     output: "standalone",
     webpack: (config, { isServer }) => {
         config.resolve.alias['@'] = path.resolve(__dirname, 'src');
+
+        if (!isServer) {
+            config.module.rules.push({
+                test: /\.(mp3|wav|mpe?g|ogg)$/i,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        publicPath: '/_next/static/media/',
+                        outputPath: 'static/media/',
+                        name: '[name].[ext]',
+                        esModule: false,
+                    },
+                }],
+            });
+        }
+
         return config;
     },
 };

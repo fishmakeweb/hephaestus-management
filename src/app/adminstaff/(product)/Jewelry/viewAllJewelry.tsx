@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import ManageProductUtils from "@/dbUtils/Admin/ManageProducts";
-import { useRouter } from "next/navigation";
 import UpdateJewelry from "./updateJewelry";
 import { setJewelryStatus } from "@/dbUtils/jewelryAPI/types";
 import Image from "next/image";
@@ -46,7 +45,6 @@ export interface Jewelry {
 }
 
 const ViewAllJewelry: React.FC = () => {
-  const router = useRouter();
 
   // Wrap productManager initialization in useMemo
   const productManager = useMemo(() => new ManageProductUtils(), []);
@@ -57,8 +55,6 @@ const ViewAllJewelry: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [editingJewelryId, setEditingJewelryId] = useState<number | null>(null);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] =
-    useState<boolean>(false);
   const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
@@ -122,26 +118,6 @@ const ViewAllJewelry: React.FC = () => {
     }
   };
 
-  const handleActionClick = (jewelryId: number | null) => {
-    setShowDeleteConfirmation(true);
-    setEditingJewelryId(jewelryId);
-  };
-
-  const handleDelete = async (jewelryId: number | null) => {
-    if (jewelryId === null) return;
-    try {
-      await productManager.deleteJewelry(jewelryId);
-      setShowDeleteConfirmation(false);
-      fetchJewelry(currentPage); // Dependency included here
-    } catch (error) {
-      console.error("Xóa trang sức thất bại:", error);
-    }
-  };
-
-  const handleCloseForm = () => {
-    setShowUpdateForm(false);
-    setEditingJewelryId(null);
-  };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const categoryId = Number(event.target.value);
@@ -173,8 +149,8 @@ const ViewAllJewelry: React.FC = () => {
             <select onChange={handleCategoryChange} defaultValue="">
               <option value="">Filter danh mục</option>
               <option value="1">Nhẫn đính hôn</option>
-              <option value="2">Nhẫn thời trang</option>
-              <option value="3">Dây Chuyền</option>
+              <option value="3">Nhẫn thời trang</option>
+              <option value="2">Dây Chuyền</option>
               <option value="0">Tất cả các danh mục</option>
             </select>
           </div>

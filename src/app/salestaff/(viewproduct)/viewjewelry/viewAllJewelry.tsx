@@ -112,8 +112,8 @@ const ViewAllJewelry: React.FC = () => {
             <select onChange={handleCategoryChange}>
               <option value="">Filter danh mục</option>
               <option value="1">Nhẫn đính hôn</option>
-              <option value="2">Nhẫn thời trang</option>
-              <option value="3">Dây Chuyền</option>
+              <option value="3">Nhẫn thời trang</option>
+              <option value="2">Dây Chuyền</option>
               <option value="0">Tất cả các danh mục</option>
             </select>
           </div>

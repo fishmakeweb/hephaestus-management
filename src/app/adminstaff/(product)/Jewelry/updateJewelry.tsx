@@ -361,7 +361,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                   className="text-md font-semibold text-zinc-900"
                   value=""
                 >
-                  Chọn kim cương (không bắt buộc)
+                  ID kim cương đang chọn: {selectedDiamond}
                 </option>
                 {diamonds.map((diamond) => (
                   <option

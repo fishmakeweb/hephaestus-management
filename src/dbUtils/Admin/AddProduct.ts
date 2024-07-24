@@ -142,7 +142,7 @@ class AddProductUtils {
       const response = await axios.post("/admin/jewelry", jewelryData);
       if (!isNullOrEmptyOrBlank(selectedDiamond)) {
         const dresponse = await axios.put(
-          `/secure/set/diamonds/${selectedDiamond}`
+          `/admin/set/diamonds/${selectedDiamond}`
         );
         console.log(dresponse);
       }

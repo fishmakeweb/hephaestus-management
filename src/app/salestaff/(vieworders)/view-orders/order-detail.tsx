@@ -118,7 +118,7 @@ const TrackedOrderCard: React.FC<TrackedOrderCardProps> = ({
                     {detail.jewelry.name}
                   </p>
                   <p className="text-sm text-gray-500">
-                    Giá tiền: ${detail.jewelry.price.toFixed(2)}
+                    Giá tiền: {detail.jewelry.price} VNĐ
                   </p>
                   <p className="text-sm text-gray-500">
                     Số lượng: {detail.quantity}
@@ -137,7 +137,7 @@ const TrackedOrderCard: React.FC<TrackedOrderCardProps> = ({
                   total + detail.jewelry.price * detail.quantity,
                 0
               )
-              .toFixed(2)}{" "}
+              }{" "}
             VNĐ
           </p>
         </div>

@@ -61,8 +61,8 @@ const CusOrderCards: React.FC<OrderCardsProps> = ({ customOrderData }) => {
                 Trạng thái: {customOrder.orderStatus}
               </p>
               <p id="fullPaid" className="text-lg font-semibold">
-                Trả trước: ${customOrder.prepaid.toFixed(2)} Trả đủ: $
-                {customOrder.fullpaid.toFixed(2)}
+                Trả trước: {customOrder.prepaid} VNĐ Trả đủ:
+                {customOrder.fullpaid} VNĐ
               </p>
             </CardBody>
             <Divider />

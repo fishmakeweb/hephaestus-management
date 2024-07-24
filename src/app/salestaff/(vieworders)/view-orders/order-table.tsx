@@ -97,7 +97,7 @@ export default function OrderTable() {
                 {order.orderStatus.statusDescription}
               </td>
               <td className="px-6 py-3 whitespace-no-wrap">
-                {order.totalPrice.toFixed(2)} VNĐ
+                {order.totalPrice} VNĐ
               </td>
               <td className="px-8 py-3 whitespace-no-wrap">
                 <button

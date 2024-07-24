@@ -50,7 +50,7 @@ const OrderCards: React.FC<OrderCardsProps> = ({ orderData }) => {
                 Trạng thái: {order.orderStatus}
               </p>
               <p className="text-lg font-semibold">
-                Tổng giá: ${order.totalPrice.toFixed(2)}
+                Tổng giá: {order.totalPrice} VNĐ
               </p>
             </CardBody>
             <Divider />

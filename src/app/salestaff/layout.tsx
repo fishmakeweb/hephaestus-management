@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import Sidebar from "./Sidebar";
 import NavbarStaff from "../../components/TopNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import AuthService from "@/dbUtils/Auth/AuthService";
 import React, { useEffect, useState } from "react";
 import NotFound from "../not-found";
@@ -14,6 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [role, setRole] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string>("");
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -27,6 +31,31 @@ export default function RootLayout({
     checkUserRole();
   }, []);
 
+  useEffect(() => {
+    const socket = new SockJS('https://api.hephaestus.store/chat');
+    const client = new Client({
+      webSocketFactory: () => socket,
+      connectHeaders: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      },
+      onConnect: () => {
+        client.subscribe('/topic/notifications', (message) => {
+          setNotification(message.body);
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 5000); // Hide after 5 seconds
+        });
+      },
+      onDisconnect: () => {
+        console.log("Disconnected");
+      }
+    });
+    client.activate();
+
+    return () => {
+      client.deactivate();
+    };
+  }, []);
+
   if (role !== "ROLE_SALESTAFF") {
     return <NotFound />;
   }
@@ -38,7 +67,12 @@ export default function RootLayout({
           <Sidebar />
           <ScrollArea className="h-screen w-full">
             <div className="w-full">
-             <NavbarStaff role = {role}/>
+              <NavbarStaff role={role} />
+              {showNotification && (
+                <div className="fixed top-20 right-5 bg-blue-500 text-white p-3 rounded-lg shadow-md transition-opacity duration-300">
+                  Notification: {notification}
+                </div>
+              )}
             </div>
             <div className="flex justify-center">
               <div className="h-screen w-full">

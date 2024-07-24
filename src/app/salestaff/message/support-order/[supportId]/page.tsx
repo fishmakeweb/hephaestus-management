@@ -71,7 +71,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="mt-4 bg-white shadow-lg rounded-lg p-1 sm:p-2 w-full max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-xl mx-auto">
-      <h3 className="text-lg font-semibold mb-1 sm:mb-2">Order Support Box</h3>
+      <h3 className="text-lg font-semibold mb-1 sm:mb-2">Hộp hỗ trợ đơn thường</h3>
       <div className="chat-box border border-gray-300 rounded-lg p-1 sm:p-2 max-h-60 overflow-auto">
         <ul className="space-y-1 sm:space-y-2">
           {chatMessages.map((msg) => (
@@ -86,7 +86,7 @@ const Page: React.FC = () => {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type a message..."
+          placeholder="Nhập tin nhắn..."
           className="flex-grow p-1 sm:p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-indigo-300"
           onKeyPress={(e) => (e.key === "Enter" ? sendMessage() : null)}
         />
@@ -94,7 +94,7 @@ const Page: React.FC = () => {
           onClick={sendMessage}
           className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 sm:py-2 px-2 sm:px-4 rounded transition-colors duration-150 ease-in-out"
         >
-          Send
+          Gửi
         </button>
       </div>
     </div>

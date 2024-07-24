@@ -5,8 +5,9 @@ import NavbarStaff from "../../components/TopNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { Alert,AlertDescription,AlertTitle } from "@/components/ui/alert";
 import AuthService from "@/dbUtils/Auth/AuthService";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import NotFound from "../not-found";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
   const [role, setRole] = useState<string | null>(null);
   const [notification, setNotification] = useState<string>("");
   const [showNotification, setShowNotification] = useState(false);
+  const audioRef = useRef(new Audio('https://diamondshop-img.ap-south-1.linodeobjects.com/facebookchat.mp3'));
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -32,7 +34,7 @@ export default function RootLayout({
   }, []);
 
   useEffect(() => {
-    const socket = new SockJS('https://api.hephaestus.store/chat');
+    const socket = new SockJS('http://localhost:8080/chat');
     const client = new Client({
       webSocketFactory: () => socket,
       connectHeaders: {
@@ -42,6 +44,7 @@ export default function RootLayout({
         client.subscribe('/topic/notifications', (message) => {
           setNotification(message.body);
           setShowNotification(true);
+          audioRef.current.play();
           setTimeout(() => setShowNotification(false), 5000); // Hide after 5 seconds
         });
       },
@@ -69,9 +72,10 @@ export default function RootLayout({
             <div className="w-full">
               <NavbarStaff role={role} />
               {showNotification && (
-                <div className="fixed top-20 right-5 bg-blue-500 text-white p-3 rounded-lg shadow-md transition-opacity duration-300">
-                  Notification: {notification}
-                </div>
+                <Alert  className="w-[15vw] bg-white fixed top-20 right-5 p-3 rounded-lg shadow-md transition-opacity duration-300 z-10">
+                <AlertTitle className="underline">Notification</AlertTitle>
+                <AlertDescription>{notification}</AlertDescription>
+              </Alert>
               )}
             </div>
             <div className="flex justify-center">

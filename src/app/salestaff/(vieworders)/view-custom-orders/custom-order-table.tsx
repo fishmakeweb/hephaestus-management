@@ -206,10 +206,10 @@ export default function CustomOrderTable() {
                   {customOrder.description}
                 </td>
                 <td className="px-4 py-3 whitespace-no-wrap">
-                  {customOrder.prepaid.toFixed(2)} VNĐ
+                  {customOrder.prepaid} VNĐ
                 </td>
                 <td className="px-4 py-3 whitespace-no-wrap">
-                  {customOrder.fullpaid.toFixed(2)} VNĐ
+                  {customOrder.fullpaid} VNĐ
                 </td>
                 <td className="px-6 py-3 whitespace-no-wrap flex flex-col space-y-2">
                   <button

@@ -81,7 +81,7 @@ export const DiamondTable: ColumnDef<Diamond>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: info => `$${info.getValue()}`,
+    cell: info => `${info.getValue()} VNĐ`,
   },
   {
     accessorKey: 'img',

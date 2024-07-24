@@ -369,7 +369,7 @@ const UpdateJewelry: React.FC<UpdateJewelryProps> = ({ jewelryId, onClose }) => 
                     key={diamond.diamondId}
                     value={diamond.diamondId}
                   >
-                    {`ID: ${diamond.diamondId}, Màu sắc: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price}`}
+                    {`ID: ${diamond.diamondId}, Màu sắc: ${diamond.color.colorDescription}, Cut: ${diamond.cut.cutDescription}, Clarity: ${diamond.clarity.clarityDescription}, Carat: ${diamond.carat.carat}, Giá: ${diamond.price} VNĐ`}
                   </option>
                 ))}
               </select>

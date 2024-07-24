@@ -297,7 +297,7 @@ const ViewAllJewelry: React.FC = () => {
                         {item.size.sizeNumber} {item.size.unit}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        ${item.price.toFixed(2)}
+                        {item.price.toFixed(2)} VNĐ
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                         {item.quantity}

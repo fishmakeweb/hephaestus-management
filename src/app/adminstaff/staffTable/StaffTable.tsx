@@ -58,19 +58,22 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
               <td className="px-6 py-3 whitespace-no-wrap">{staff.username}</td>
               <td className="px-6 py-3 whitespace-no-wrap">{staff.role.roleName}</td>
               <td className="px-6 py-3 whitespace-no-wrap">
-                <button
-                  className="inline-block w-[8vw] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleUpdateUser(staff)}
-                >
-                  Cập Nhật
-                </button>
-                <button
-                  className="inline-block w-[8vw] bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleDelUser(staff.staffId)}
-                >
-                  Xóa
-                </button>
+                <div className="flex flex-col space-y-2">
+                  <button
+                    className="inline-block w-[8vw] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => handleUpdateUser(staff)}
+                  >
+                    Cập Nhật
+                  </button>
+                  <button
+                    className="inline-block w-[8vw] bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => handleDelUser(staff.staffId)}
+                  >
+                    Xóa
+                  </button>
+                </div>
               </td>
+
             </tr>
           ))}
         </tbody>

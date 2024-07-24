@@ -1,5 +1,3 @@
-
-// Sidebar.tsx
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
@@ -32,14 +30,14 @@ const Sidebar: React.FC = () => {
                     </div>
 
                     <ul className="mt-4 ml-6 mr-6">
-                        <span className="text-gray-400 font-bold">ADMIN</span>
+                        <span className="text-gray-400 font-bold">QUẢN TRỊ</span>
                         <li className="mb-1 group">
                             <Link
                                 href="/adminstaff/dashboard"
                                 className={`flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/adminstaff/dashboard' ? 'bg-black text-white' : ''}`}
                             >
                                 <i className="bx bxl-blogger mr-3 text-lg" />
-                                <span className="text-sm">Dashboard</span>
+                                <span className="text-sm">Bảng Điều Khiển</span>
                             </Link>
                         </li>
                         <li className="mb-1 group">
@@ -48,7 +46,7 @@ const Sidebar: React.FC = () => {
                                 className={`flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-600 hover:text-gray-100 rounded-md ${pathname === '/adminstaff/staffTable' ? 'bg-black text-white' : ''}`}
                             >
                                 <i className="bx bxl-blogger mr-3 text-lg" />
-                                <span className="text-sm">Staff</span>
+                                <span className="text-sm">Nhân Viên</span>
                             </Link>
                         </li>
                         <li className="mb-1 group">
@@ -57,7 +55,7 @@ const Sidebar: React.FC = () => {
                                 className="flex w-full font-semibold items-center py-2 px-4 text-gray-900 hover:text-gray-100 hover:bg-gray-600 rounded-md"
                             >
                                 <i className="bx bx-user mr-3 text-lg" />
-                                <span className="text-sm">Products</span>
+                                <span className="text-sm">Sản Phẩm</span>
                                 <i
                                     className={`ri-arrow-right-s-line ml-auto ${isProductsDropdownOpen ? "rotate-90" : ""}`}
                                 />
@@ -70,7 +68,7 @@ const Sidebar: React.FC = () => {
                                         href="/adminstaff/Diamond"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/Diamond' ? 'bg-black text-white' : ''}`}
                                     >
-                                        - Diamond
+                                        - Kim Cương
                                     </Link>
                                 </li>
                                 <li className="mb-4">
@@ -78,7 +76,7 @@ const Sidebar: React.FC = () => {
                                         href="/adminstaff/Jewelry"
                                         className={`text-gray-800 text-sm py-2 px-3 flex items-center hover:bg-gray-600 hover:text-white rounded-md ${pathname === '/adminstaff/Jewelry' ? 'bg-black text-white' : ''}`}
                                     >
-                                        - Jewelry
+                                        - Trang Sức
                                     </Link>
                                 </li>
                             </ul>

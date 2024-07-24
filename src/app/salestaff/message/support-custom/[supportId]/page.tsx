@@ -108,29 +108,6 @@ export default function Chat() {
       </button>
     </div>
   </div>
-
-      <p className="text-xl font-semibold mb-4">Custom Order Support Box</p>
-      <div className="w-full bg-white rounded-lg shadow-md">
-        <div className="chat-box">
-          <div className="messages">
-            <ScrollArea className="h-[70vh]">
-              {chatMessages.map((msg) => (
-                <p className="mb-2" key={msg.id}>
-                  <span className="bg-gray-300 text-black p-1">{msg.username}</span>: {msg.message}
-                </p>
-              ))}
-            </ScrollArea>
-          </div>
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Hello..."
-            onKeyPress={(e) => (e.key === "Enter" ? sendMessage() : null)}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
-      </div>
     </>
   );
 }

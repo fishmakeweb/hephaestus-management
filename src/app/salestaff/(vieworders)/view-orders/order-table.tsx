@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Order, fetchAllOrders } from "@/dbUtils/Sales/ManageOrders";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
+import TrackedOrderCard from "./order-detail"; // Import the component
+interface SelectedOrder {
+  orderId: string;
+  username: string;
+  orderStatus: string; // Add more properties as needed
+}
 export default function OrderTable() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const totalPages = Math.ceil(orders.length / rowsPerPage);
+  const [selectedOrder, setSelectedOrder] = useState<SelectedOrder | null>(
+    null
+  );
 
   useEffect(() => {
     fetchOrders();
@@ -27,6 +36,12 @@ export default function OrderTable() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  const handleViewDetail = (orderId: any, username: any, orderStatus : any) => {
+    setSelectedOrder({ orderId, username, orderStatus });
+  };
+  const handleCloseDetail = () => {
+    setSelectedOrder(null);
+  };
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentRows = orders.slice(startIndex, startIndex + rowsPerPage);
 
@@ -50,6 +65,9 @@ export default function OrderTable() {
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
               Total Price
             </th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+              View Order Detail
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -58,20 +76,38 @@ export default function OrderTable() {
               <td className="px-6 py-3 whitespace-no-wrap">{order.orderId}</td>
               <td className="px-6 py-3 whitespace-no-wrap">{order.username}</td>
               <td className="px-6 py-3 whitespace-no-wrap">
-                {new Date(order.orderDate).toLocaleString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
+                {(() => {
+                  const dateString = new Date(order.orderDate).toLocaleString(
+                    "vi-VN",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    }
+                  );
+                  return (
+                    dateString.charAt(0).toUpperCase() + dateString.slice(1)
+                  );
+                })()}
               </td>
               <td className="px-6 py-3 whitespace-no-wrap">
                 {order.orderStatus.statusDescription}
               </td>
               <td className="px-6 py-3 whitespace-no-wrap">
                 ${order.totalPrice.toFixed(2)}
+              </td>
+              <td className="px-6 py-3 whitespace-no-wrap">
+                <button
+                  className="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
+                  onClick={() =>
+                    handleViewDetail(order.orderId, order.username, order.orderStatus.statusDescription)
+                  }
+                >
+                  View detail
+                </button>
               </td>
             </tr>
           ))}
@@ -93,6 +129,14 @@ export default function OrderTable() {
           Next
         </button>
       </div>
+      {selectedOrder && (
+        <TrackedOrderCard
+          orderId={selectedOrder.orderId}
+          username={selectedOrder.username}
+          orderStatus={selectedOrder.orderStatus}
+          onClose={handleCloseDetail}
+        />
+      )}
     </div>
   );
 }

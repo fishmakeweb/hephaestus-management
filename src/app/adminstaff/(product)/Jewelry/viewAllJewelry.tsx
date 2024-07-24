@@ -15,8 +15,9 @@ import {
 import FormAddJewelrySheet from "./AddJewelryForm";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { filterJewelryByCategory } from "@/dbUtils/jewelryAPI/view";
 
-interface Jewelry {
+export interface Jewelry {
   jewelryId: number;
   name: string;
   diamond: {
@@ -59,24 +60,47 @@ const ViewAllJewelry: React.FC = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] =
     useState<boolean>(false);
   const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
-  const fetchJewelry = useCallback(async (page: number = 1) => {
-    setLoading(true);
-    try {
-      const response = await productManager.fetchJewelryPagination(page);
-      const jewelry = response?.data;
-      setJewelry(jewelry.content);
-      setTotalPages(jewelry.totalPages);
-      setLoading(false);
-    } catch (error) {
-      setError("Failed to fetch jewelry data.");
-      setLoading(false);
-    }
-  }, [productManager]);
+  const fetchJewelry = useCallback(
+    async (page: number = 1, categoryId?: number) => {
+      setLoading(true);
+      try {
+        let response;
+        let jewelryData;
+  
+        if (categoryId) {
+          response = await filterJewelryByCategory(categoryId);
+          jewelryData = response;
+        } else {
+          response = await productManager.fetchJewelryPagination(page);
+          jewelryData = response?.data; 
+        }
+  
+        if (Array.isArray(jewelryData)) {
+          setJewelry(jewelryData);
+          setTotalPages(1); 
+        } else {
+          setJewelry(jewelryData.content);
+          setTotalPages(jewelryData.totalPages);
+        }
+  
+        setLoading(false);
+      } catch (error) {
+        setError("Không thể tải dữ liệu trang sức.");
+        setLoading(false);
+      }
+    },
+    [productManager]
+  );
 
   useEffect(() => {
-    fetchJewelry(currentPage);
-  }, [fetchJewelry, currentPage]);
+    if (selectedCategory) {
+      fetchJewelry(currentPage, selectedCategory);
+    } else {
+      fetchJewelry(currentPage);
+    }
+  }, [fetchJewelry, currentPage, selectedCategory]);
 
   const handleSetStatus = async (jewelryId: number, status: boolean) => {
     await setJewelryStatus(jewelryId, !status);
@@ -110,7 +134,7 @@ const ViewAllJewelry: React.FC = () => {
       setShowDeleteConfirmation(false);
       fetchJewelry(currentPage); // Dependency included here
     } catch (error) {
-      console.error("Delete jewelry failed:", error);
+      console.error("Xóa trang sức thất bại:", error);
     }
   };
 
@@ -119,12 +143,13 @@ const ViewAllJewelry: React.FC = () => {
     setEditingJewelryId(null);
   };
 
-  const handleAdd = () => {
-    router.push("/adminstaff/addJewelry");
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = Number(event.target.value);
+    setSelectedCategory(categoryId !== 0 ? categoryId : null);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Đang tải...</div>;
   }
 
   if (error) {
@@ -134,19 +159,30 @@ const ViewAllJewelry: React.FC = () => {
   return (
     <>
       <>
-        <section className="container-fluid px-4 mx-auto overflow-x-auto"> {/* Added overflow-x-auto */}
-          <div className="sm:flex sm:items-center sm:justify-between mt-4">
-            <div>
-              <div className="flex items-center gap-x-3">
-                <h2 className="text-lg font-medium text-gray-800">Jewelry</h2>
-                <span className="px-3 py-1 text-base text-blue-600 bg-blue-100 rounded-full">
-                  {jewelry.length} products
-                </span>
-              </div>
+      <section className="container-fluid px-4">
+        <div className="sm:flex sm:items-center sm:justify-between mt-4">
+          <div>
+            <div className="flex items-center gap-x-3">
+              <h2 className="text-lg font-medium text-gray-800">Trang sức</h2>
+              <span className="px-3 py-1 text-base text-blue-600 bg-blue-100 rounded-full">
+                {jewelry.length} sản phẩm
+              </span>
             </div>
           </div>
+          <div className="mt-4">
+            <select onChange={handleCategoryChange} defaultValue="">
+              <option value="">Filter danh mục</option>
+              <option value="1">Nhẫn đính hôn</option>
+              <option value="2">Nhẫn thời trang</option>
+              <option value="0">Tất cả các danh mục</option>
+            </select>
+          </div>
+        </div>
+          <div className="mt-4">
+            <FormAddJewelrySheet />
+          </div>
           <div className="flex flex-col mt-6">
-            <div className="border border-gray-200 md:rounded-lg">
+            <div className="border border-gray-100">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -155,7 +191,7 @@ const ViewAllJewelry: React.FC = () => {
                       className="py-3.5 px-4 text-sm font-normal rtl:text-right text-gray-500"
                     >
                       <button className="flex items-center gap-x-3 focus:outline-none">
-                        <span>Products</span>
+                        <span>Sản phẩm</span>
                         <svg
                           className="h-3"
                           viewBox="0 0 10 11"
@@ -174,48 +210,48 @@ const ViewAllJewelry: React.FC = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Category
+                      Danh mục
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Shape
+                      Hình dạng
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Size
+                      Kích thước
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Price
+                      Giá
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Quantity
+                      Số lượng
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Date
+                      Ngày
                     </th>
                     <th
                       scope="col"
                       className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
                     >
-                      Status
+                      Tình trạng
                     </th>
                     <th scope="col" className="relative py-3.5 px-4">
-                      <span className="sr-only">Actions</span>
+                      <span className="sr-only">Hành động</span>
                     </th>
                   </tr>
                 </thead>
@@ -243,14 +279,14 @@ const ViewAllJewelry: React.FC = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                      <td className="px-8 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                           <h2 className="text-sm font-normal text-emerald-500">
                             {item.category.categoryName}
                           </h2>
                         </div>
                       </td>
-                      <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                           <h2 className="text-sm font-normal text-emerald-500">
                             {item.shape.shapeDescription}
@@ -270,28 +306,28 @@ const ViewAllJewelry: React.FC = () => {
                         {item.date}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {item.sold ? "Sold" : "Available"}
+                        {item.sold ? "Đã bán" : "Còn hàng"}
                       </td>
                       <td>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
+                              <span className="sr-only">Mở menu</span>
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => handleEditClick(item.jewelryId)}
                             >
-                              Update
+                              Cập nhật
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
 
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => handleSetStatus(item.jewelryId, item.sold)}
                             >
-                              {item.sold ? 'Set Available' : 'Set Sold'}
+                              {item.sold ? 'Đặt thành Còn hàng' : 'Đặt thành Đã bán'}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -310,19 +346,16 @@ const ViewAllJewelry: React.FC = () => {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Previous
+              Trước
             </button>
             <button
               className="px-3 py-1.5 ml-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-200 rounded-md hover:bg-gray-100"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Next
+              Tiếp theo
             </button>
           </div>
-          <span className="text-sm font-normal text-gray-700">
-            Page {currentPage} of {totalPages}
-          </span>
         </div>
       </>
       {editingJewelryId && showUpdateForm && (

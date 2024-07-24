@@ -41,12 +41,12 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
       <table className="min-w-full divide-y divide-gray-200 border-collapse border border-black w-full">
         <thead>
           <tr>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Staff ID</th>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Full Name</th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Mã Nhân Viên</th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Họ và Tên</th>
             <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Email</th>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Username</th>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Role</th>
-            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Action</th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Tên Đăng Nhập</th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Vai Trò</th>
+            <th className="px-6 py-4 bg-black text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">Hành Động</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -59,16 +59,16 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
               <td className="px-6 py-3 whitespace-no-wrap">{staff.role.roleName}</td>
               <td className="px-6 py-3 whitespace-no-wrap">
                 <button
-                  className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
+                  className="inline-block w-[8vw] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   onClick={() => handleUpdateUser(staff)}
                 >
-                  Update
+                  Cập Nhật
                 </button>
                 <button
-                  className="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  className="inline-block w-[8vw] bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                   onClick={() => handleDelUser(staff.staffId)}
                 >
-                  Delete
+                  Xóa
                 </button>
               </td>
             </tr>
@@ -81,14 +81,14 @@ const StaffTable: React.FC<UsersTableProps> = ({ staffList, onDelete, onUpdate }
           disabled={currentPage === 1}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
         >
-          Previous
+          Trước
         </button>
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
         >
-          Next
+          Sau
         </button>
       </div>
     </div>

@@ -74,20 +74,20 @@ const FormAddDiamondSheet: React.FC = () => {
   const validate = (): boolean => {
     const newErrors: { [key: string]: string } = {};
     if (!diamondMeasurement)
-      newErrors.diamondMeasurement = "Measurement is required.";
-    if (!diamondColor) newErrors.diamondColor = "Color is required.";
-    if (!diamondCut) newErrors.diamondCut = "Cut is required.";
-    if (!diamondCarat) newErrors.diamondCarat = "Carat is required.";
-    if (!diamondClarity) newErrors.diamondClarity = "Clarity is required.";
-    if (!giaIssueDate) newErrors.giaIssueDate = "GIA issue date is required.";
-    if (!diamondPrice) newErrors.diamondPrice = "Price is required.";
+        newErrors.diamondMeasurement = "Kích thước là bắt buộc.";
+    if (!diamondColor) newErrors.diamondColor = "Màu sắc là bắt buộc.";
+    if (!diamondCut) newErrors.diamondCut = "Cut là bắt buộc.";
+    if (!diamondCarat) newErrors.diamondCarat = "Carat là bắt buộc.";
+    if (!diamondClarity) newErrors.diamondClarity = "Clarity là bắt buộc.";
+    if (!giaIssueDate) newErrors.giaIssueDate = "Ngày cấp GIA là bắt buộc.";
+    if (!diamondPrice) newErrors.diamondPrice = "Giá bán là bắt buộc.";
     if (diamondPrice && parseFloat(diamondPrice) <= 0)
-      newErrors.diamondPrice = "Price must be greater than 0.";
-    if (!diamondUrl) newErrors.diamondUrl = "File image is required.";
+        newErrors.diamondPrice = "Giá bán phải lớn hơn 0.";
+    if (!diamondUrl) newErrors.diamondUrl = "Ảnh là bắt buộc.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+};
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -132,43 +132,43 @@ const FormAddDiamondSheet: React.FC = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" onClick={() => setIsOpen(true)}>Add New Diamond</Button>
+        <Button variant="outline" onClick={() => setIsOpen(true)}>Thêm kim cương mới</Button>
       </SheetTrigger>
       <SheetContent side="center" className="pb-2">
         <ScrollArea className="h-screen p-6 mt-4">
           <SheetHeader>
-            <SheetTitle>Add Diamond</SheetTitle>
+            <SheetTitle>Thêm kim cương</SheetTitle>
           </SheetHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 px-4">
-              <Label htmlFor="measurement">Measurement</Label>
+              <Label htmlFor="measurement">Kích thước</Label>
               <select
                 id="measurement"
                 value={diamondMeasurement}
                 onChange={(e) => setDiamondMeasurement(e.target.value)}
                 className="input"
               >
-                <option value="">Select a measurement</option>
+                <option value="">Chọn kích thước</option>
                 {measurements.map((measurement) => (
                   <option
                     key={measurement.measurementId}
                     value={measurement.measurementId}
                   >
-                    {`Length: ${measurement.length}, Width: ${measurement.width}, Height: ${measurement.height}`}
+                    {`Dài: ${measurement.length}, Rộng: ${measurement.width}, Cao: ${measurement.height}`}
                   </option>
                 ))}
               </select>
               {errors.diamondMeasurement && (
                 <p className="text-red-500">{errors.diamondMeasurement}</p>
               )}
-              <Label htmlFor="color">Color</Label>
+              <Label htmlFor="color">Màu sắc</Label>
               <select
                 id="color"
                 value={diamondColor}
                 onChange={(e) => setDiamondColor(e.target.value)}
                 className="input"
               >
-                <option value="">Select a color</option>
+                <option value="">Chọn màu sắc</option>
                 {colors.map((color) => (
                   <option key={color.colorId} value={color.colorId}>
                     {color.colorDescription}
@@ -185,7 +185,7 @@ const FormAddDiamondSheet: React.FC = () => {
                 onChange={(e) => setDiamondCut(e.target.value)}
                 className="input"
               >
-                <option value="">Select a cut</option>
+                <option value="">Chọn cut</option>
                 {cuts.map((cut) => (
                   <option key={cut.cutId} value={cut.cutId}>
                     {cut.cutDescription}
@@ -202,7 +202,7 @@ const FormAddDiamondSheet: React.FC = () => {
                 onChange={(e) => setDiamondCarat(e.target.value)}
                 className="input"
               >
-                <option value="">Select a carat</option>
+                <option value="">Chọn carat</option>
                 {carats.map((carat) => (
                   <option key={carat.caratId} value={carat.caratId}>
                     {carat.carat}
@@ -219,7 +219,7 @@ const FormAddDiamondSheet: React.FC = () => {
                 onChange={(e) => setDiamondClarity(e.target.value)}
                 className="input"
               >
-                <option value="">Select a clarity</option>
+                <option value="">Chọn clarity</option>
                 {clarities.map((clarity) => (
                   <option key={clarity.clarityId} value={clarity.clarityId}>
                     {clarity.clarityDescription}
@@ -229,7 +229,7 @@ const FormAddDiamondSheet: React.FC = () => {
               {errors.diamondClarity && (
                 <p className="text-red-500">{errors.diamondClarity}</p>
               )}
-              <Label htmlFor="giaIssueDate">GIA Issue Date</Label>
+              <Label htmlFor="giaIssueDate">Ngày phát hành GIA</Label>
               <Input
                 type="date"
                 id="giaIssueDate"
@@ -240,7 +240,7 @@ const FormAddDiamondSheet: React.FC = () => {
               {errors.giaIssueDate && (
                 <p className="text-red-500">{errors.giaIssueDate}</p>
               )}
-              <Label htmlFor="price">Price</Label>
+              <Label htmlFor="price">Giá bán</Label>
               <Input
                 type="number"
                 id="price"
@@ -251,7 +251,7 @@ const FormAddDiamondSheet: React.FC = () => {
               {errors.diamondPrice && (
                 <p className="text-red-500">{errors.diamondPrice}</p>
               )}
-              <Label htmlFor="fileImage">Diamond Image</Label>
+              <Label htmlFor="fileImage">Hình ảnh</Label>
               <Input
                 type="file"
                 id="fileImage"
@@ -275,7 +275,7 @@ const FormAddDiamondSheet: React.FC = () => {
             <Button type="submit" className="mb-8">
               <SheetClose asChild onClick={handleSheetClose}>
               </SheetClose>
-              <p>Save diamond</p>
+              <p>Lưu kim cương</p>
             </Button>
           </form>
         </ScrollArea>

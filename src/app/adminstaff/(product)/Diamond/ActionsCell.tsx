@@ -8,7 +8,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import AuthService from "@/dbUtils/Auth/AuthService";
 import FormUpdateDiamond from "./updateDiamond";
 import { Diamond } from './diamondTable';
 import { setDiamondStatus } from '@/dbUtils/diamondAPI/types';
@@ -47,12 +46,12 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ diamond }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Hành động</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleUpdateClick}>
-            Update
+            Cập nhật
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSetStatus(diamond.diamondId, diamond.sold)}>
-            {diamond.sold ? 'Set Available' : 'Set Sold'}
+            {diamond.sold ? 'Đặt Còn hàng' : 'Đặt Đã bán'}  
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

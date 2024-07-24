@@ -34,7 +34,7 @@ export default function RootLayout({
   }, []);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/chat');
+    const socket = new SockJS('https://api.hephaestus.store/chat');
     const client = new Client({
       webSocketFactory: () => socket,
       connectHeaders: {

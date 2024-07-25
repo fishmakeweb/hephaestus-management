@@ -13,17 +13,32 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
 
   const staffManager = new StaffManage();
 
-  const validateInput = (name: string, value: string): string | null => {
-    if (name.includes('role')) return null;
-    if (/[^a-zA-Z0-9@.]/.test(value) && name !== 'fullName') {
+  const validateFullName = (fullName: string): string | null => {
+    if (/[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀẾỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰÝỴỶỸĐđâấầẩẫậăắằẳẵặêếềểễệôốồổỗộơớờởỡợưứừửữựỲỴỶỸýỳỷỹ ]/.test(fullName)) {
       return 'Không được phép có ký tự đặc biệt.';
+    }
+    return null;
+  };
+
+  const validateEmail = (email: string): string | null => {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      return 'Vui lòng nhập email.';
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmedEmail)) {
+      return 'Email không hợp lệ.';
     }
     return null;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const error = validateInput(name, value);
+    let error = null;
+
+    if (name === 'fullName') {
+      error = validateFullName(value);
+    } else if (name === 'email') {
+      error = validateEmail(value);
+    }
 
     if (error) {
       setErrors({
@@ -41,7 +56,6 @@ const UpdateStaffForm: React.FC<UpdateStaffFormProps> = ({ editingStaff, onClose
       ...staff,
       [name]: name === 'role' ? { roleName: value } : value
     });
-    console.log(error);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
